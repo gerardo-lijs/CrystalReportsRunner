@@ -14,7 +14,7 @@ public sealed class CrystalReportsEngine : IDisposable
 {
     private readonly string _pipeName;
     private readonly PipeServerWithCallback<ICrystalReportsRunner, ICrystalReportsCaller> _pipe;
-    private readonly DbConnection? _connection;
+    private readonly CrystalReportsConnection? _connection;
 
     /// <inheritdoc/>
     public CrystalReportsEngine() : this(null)
@@ -22,7 +22,7 @@ public sealed class CrystalReportsEngine : IDisposable
     }
 
     /// <inheritdoc/>
-    public CrystalReportsEngine(DbConnection? connection)
+    public CrystalReportsEngine(CrystalReportsConnection? connection)
     {
         _pipeName = $"lijs-dev-crystal-reports-runner-{Guid.NewGuid()}";
         _pipe = new PipeServerWithCallback<ICrystalReportsRunner, ICrystalReportsCaller>(

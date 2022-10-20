@@ -12,7 +12,7 @@ public interface ICrystalReportsRunner
         Report report,
         ReportViewerSettings viewerSettings,
         WindowHandle? owner = null,
-        DbConnection? connection = null);
+        CrystalReportsConnection? connection = null);
 
     /// <summary>
     /// Show report in modal window
@@ -21,7 +21,7 @@ public interface ICrystalReportsRunner
         Report report,
         ReportViewerSettings viewSettings,
         WindowHandle owner,
-        DbConnection? connection);
+        CrystalReportsConnection? connection);
 }
 
 /// <summary>

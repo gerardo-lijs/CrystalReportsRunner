@@ -3,7 +3,8 @@ using LijsDev.CrystalReportsRunner.Core;
 // ========== Initializing Engine ===========
 
 // Method 1: With Connection string
-var connection = new DbConnection("Server=.\\SQLEXPRESS;Database=CrystalReportsSample;Trusted_Connection=True;");
+var connection = CrystalReportsConnectionFactory.CreateSqlConnection(".\\SQLEXPRESS", "CrystalReportsSample");
+
 using var engine = new CrystalReportsEngine(connection);
 
 // Method 2: Without Connection string

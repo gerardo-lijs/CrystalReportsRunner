@@ -81,7 +81,7 @@ public partial class MainWindow : Window
     private static CrystalReportsEngine CreateEngine()
     {
         // NOTE: Create CrystalReportsSample using Schema.sql in the \samples\shared folder
-        var connection = new DbConnection("Server=.\\SQLEXPRESS;Database=CrystalReportsSample;Trusted_Connection=True;");
+        var connection = CrystalReportsConnectionFactory.CreateSqlConnection(".\\SQLEXPRESS", "CrystalReportsSample");
         var engine = new CrystalReportsEngine(connection);
 
         // Method 2: Without Connection string

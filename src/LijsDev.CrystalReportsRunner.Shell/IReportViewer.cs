@@ -9,5 +9,5 @@ using LijsDev.CrystalReportsRunner.Core;
 /// </summary>
 public interface IReportViewer
 {
-    public Form GetViewerForm(Report report, ReportViewerSettings settings, DbConnection? dbConnection);
+    public Form GetViewerForm(Report report, ReportViewerSettings settings, CrystalReportsConnection? dbConnection);
 }

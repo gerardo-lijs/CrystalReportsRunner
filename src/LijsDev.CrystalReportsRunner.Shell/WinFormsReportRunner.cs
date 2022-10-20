@@ -23,7 +23,7 @@ public class WinFormsReportRunner : ICrystalReportsRunner
         Report report,
         ReportViewerSettings viewerSettings,
         WindowHandle? owner = null,
-        DbConnection? dbConnection = null)
+        CrystalReportsConnection? dbConnection = null)
     {
         using var waitHandle = new ManualResetEvent(false);
 
@@ -55,7 +55,7 @@ public class WinFormsReportRunner : ICrystalReportsRunner
         Report report,
         ReportViewerSettings viewerSettings,
         WindowHandle owner,
-        DbConnection? dbConnection = null)
+        CrystalReportsConnection? dbConnection = null)
     {
         using var waitHandle = new ManualResetEvent(false);
 

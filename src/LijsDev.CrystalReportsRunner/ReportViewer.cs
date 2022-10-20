@@ -12,31 +12,29 @@ using LijsDev.CrystalReportsRunner.Shell;
 
 internal class ReportViewer : IReportViewer
 {
-    public Form GetViewerForm(Report report, ReportViewerSettings viewerSettings, DbConnection? dbConnection)
+    public Form GetViewerForm(Report report, ReportViewerSettings viewerSettings, CrystalReportsConnection? dbConnection)
     {
         var document = CreateReportDocument(report, dbConnection);
         return new ViewerForm(document, viewerSettings);
     }
 
-    private static ReportDocument CreateReportDocument(Report report, DbConnection? dbConnection)
+    private static ReportDocument CreateReportDocument(Report report, CrystalReportsConnection? dbConnection)
     {
         var document = new ReportDocument();
         document.Load(report.Path);
 
         ConnectionInfo? crConnection;
 
-        if (dbConnection != null)
+        if (dbConnection is not null)
         {
-            var connectionSettings = dbConnection.GetConnectionSettings();
-
             var logonProperties = new NameValuePairs2
             {
                 new NameValuePair2("Auto Translate", "-1"),
                 new NameValuePair2("Connect Timeout", "15"),
-                new NameValuePair2("Data Source", connectionSettings.DataSource),
+                new NameValuePair2("Data Source", dbConnection.Server),
                 new NameValuePair2("General Timeout", "0"),
-                new NameValuePair2("Initial Catalog", connectionSettings.InitialCatalog),
-                new NameValuePair2("Integrated Security", connectionSettings.IntegratedSecurity ? "False" : "True"),
+                new NameValuePair2("Initial Catalog", dbConnection.Database),
+                new NameValuePair2("Integrated Security", dbConnection.UseIntegratedSecurity ? "False" : "True"),
                 new NameValuePair2("Locale Identifier", "1033"),
                 new NameValuePair2("OLE DB Services", "-5"),
                 new NameValuePair2("Provider", "MSOLEDBSQL"),
@@ -48,36 +46,36 @@ internal class ReportViewer : IReportViewer
             foreach (IConnectionInfo connection in document.DataSourceConnections)
             {
                 connection.SetLogonProperties(logonProperties);
-                if (connectionSettings.IntegratedSecurity)
+                if (dbConnection.UseIntegratedSecurity)
                 {
                     connection.SetConnection(
-                        connectionSettings.DataSource, connectionSettings.InitialCatalog, useIntegratedSecurity: true);
+                        dbConnection.Server, dbConnection.Database, useIntegratedSecurity: true);
                 }
                 else
                 {
                     connection.SetConnection(
-                        connectionSettings.DataSource,
-                        connectionSettings.InitialCatalog,
-                        connectionSettings.UserID,
-                        connectionSettings.Password);
+                        dbConnection.Server,
+                        dbConnection.Database,
+                        dbConnection.Username,
+                        dbConnection.Password);
                 }
             }
 
             // Set table connection
             crConnection = new ConnectionInfo
             {
-                ServerName = connectionSettings.DataSource,
-                DatabaseName = connectionSettings.InitialCatalog
+                ServerName = dbConnection.Server,
+                DatabaseName = dbConnection.Database
             };
 
-            if (connectionSettings.IntegratedSecurity)
+            if (dbConnection.UseIntegratedSecurity)
             {
                 crConnection.IntegratedSecurity = true;
             }
             else
             {
-                crConnection.UserID = connectionSettings.UserID;
-                crConnection.Password = connectionSettings.Password;
+                crConnection.UserID = dbConnection.Username;
+                crConnection.Password = dbConnection.Password;
             }
         }
         else
