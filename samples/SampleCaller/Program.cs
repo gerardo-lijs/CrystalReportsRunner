@@ -12,23 +12,23 @@ using var engine = new CrystalReportsEngine(connection);
 // ========== Customizing Viewer Settings ===========
 
 engine.ViewerSettings.AllowedExportFormats =
-    CrystalReportsViewerExportFormats.PdfFormat |
-    CrystalReportsViewerExportFormats.ExcelFormat |
-    CrystalReportsViewerExportFormats.CsvFormat |
-    CrystalReportsViewerExportFormats.WordFormat |
-    CrystalReportsViewerExportFormats.XmlFormat |
-    CrystalReportsViewerExportFormats.RtfFormat |
-    CrystalReportsViewerExportFormats.ExcelRecordFormat |
-    CrystalReportsViewerExportFormats.EditableRtfFormat |
-    CrystalReportsViewerExportFormats.XLSXFormat |
-    CrystalReportsViewerExportFormats.XmlFormat;
+    ReportViewerExportFormats.PdfFormat |
+    ReportViewerExportFormats.ExcelFormat |
+    ReportViewerExportFormats.CsvFormat |
+    ReportViewerExportFormats.WordFormat |
+    ReportViewerExportFormats.XmlFormat |
+    ReportViewerExportFormats.RtfFormat |
+    ReportViewerExportFormats.ExcelRecordFormat |
+    ReportViewerExportFormats.EditableRtfFormat |
+    ReportViewerExportFormats.XLSXFormat |
+    ReportViewerExportFormats.XmlFormat;
 
 engine.ViewerSettings.ShowRefreshButton = false;
 engine.ViewerSettings.ShowCopyButton = false;
 engine.ViewerSettings.ShowGroupTreeButton = false;
 engine.ViewerSettings.ShowParameterPanelButton = false;
 engine.ViewerSettings.EnableDrillDown = false;
-engine.ViewerSettings.ToolPanelView = CrystalReportsToolPanelViewType.None;
+engine.ViewerSettings.ToolPanelView = ReportViewerToolPanelViewType.None;
 engine.ViewerSettings.ShowCloseButton = false;
 engine.ViewerSettings.EnableRefresh = false;
 

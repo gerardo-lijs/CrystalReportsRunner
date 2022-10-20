@@ -4,7 +4,6 @@ using LijsDev.CrystalReportsRunner.Core;
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
 
@@ -88,30 +87,32 @@ public partial class MainWindow : Window
         // Method 2: Without Connection string
         // using var engine = new CrystalReportsEngine();
 
-        // ========== Customizing Viewer Settings ===========
+        // ========== Customizing Viewer Settings (optional) ===========
 
         engine.ViewerSettings.AllowedExportFormats =
-            CrystalReportsViewerExportFormats.PdfFormat |
-            CrystalReportsViewerExportFormats.ExcelFormat |
-            CrystalReportsViewerExportFormats.CsvFormat |
-            CrystalReportsViewerExportFormats.WordFormat |
-            CrystalReportsViewerExportFormats.XmlFormat |
-            CrystalReportsViewerExportFormats.RtfFormat |
-            CrystalReportsViewerExportFormats.ExcelRecordFormat |
-            CrystalReportsViewerExportFormats.EditableRtfFormat |
-            CrystalReportsViewerExportFormats.XLSXFormat |
-            CrystalReportsViewerExportFormats.XmlFormat;
+            ReportViewerExportFormats.PdfFormat |
+            ReportViewerExportFormats.ExcelFormat |
+            ReportViewerExportFormats.CsvFormat |
+            ReportViewerExportFormats.WordFormat |
+            ReportViewerExportFormats.XmlFormat |
+            ReportViewerExportFormats.RtfFormat |
+            ReportViewerExportFormats.ExcelRecordFormat |
+            ReportViewerExportFormats.EditableRtfFormat |
+            ReportViewerExportFormats.XLSXFormat |
+            ReportViewerExportFormats.XmlFormat;
 
         engine.ViewerSettings.ShowRefreshButton = false;
         engine.ViewerSettings.ShowCopyButton = false;
         engine.ViewerSettings.ShowGroupTreeButton = false;
         engine.ViewerSettings.ShowParameterPanelButton = false;
         engine.ViewerSettings.EnableDrillDown = false;
-        engine.ViewerSettings.ToolPanelView = CrystalReportsToolPanelViewType.None;
+        engine.ViewerSettings.ToolPanelView = ReportViewerToolPanelViewType.None;
         engine.ViewerSettings.ShowCloseButton = false;
         engine.ViewerSettings.EnableRefresh = false;
 
-        engine.ViewerSettings.SetUICulture(Thread.CurrentThread.CurrentUICulture);
+        // Optional we can also set culture for Crystal Reports Viewer UI to match the one used in your application
+        //engine.ViewerSettings.SetUICulture(Thread.CurrentThread.CurrentUICulture);
+
         return engine;
     }
 }

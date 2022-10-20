@@ -6,7 +6,24 @@ namespace LijsDev.CrystalReportsRunner.Core;
 public class ReportViewerSettings
 {
     /// <summary>
+    /// Sets the report viewer window minimum width
+    /// </summary>
+    public int? WindowMinimumWidth { get; set; } = 700;
+
+    /// <summary>
+    /// Sets the report viewer window minimum height
+    /// </summary>
+    public int? WindowMinimumHeight { get; set; } = 500;
+
+    /// <summary>
+    /// Sets the report viewer window initial state (Normal, Minimized or Maximized).
+    /// Default: Maximized
+    /// </summary>
+    public ReportViewerWindowState WindowInitialState { get; set; } = ReportViewerWindowState.Maximized;
+
+    /// <summary>
     /// Set the UI culture to use in the CrystalReportViewer control.
+    /// Default: Use system locale
     /// </summary>
     public void SetUICulture(System.Globalization.CultureInfo value)
     {
@@ -22,13 +39,13 @@ public class ReportViewerSettings
     /// Sets which exports formats are available.
     /// Default: AllFormats
     /// </summary>
-    public CrystalReportsViewerExportFormats AllowedExportFormats { get; set; } = CrystalReportsViewerExportFormats.AllFormats;
+    public ReportViewerExportFormats AllowedExportFormats { get; set; } = ReportViewerExportFormats.AllFormats;
 
     /// <summary>
     /// Sets the report tool panel view type.
     /// Default: GroupTree
     /// </summary>
-    public CrystalReportsToolPanelViewType ToolPanelView { get; set; } = CrystalReportsToolPanelViewType.GroupTree;
+    public ReportViewerToolPanelViewType ToolPanelView { get; set; } = ReportViewerToolPanelViewType.GroupTree;
 
     /// <summary>
     /// Sets whether the user can drill down into the report
@@ -42,7 +59,7 @@ public class ReportViewerSettings
     public bool EnableRefresh { get; set; } = true;
 
     /// <summary>
-    /// Sets whether the CrystalReportViewer control's toolbar has the button for closing a report page
+    /// Sets whether the close button on the toolbar is visible or hidden.
     /// Default: true
     /// </summary>
     public bool ShowCloseButton { get; set; } = true;
@@ -54,10 +71,16 @@ public class ReportViewerSettings
     public bool ShowPrintButton { get; set; } = true;
 
     /// <summary>
-    /// Sets whether the CrystalReportViewer control's toolbar has the button for exporting.
+    /// Sets whether the export button on the toolbar is visible or hidden.
     /// Default: true
     /// </summary>
     public bool ShowExportButton { get; set; } = true;
+
+    /// <summary>
+    /// Sets whether the zoom button on the toolbar is visible or hidden.
+    /// Default: true
+    /// </summary>
+    public bool ShowZoomButton { get; set; } = true;
 
     /// <summary>
     /// Sets whether the copy button on the toolbar is visible or hidden.
@@ -72,7 +95,7 @@ public class ReportViewerSettings
     public bool ShowRefreshButton { get; set; } = true;
 
     /// <summary>
-    /// Sets whether the CrystalReportViewer control's toolbar has the button for showing or hiding the group tree
+    /// Sets whether the show/hide group tree button on the toolbar is visible or hidden.
     /// Default: true
     /// </summary>
     public bool ShowGroupTreeButton { get; set; } = true;
