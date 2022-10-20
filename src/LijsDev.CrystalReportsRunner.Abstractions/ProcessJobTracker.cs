@@ -1,6 +1,8 @@
-﻿// https://gist.github.com/AArnott/2609636d2f2369495abe76e8a01446a4
+// https://gist.github.com/AArnott/2609636d2f2369495abe76e8a01446a4
 // Copyright (c) Andrew Arnott. All rights reserved.
 // Licensed under the MIT license.
+
+namespace LijsDev.CrystalReportsRunner.Abstractions;
 
 /* This is a derivative from multiple answers on https://stackoverflow.com/questions/3342941/kill-child-process-when-parent-process-is-killed */
 
@@ -14,8 +16,6 @@ using Windows.Win32.System.JobObjects;
 
 using static Windows.Win32.PInvoke;
 
-namespace LijsDev.CrystalReportsRunner.Abstractions;
-
 /// <summary>
 /// Allows processes to be automatically killed if this parent process unexpectedly quits
 /// (or when an instance of this class is disposed).
@@ -27,8 +27,8 @@ namespace LijsDev.CrystalReportsRunner.Abstractions;
 /// </remarks>
 public class ProcessJobTracker : IDisposable
 {
-    private readonly object disposeLock = new object();
-    private bool disposed;
+    private readonly object _disposeLock = new();
+    private bool _disposed;
 
     /// <summary>
     /// The job handle.
@@ -37,7 +37,7 @@ public class ProcessJobTracker : IDisposable
     /// Closing this handle would close all tracked processes. So we don't do it in this process
     /// so that it happens automatically when our process exits.
     /// </remarks>
-    private readonly SafeFileHandle jobHandle;
+    private readonly SafeFileHandle? _jobHandle;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ProcessJobTracker"/> class.
@@ -53,8 +53,8 @@ public class ProcessJobTracker : IDisposable
             // The job name is optional (and can be null) but it helps with diagnostics.
             //  If it's not null, it has to be unique. Use SysInternals' Handle command-line
             //  utility: handle -a ChildProcessTracker
-            string jobName = nameof(ProcessJobTracker) + Process.GetCurrentProcess().Id;
-            this.jobHandle = CreateJobObject(null, jobName);
+            var jobName = nameof(ProcessJobTracker) + Process.GetCurrentProcess().Id;
+            _jobHandle = CreateJobObject(null, jobName);
 
             var extendedInfo = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION
             {
@@ -64,7 +64,7 @@ public class ProcessJobTracker : IDisposable
                 },
             };
 
-            if (!SetInformationJobObject(this.jobHandle, JOBOBJECTINFOCLASS.JobObjectExtendedLimitInformation, &extendedInfo, (uint)sizeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION)))
+            if (!SetInformationJobObject(_jobHandle, JOBOBJECTINFOCLASS.JobObjectExtendedLimitInformation, &extendedInfo, (uint)sizeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION)))
             {
                 throw new Win32Exception();
             }
@@ -88,7 +88,7 @@ public class ProcessJobTracker : IDisposable
         if (Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.OSVersion.Version > new Version(5, 1, 2600))
 #endif
         {
-            bool success = AssignProcessToJobObject(this.jobHandle, new SafeFileHandle(process.Handle, ownsHandle: false));
+            bool success = AssignProcessToJobObject(_jobHandle, new SafeFileHandle(process.Handle, ownsHandle: false));
             if (!success && !process.HasExited)
             {
                 throw new Win32Exception();
@@ -101,7 +101,7 @@ public class ProcessJobTracker : IDisposable
     /// </summary>
     public void Dispose()
     {
-        this.Dispose(true);
+        Dispose(true);
         GC.SuppressFinalize(this);
     }
 
@@ -109,14 +109,14 @@ public class ProcessJobTracker : IDisposable
     {
         if (disposing)
         {
-            lock (this.disposeLock)
+            lock (_disposeLock)
             {
-                if (!this.disposed)
+                if (!_disposed)
                 {
-                    this.jobHandle?.Dispose();
+                    _jobHandle?.Dispose();
                 }
 
-                this.disposed = true;
+                _disposed = true;
             }
         }
     }

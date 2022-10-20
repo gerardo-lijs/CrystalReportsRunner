@@ -1,31 +1,19 @@
-﻿using Newtonsoft.Json;
-
-using System;
-
-namespace LijsDev.CrystalReportsRunner.Abstractions
+namespace LijsDev.CrystalReportsRunner.Abstractions;
+public interface ICrystalReportsRunner
 {
-    public interface ICrystalReportsRunner
-    {
-        void ShowReport(
-            Report report,
-            ReportViewerSettings viewerSettings,
-            WindowHandle? parent = null,
-            DbConnection? connection = null);
+    void ShowReport(
+        Report report,
+        ReportViewerSettings viewerSettings,
+        WindowHandle? parent = null,
+        DbConnection? connection = null);
 
-        void ShowReportDialog(
-            Report report,
-            ReportViewerSettings viewSettings,
-            WindowHandle parent,
-            DbConnection? connection);
-    }
-
-    public interface ICrystalReportsCaller
-    {
-
-    }
-
-    public class DefaultCrystalReportsCaller : ICrystalReportsCaller
-    {
-
-    }
+    void ShowReportDialog(
+        Report report,
+        ReportViewerSettings viewSettings,
+        WindowHandle parent,
+        DbConnection? connection);
 }
+
+public interface ICrystalReportsCaller { }
+
+public class DefaultCrystalReportsCaller : ICrystalReportsCaller { }

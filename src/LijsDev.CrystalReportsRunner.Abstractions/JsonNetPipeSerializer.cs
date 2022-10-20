@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+namespace LijsDev.CrystalReportsRunner.Abstractions;
+
+using Newtonsoft.Json;
 
 using PipeMethodCalls;
 
@@ -6,39 +8,33 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace LijsDev.CrystalReportsRunner.Abstractions
+public class JsonNetPipeSerializer : IPipeSerializer
 {
-    public class JsonNetPipeSerializer : IPipeSerializer
+    private readonly JsonSerializerSettings _jsonSettings = new();
+
+    public object Deserialize(byte[] data, Type type)
     {
-        private readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
-        {
+        using var stream = new MemoryStream(data);
+        using var reader = new StreamReader(stream, Encoding.UTF8);
+        using var jsonReader = new JsonTextReader(reader);
 
-        };
+        var serializer = JsonSerializer.CreateDefault(_jsonSettings);
 
-        public object Deserialize(byte[] data, Type type)
-        {
-            using var stream = new MemoryStream(data);
-            using var reader = new StreamReader(stream, Encoding.UTF8);
-            using var jsonReader = new JsonTextReader(reader);
+        return serializer.Deserialize(jsonReader, type) ?? throw new InvalidDataException();
+    }
 
-            var serializer = JsonSerializer.CreateDefault(_jsonSettings);
+    public byte[] Serialize(object o)
+    {
+        using var memoryStream = new MemoryStream();
+        using var writer = new StreamWriter(memoryStream, Encoding.UTF8);
+        using var jsonWriter = new JsonTextWriter(writer);
 
-            return serializer.Deserialize(jsonReader, type);
-        }
+        var serializer = JsonSerializer.CreateDefault(_jsonSettings);
 
-        public byte[] Serialize(object o)
-        {
-            using var memoryStream = new MemoryStream();
-            using var writer = new StreamWriter(memoryStream, Encoding.UTF8);
-            using var jsonWriter = new JsonTextWriter(writer);
+        serializer.Serialize(jsonWriter, o);
+        jsonWriter.Flush();
+        memoryStream.Position = 0;
 
-            var serializer = JsonSerializer.CreateDefault(_jsonSettings);
-
-            serializer.Serialize(jsonWriter, o);
-            jsonWriter.Flush();
-            memoryStream.Position = 0;
-
-            return memoryStream.ToArray();
-        }
+        return memoryStream.ToArray();
     }
 }

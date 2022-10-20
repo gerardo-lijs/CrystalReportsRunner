@@ -1,4 +1,6 @@
-﻿using LijsDev.CrystalReportsRunner.Abstractions;
+﻿namespace WpfCaller;
+
+using LijsDev.CrystalReportsRunner.Abstractions;
 
 using System;
 using System.Collections.Generic;
@@ -6,117 +8,114 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace WpfCaller
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MainWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    private readonly List<IDisposable> _disposables = new();
+
+    public MainWindow()
     {
-        private readonly List<IDisposable> _disposables = new();
+        InitializeComponent();
+        Closed += MainWindow_Closed;
+    }
 
-        public MainWindow()
+    private void MainWindow_Closed(object? sender, EventArgs e)
+    {
+        foreach (var disposable in _disposables.ToArray())
         {
-            InitializeComponent();
-            Closed += MainWindow_Closed;
+            _disposables.Remove(disposable);
+            disposable.Dispose();
         }
+    }
 
-        private void MainWindow_Closed(object? sender, EventArgs e)
+    private async void ShowButton_Click(object sender, RoutedEventArgs e)
+    {
+        LoadingBorder.Visibility = Visibility.Visible;
+
+        try
         {
-            foreach (var disposable in _disposables.ToArray())
-            {
-                _disposables.Remove(disposable);
-                disposable.Dispose();
-            }
-        }
+            var engine = CreateEngine();
+            _disposables.Add(engine);
+            var report = CreateReport();
 
-        private async void ShowButton_Click(object sender, RoutedEventArgs e)
+            var windowHandle = new WindowHandle(new WindowInteropHelper(this).EnsureHandle());
+            await engine.ShowReport(report, parent: windowHandle);
+        }
+        catch (Exception ex)
         {
-            LoadingBorder.Visibility = Visibility.Visible;
-
-            try
-            {
-                var engine = CreateEngine();
-                _disposables.Add(engine);
-                var report = CreateReport();
-
-                var windowHandle = new WindowHandle(new WindowInteropHelper(this).EnsureHandle());
-                await engine.ShowReport(report, parent: windowHandle);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            finally
-            {
-                LoadingBorder.Visibility = Visibility.Collapsed;
-            }
+            MessageBox.Show(ex.ToString());
         }
-
-        private async void ShowDialogButton_Click(object sender, RoutedEventArgs e)
+        finally
         {
-            LoadingBorder.Visibility = Visibility.Visible;
-
-            try
-            {
-                using var engine = CreateEngine();
-                var report = CreateReport();
-
-                var windowHandle = new WindowHandle(new WindowInteropHelper(this).EnsureHandle());
-                await engine.ShowReportDialog(report, parent: windowHandle);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            finally
-            {
-                LoadingBorder.Visibility = Visibility.Collapsed;
-            }
+            LoadingBorder.Visibility = Visibility.Collapsed;
         }
+    }
 
-        private static Report CreateReport()
+    private async void ShowDialogButton_Click(object sender, RoutedEventArgs e)
+    {
+        LoadingBorder.Visibility = Visibility.Visible;
+
+        try
         {
-            var report = new Report("SampleReport.rpt", "Sample Report");
-            report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
-            report.Parameters.Add("UserName", "Muhammad");
-            return report;
-        }
+            using var engine = CreateEngine();
+            var report = CreateReport();
 
-        private static CrystalReportsEngine CreateEngine()
+            var windowHandle = new WindowHandle(new WindowInteropHelper(this).EnsureHandle());
+            await engine.ShowReportDialog(report, parent: windowHandle);
+        }
+        catch (Exception ex)
         {
-            // NOTE: Create CrystalReportsSample using Schema.sql in the \samples\shared folder
-            var connection = new DbConnection("Server=.\\SQLEXPRESS;Database=CrystalReportsSample;Trusted_Connection=True;");
-            var engine = new CrystalReportsEngine(connection);
-
-            // Method 2: Without Connection string
-            // using var engine = new CrystalReportsEngine();
-
-            // ========== Customizing Viewer Settings ===========
-
-            engine.ViewerSettings.AllowedExportFormats =
-                CrystalReportsViewerExportFormats.PdfFormat |
-                CrystalReportsViewerExportFormats.ExcelFormat |
-                CrystalReportsViewerExportFormats.CsvFormat |
-                CrystalReportsViewerExportFormats.WordFormat |
-                CrystalReportsViewerExportFormats.XmlFormat |
-                CrystalReportsViewerExportFormats.RtfFormat |
-                CrystalReportsViewerExportFormats.ExcelRecordFormat |
-                CrystalReportsViewerExportFormats.EditableRtfFormat |
-                CrystalReportsViewerExportFormats.XLSXFormat |
-                CrystalReportsViewerExportFormats.XmlFormat;
-
-            engine.ViewerSettings.ShowRefreshButton = false;
-            engine.ViewerSettings.ShowCopyButton = false;
-            engine.ViewerSettings.ShowGroupTreeButton = false;
-            engine.ViewerSettings.ShowParameterPanelButton = false;
-            engine.ViewerSettings.EnableDrillDown = false;
-            engine.ViewerSettings.ToolPanelView = CrystalReportsToolPanelViewType.None;
-            engine.ViewerSettings.ShowCloseButton = false;
-            engine.ViewerSettings.EnableRefresh = false;
-
-            engine.ViewerSettings.ProductLacaleLCID = Thread.CurrentThread.CurrentUICulture.LCID;
-            return engine;
+            MessageBox.Show(ex.ToString());
         }
+        finally
+        {
+            LoadingBorder.Visibility = Visibility.Collapsed;
+        }
+    }
+
+    private static Report CreateReport()
+    {
+        var report = new Report("SampleReport.rpt", "Sample Report");
+        report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
+        report.Parameters.Add("UserName", "Muhammad");
+        return report;
+    }
+
+    private static CrystalReportsEngine CreateEngine()
+    {
+        // NOTE: Create CrystalReportsSample using Schema.sql in the \samples\shared folder
+        var connection = new DbConnection("Server=.\\SQLEXPRESS;Database=CrystalReportsSample;Trusted_Connection=True;");
+        var engine = new CrystalReportsEngine(connection);
+
+        // Method 2: Without Connection string
+        // using var engine = new CrystalReportsEngine();
+
+        // ========== Customizing Viewer Settings ===========
+
+        engine.ViewerSettings.AllowedExportFormats =
+            CrystalReportsViewerExportFormats.PdfFormat |
+            CrystalReportsViewerExportFormats.ExcelFormat |
+            CrystalReportsViewerExportFormats.CsvFormat |
+            CrystalReportsViewerExportFormats.WordFormat |
+            CrystalReportsViewerExportFormats.XmlFormat |
+            CrystalReportsViewerExportFormats.RtfFormat |
+            CrystalReportsViewerExportFormats.ExcelRecordFormat |
+            CrystalReportsViewerExportFormats.EditableRtfFormat |
+            CrystalReportsViewerExportFormats.XLSXFormat |
+            CrystalReportsViewerExportFormats.XmlFormat;
+
+        engine.ViewerSettings.ShowRefreshButton = false;
+        engine.ViewerSettings.ShowCopyButton = false;
+        engine.ViewerSettings.ShowGroupTreeButton = false;
+        engine.ViewerSettings.ShowParameterPanelButton = false;
+        engine.ViewerSettings.EnableDrillDown = false;
+        engine.ViewerSettings.ToolPanelView = CrystalReportsToolPanelViewType.None;
+        engine.ViewerSettings.ShowCloseButton = false;
+        engine.ViewerSettings.EnableRefresh = false;
+
+        engine.ViewerSettings.ProductLacaleLCID = Thread.CurrentThread.CurrentUICulture.LCID;
+        return engine;
     }
 }
