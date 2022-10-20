@@ -101,6 +101,7 @@ public partial class MainWindow : Window
             ReportViewerExportFormats.XLSXFormat |
             ReportViewerExportFormats.XmlFormat;
 
+        engine.ViewerSettings.ShowReportTabs = false;
         engine.ViewerSettings.ShowRefreshButton = false;
         engine.ViewerSettings.ShowCopyButton = false;
         engine.ViewerSettings.ShowGroupTreeButton = false;

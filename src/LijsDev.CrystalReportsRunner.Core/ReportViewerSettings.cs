@@ -95,6 +95,12 @@ public class ReportViewerSettings
     public bool ShowRefreshButton { get; set; } = true;
 
     /// <summary>
+    /// Sets whether the reports tabs on the toolbar are visible or hidden.
+    /// Default: true
+    /// </summary>
+    public bool ShowReportTabs { get; set; } = true;
+
+    /// <summary>
     /// Sets whether the show/hide group tree button on the toolbar is visible or hidden.
     /// Default: true
     /// </summary>

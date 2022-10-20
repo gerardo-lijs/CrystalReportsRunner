@@ -24,10 +24,12 @@ internal partial class ViewerForm : Form
         crystalReportViewer1.ReportSource = document;
         Text = document.SummaryInfo.ReportTitle;        // TODO: We are not using the specified Window title here. This is good as default
 
-        // TODO: Review what this does exactly. Brought from legacy caller app
-        //SetViewerTabsVisible(false);
-
         // Configure Crystal Report Viewer
+        if (!viewerSettings.ShowReportTabs)
+        {
+            SetReportTabsVisible(false);
+        }
+
         if (viewerSettings.UICultureLCID is not null)
         {
             crystalReportViewer1.SetProductLocale(viewerSettings.UICultureLCID.Value);
@@ -50,7 +52,7 @@ internal partial class ViewerForm : Form
         crystalReportViewer1.ShowZoomButton = viewerSettings.ShowZoomButton;
     }
 
-    private void SetViewerTabsVisible(bool visible)
+    private void SetReportTabsVisible(bool visible)
     {
         foreach (Control control in crystalReportViewer1.Controls)
         {
