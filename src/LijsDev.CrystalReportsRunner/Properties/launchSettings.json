@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CrystalReportsViewer": {
+      "commandName": "Project",
+      "commandLineArgs": "--pipe-name 123"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+﻿<Window
+    x:Class="WpfCaller.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WpfCaller"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="10,5" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <StackPanel
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+
+            <Button
+                x:Name="ShowButton"
+                Click="ShowButton_Click"
+                Content="Show Report" />
+
+            <TextBlock Width="20" />
+
+            <Button
+                x:Name="ShowDialogButton"
+                Click="ShowDialogButton_Click"
+                Content="Show Report as a Dialog" />
+        </StackPanel>
+
+        <Border
+            x:Name="LoadingBorder"
+            Background="Black"
+            Opacity="0.8"
+            Visibility="Collapsed" />
+    </Grid>
+</Window>
