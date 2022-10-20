@@ -32,7 +32,7 @@ engine.ViewerSettings.ToolPanelView = CrystalReportsToolPanelViewType.None;
 engine.ViewerSettings.ShowCloseButton = false;
 engine.ViewerSettings.EnableRefresh = false;
 
-engine.ViewerSettings.ProductLocaleLCID = Thread.CurrentThread.CurrentUICulture.LCID;
+engine.ViewerSettings.SetUICulture(Thread.CurrentThread.CurrentUICulture);
 
 // ========== Showing the Report ===========
 
