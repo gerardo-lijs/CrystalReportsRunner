@@ -27,21 +27,16 @@ internal class ReportViewer : IReportViewer
 
         if (dbConnection is not null)
         {
-            var logonProperties = new NameValuePairs2
+            var logonProperties = new NameValuePairs2()
             {
-                new NameValuePair2("Auto Translate", "-1"),
-                new NameValuePair2("Connect Timeout", "15"),
                 new NameValuePair2("Data Source", dbConnection.Server),
-                new NameValuePair2("General Timeout", "0"),
                 new NameValuePair2("Initial Catalog", dbConnection.Database),
                 new NameValuePair2("Integrated Security", dbConnection.UseIntegratedSecurity ? "False" : "True"),
-                new NameValuePair2("Locale Identifier", "1033"),
-                new NameValuePair2("OLE DB Services", "-5"),
-                new NameValuePair2("Provider", "MSOLEDBSQL"),
-                new NameValuePair2("Tag with column collation when possible", "0"),
-                new NameValuePair2("Use DSN Default Properties", "False"),
-                new NameValuePair2("Use Encryption for Data", "0")
             };
+            foreach (var property in dbConnection.LogonProperties)
+            {
+                logonProperties.Add(new NameValuePair2(property.Key, property.Value));
+            }
 
             foreach (IConnectionInfo connection in document.DataSourceConnections)
             {

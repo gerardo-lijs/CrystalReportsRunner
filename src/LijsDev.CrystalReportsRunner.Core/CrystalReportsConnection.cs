@@ -31,4 +31,9 @@ public class CrystalReportsConnection
     /// Maps to Crystal Reports ConnectionInfo -> IntegratedSecurity
     /// </summary>
     public bool UseIntegratedSecurity { get; set; }
+
+    /// <summary>
+    /// Logon Properties
+    /// </summary>
+    public Dictionary<string, string> LogonProperties { get; set; } = new();
 }

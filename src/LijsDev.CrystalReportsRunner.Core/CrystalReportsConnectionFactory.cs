@@ -1,5 +1,3 @@
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-
 namespace LijsDev.CrystalReportsRunner.Core;
 
 /// <summary>
@@ -14,7 +12,8 @@ public static class CrystalReportsConnectionFactory
     {
         Server = server,
         Database = database,
-        UseIntegratedSecurity = true
+        UseIntegratedSecurity = true,
+        LogonProperties = SqlLogonProperties
     };
 
     /// <summary>
@@ -27,5 +26,18 @@ public static class CrystalReportsConnectionFactory
         Username = username,
         Password = password,
         UseIntegratedSecurity = false
+    };
+
+    private static Dictionary<string, string> SqlLogonProperties => new()
+    {
+        { "Auto Translate", "-1" },
+        { "Connect Timeout", "15" },
+        { "General Timeout", "0" },
+        { "Locale Identifier", "1033" },
+        { "OLE DB Services", "-5" },
+        { "Provider", "MSOLEDBSQL" },
+        { "Tag with column collation when possible", "0" },
+        { "Use DSN Default Properties", "False" },
+        { "Use Encryption for Data", "0" },
     };
 }
