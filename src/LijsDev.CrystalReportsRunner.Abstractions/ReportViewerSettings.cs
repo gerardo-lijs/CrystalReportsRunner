@@ -1,8 +1,8 @@
-﻿namespace LijsDev.CrystalReportsRunner.Abstractions;
+namespace LijsDev.CrystalReportsRunner.Abstractions;
 
 public class ReportViewerSettings
 {
-    public int? ProductLacaleLCID { get; set; }
+    public int? ProductLocaleLCID { get; set; }
     public CrystalReportsViewerExportFormats AllowedExportFormats { get; set; } = CrystalReportsViewerExportFormats.AllFormats;
 
     public bool ShowRefreshButton { get; set; } = true;

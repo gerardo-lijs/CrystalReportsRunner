@@ -1,4 +1,4 @@
-﻿using LijsDev.CrystalReportsRunner.Abstractions;
+using LijsDev.CrystalReportsRunner.Abstractions;
 
 // ========== Initializing Engine ===========
 
@@ -32,7 +32,7 @@ engine.ViewerSettings.ToolPanelView = CrystalReportsToolPanelViewType.None;
 engine.ViewerSettings.ShowCloseButton = false;
 engine.ViewerSettings.EnableRefresh = false;
 
-engine.ViewerSettings.ProductLacaleLCID = Thread.CurrentThread.CurrentUICulture.LCID;
+engine.ViewerSettings.ProductLocaleLCID = Thread.CurrentThread.CurrentUICulture.LCID;
 
 // ========== Showing the Report ===========
 

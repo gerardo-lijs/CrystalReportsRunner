@@ -16,9 +16,9 @@ internal partial class ViewerForm : Form
         crystalReportViewer1.ReportSource = document;
         Text = document.SummaryInfo.ReportTitle;
 
-        if (viewerSettings.ProductLacaleLCID != null)
+        if (viewerSettings.ProductLocaleLCID != null)
         {
-            crystalReportViewer1.SetProductLocale(viewerSettings.ProductLacaleLCID.Value);
+            crystalReportViewer1.SetProductLocale(viewerSettings.ProductLocaleLCID.Value);
         }
 
         crystalReportViewer1.AllowedExportFormats = (int)viewerSettings.AllowedExportFormats;

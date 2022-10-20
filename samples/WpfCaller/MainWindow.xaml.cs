@@ -111,7 +111,7 @@ public partial class MainWindow : Window
         engine.ViewerSettings.ShowCloseButton = false;
         engine.ViewerSettings.EnableRefresh = false;
 
-        engine.ViewerSettings.ProductLacaleLCID = Thread.CurrentThread.CurrentUICulture.LCID;
+        engine.ViewerSettings.ProductLocaleLCID = Thread.CurrentThread.CurrentUICulture.LCID;
         return engine;
     }
 }
