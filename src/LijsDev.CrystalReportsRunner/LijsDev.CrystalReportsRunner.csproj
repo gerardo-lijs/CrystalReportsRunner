@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net48</TargetFramework>
+    <Platforms>x86</Platforms>
     <UseWindowsForms>true</UseWindowsForms>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
@@ -17,24 +18,17 @@
 
   <ItemGroup>
     <Reference Include="CrystalDecisions.CrystalReports.Engine">
-      <HintPath>..\..\dependencies\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+      <HintPath>..\..\dependencies\13.0.20\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
     </Reference>
     <Reference Include="CrystalDecisions.ReportSource">
-      <HintPath>..\..\dependencies\CrystalDecisions.ReportSource.dll</HintPath>
+      <HintPath>..\..\dependencies\13.0.20\CrystalDecisions.ReportSource.dll</HintPath>
     </Reference>
     <Reference Include="CrystalDecisions.Shared">
-      <HintPath>..\..\dependencies\CrystalDecisions.Shared.dll</HintPath>
+      <HintPath>..\..\dependencies\13.0.20\CrystalDecisions.Shared.dll</HintPath>
     </Reference>
     <Reference Include="CrystalDecisions.Windows.Forms">
-      <HintPath>..\..\dependencies\CrystalDecisions.Windows.Forms.dll</HintPath>
+      <HintPath>..\..\dependencies\13.0.20\CrystalDecisions.Windows.Forms.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Services">
-      <HintPath>C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Web.Services\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Web.Services.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 
   <ItemGroup>
