@@ -32,6 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LijsDev.CrystalReportsRunner.Core\LijsDev.CrystalReportsRunner.Core.csproj" />
+    <ProjectReference Include="..\LijsDev.CrystalReportsRunner.Shell\LijsDev.CrystalReportsRunner.Shell.csproj" />
   </ItemGroup>
 </Project>

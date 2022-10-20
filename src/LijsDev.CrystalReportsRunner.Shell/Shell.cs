@@ -1,4 +1,4 @@
-namespace LijsDev.CrystalReportsRunner.Core;
+namespace LijsDev.CrystalReportsRunner.Shell;
 
 using CommandLine;
 
@@ -10,10 +10,15 @@ using System;
 using System.Threading;
 using System.Windows.Forms;
 
+/// <summary>
+/// Shell implementation for Crystal Reports Runner
+/// </summary>
 public class Shell
 {
+    /// <inheritdoc/>
     public class Options
     {
+        /// <inheritdoc/>
         [Option('n', "pipe-name", Required = true, HelpText = "The Named Pipe this instance should connect to.")]
         public string PipeName { get; set; } = string.Empty;
     }
@@ -22,11 +27,13 @@ public class Shell
     private readonly IReportViewer _reportViewer;
     private Form? _mainForm;
 
+    /// <inheritdoc/>
     public Shell(IReportViewer reportViewer)
     {
         _reportViewer = reportViewer;
     }
 
+    /// <inheritdoc/>
     public void StartListening(string[] args)
     {
         var result = Parser.Default.ParseArguments<Options>(args);
@@ -65,6 +72,7 @@ public class Shell
         };
     }
 
+    /// <inheritdoc/>
     public void RunCodeOnUIThread(Action action)
     {
         if (_mainForm is not null)

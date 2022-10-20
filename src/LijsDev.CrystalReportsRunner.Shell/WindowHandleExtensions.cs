@@ -1,4 +1,4 @@
-﻿namespace LijsDev.CrystalReportsRunner.Core;
+namespace LijsDev.CrystalReportsRunner.Shell;
 
 using LijsDev.CrystalReportsRunner.Abstractions;
 

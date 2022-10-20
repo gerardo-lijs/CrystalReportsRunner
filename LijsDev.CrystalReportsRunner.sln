@@ -16,7 +16,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunne
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.Abstractions", "src\LijsDev.CrystalReportsRunner.Abstractions\LijsDev.CrystalReportsRunner.Abstractions.csproj", "{1757BD79-3D40-4B15-81AD-4AA300002AE7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.Core", "src\LijsDev.CrystalReportsRunner.Core\LijsDev.CrystalReportsRunner.Core.csproj", "{BF8790CC-3804-43A5-9D1C-9F0E7C76065C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.Shell", "src\LijsDev.CrystalReportsRunner.Shell\LijsDev.CrystalReportsRunner.Shell.csproj", "{BF8790CC-3804-43A5-9D1C-9F0E7C76065C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B84ED3A1-B8D3-47CA-B77A-DBCC9ADC9A7A}"
 	ProjectSection(SolutionItems) = preProject

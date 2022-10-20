@@ -1,4 +1,4 @@
-namespace LijsDev.CrystalReportsRunner.Core;
+namespace LijsDev.CrystalReportsRunner.Shell;
 
 using System.Data.SqlClient;
 
