@@ -96,12 +96,20 @@ public sealed class CrystalReportsEngine : IDisposable
         {
             _tracker = new ProcessJobTracker();
 
-            // TODO: Make this robust
+            // TODO: Make this robust using app location and not relative with issue with WorkingDir
+            // TODO: Allow to specify another location for user that deploy manually
             var path = "crystal-reports-runner\\LijsDev.CrystalReportsRunner.exe";
             var psi = new ProcessStartInfo(path)
             {
                 Arguments = $"--pipe-name {_pipeName}",
             };
+
+            // Check runner exists
+            if (!File.Exists(path))
+            {
+                // TODO: Use custom exceptions
+                throw new Exception($"Crystal Report Runner was not found in: {path}.\n\nPlease check that the Crystal Report Runner Runtime is correclty deployed via NuGet package or manually.");
+            }
 
             _process = new Process { StartInfo = psi };
             _process.Start();
