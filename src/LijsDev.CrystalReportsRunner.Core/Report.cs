@@ -1,4 +1,4 @@
-namespace LijsDev.CrystalReportsRunner.Abstractions;
+namespace LijsDev.CrystalReportsRunner.Core;
 
 using Newtonsoft.Json;
 using System.Collections.Generic;

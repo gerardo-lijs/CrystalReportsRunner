@@ -1,4 +1,4 @@
-using LijsDev.CrystalReportsRunner.Abstractions;
+using LijsDev.CrystalReportsRunner.Core;
 
 // ========== Initializing Engine ===========
 

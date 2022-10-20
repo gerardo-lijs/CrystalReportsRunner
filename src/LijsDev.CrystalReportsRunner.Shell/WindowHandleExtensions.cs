@@ -1,6 +1,6 @@
 namespace LijsDev.CrystalReportsRunner.Shell;
 
-using LijsDev.CrystalReportsRunner.Abstractions;
+using LijsDev.CrystalReportsRunner.Core;
 
 using System;
 using System.Windows.Forms;

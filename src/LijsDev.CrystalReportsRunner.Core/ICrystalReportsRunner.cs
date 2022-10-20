@@ -1,4 +1,4 @@
-namespace LijsDev.CrystalReportsRunner.Abstractions;
+namespace LijsDev.CrystalReportsRunner.Core;
 
 /// <summary>
 /// Crystal Reports Runner interface

@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Windows.Forms;
 
-using LijsDev.CrystalReportsRunner.Abstractions;
+using LijsDev.CrystalReportsRunner.Core;
 
 internal partial class ViewerForm : Form
 {

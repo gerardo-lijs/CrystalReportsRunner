@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\LijsDev.CrystalReportsRunner.Abstractions\LijsDev.CrystalReportsRunner.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\LijsDev.CrystalReportsRunner.Core\LijsDev.CrystalReportsRunner.Core.csproj" />
   </ItemGroup>
 
   <Target Name="CopyFiles" AfterTargets="Build">

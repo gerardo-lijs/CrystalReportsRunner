@@ -2,7 +2,7 @@ namespace LijsDev.CrystalReportsRunner.Shell;
 
 using CommandLine;
 
-using LijsDev.CrystalReportsRunner.Abstractions;
+using LijsDev.CrystalReportsRunner.Core;
 
 using PipeMethodCalls;
 

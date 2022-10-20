@@ -2,7 +2,7 @@ namespace LijsDev.CrystalReportsRunner.Shell;
 
 using System.Data.SqlClient;
 
-using LijsDev.CrystalReportsRunner.Abstractions;
+using LijsDev.CrystalReportsRunner.Core;
 
 public static class DbConnectionExtensions
 {

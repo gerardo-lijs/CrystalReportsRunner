@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LijsDev.CrystalReportsRunner.Abstractions\LijsDev.CrystalReportsRunner.Abstractions.csproj" />
+    <ProjectReference Include="..\LijsDev.CrystalReportsRunner.Core\LijsDev.CrystalReportsRunner.Core.csproj" />
   </ItemGroup>
 
 </Project>

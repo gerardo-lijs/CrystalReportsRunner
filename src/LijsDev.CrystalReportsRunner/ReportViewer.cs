@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
 
-using LijsDev.CrystalReportsRunner.Abstractions;
+using LijsDev.CrystalReportsRunner.Core;
 using LijsDev.CrystalReportsRunner.Shell;
 
 internal class ReportViewer : IReportViewer

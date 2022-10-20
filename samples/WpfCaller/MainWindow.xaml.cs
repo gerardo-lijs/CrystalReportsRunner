@@ -1,6 +1,6 @@
 namespace WpfCaller;
 
-using LijsDev.CrystalReportsRunner.Abstractions;
+using LijsDev.CrystalReportsRunner.Core;
 
 using System;
 using System.Collections.Generic;

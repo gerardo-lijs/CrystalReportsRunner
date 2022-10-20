@@ -2,7 +2,7 @@
 // Copyright (c) Andrew Arnott. All rights reserved.
 // Licensed under the MIT license.
 
-namespace LijsDev.CrystalReportsRunner.Abstractions;
+namespace LijsDev.CrystalReportsRunner.Core;
 
 /* This is a derivative from multiple answers on https://stackoverflow.com/questions/3342941/kill-child-process-when-parent-process-is-killed */
 

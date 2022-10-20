@@ -14,7 +14,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleCaller", "samples\Sam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner", "src\LijsDev.CrystalReportsRunner\LijsDev.CrystalReportsRunner.csproj", "{CE02C05F-406B-4917-8C83-20390066B9E5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.Abstractions", "src\LijsDev.CrystalReportsRunner.Abstractions\LijsDev.CrystalReportsRunner.Abstractions.csproj", "{1757BD79-3D40-4B15-81AD-4AA300002AE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.Core", "src\LijsDev.CrystalReportsRunner.Core\LijsDev.CrystalReportsRunner.Core.csproj", "{1757BD79-3D40-4B15-81AD-4AA300002AE7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.Shell", "src\LijsDev.CrystalReportsRunner.Shell\LijsDev.CrystalReportsRunner.Shell.csproj", "{BF8790CC-3804-43A5-9D1C-9F0E7C76065C}"
 EndProject

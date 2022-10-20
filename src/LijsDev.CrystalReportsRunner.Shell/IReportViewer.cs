@@ -2,7 +2,7 @@ namespace LijsDev.CrystalReportsRunner.Shell;
 
 using System.Windows.Forms;
 
-using LijsDev.CrystalReportsRunner.Abstractions;
+using LijsDev.CrystalReportsRunner.Core;
 
 /// <summary>
 /// Report Viewer interface
