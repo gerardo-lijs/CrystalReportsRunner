@@ -1,13 +1,13 @@
 namespace LijsDev.CrystalReportsRunner;
 
+using System.Windows.Forms;
+
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Windows.Forms;
 
 using LijsDev.CrystalReportsRunner.Abstractions;
 
-using System.Windows.Forms;
-
-public partial class ViewerForm : Form
+internal partial class ViewerForm : Form
 {
     public ViewerForm(ReportDocument document, ReportViewerSettings viewerSettings)
     {

@@ -1,36 +1,39 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<OutputType>Exe</OutputType>
-		<TargetFramework>net6.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-	</PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Authors>Muhammad Yaseen Azeez and Gerardo Lijs</Authors>
+    <Company>LijsDev</Company>
+    <Copyright>Copyright © LijsDev 2022</Copyright>
+  </PropertyGroup>
 
-	<ItemGroup>
-	  <None Include="..\shared\SampleReport.rpt" Link="SampleReport.rpt">
-	    <Generator></Generator>
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Include="..\shared\Schema.sql" Link="Schema.sql">
-	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-	  </None>
-	</ItemGroup>
+  <ItemGroup>
+    <None Include="..\shared\SampleReport.rpt" Link="SampleReport.rpt">
+      <Generator></Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\shared\Schema.sql" Link="Schema.sql">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
-	<ItemGroup>
-	  <PackageReference Include="System.Data.SqlClient" Version="4.8.4" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.4" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\..\src\LijsDev.CrystalReportsRunner.Abstractions\LijsDev.CrystalReportsRunner.Abstractions.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\LijsDev.CrystalReportsRunner.Abstractions\LijsDev.CrystalReportsRunner.Abstractions.csproj" />
+  </ItemGroup>
 
-	<Target Name="CopyFiles" AfterTargets="Build">
-		<ItemGroup>
-			<RunnerFiles Include="$(SolutionDir)src\LijsDev.CrystalReportsRunner\bin\$(Configuration)\net48\**" />
-		</ItemGroup>
-		<RemoveDir Directories="$(TargetDir)\crystal-reports-runner" />
-		<Copy SourceFiles="@(RunnerFiles)" DestinationFolder="$(TargetDir)\crystal-reports-runner" />
-	</Target>
+  <Target Name="CopyFiles" AfterTargets="Build">
+    <ItemGroup>
+      <RunnerFiles Include="$(SolutionDir)src\LijsDev.CrystalReportsRunner\bin\$(Configuration)\net48\**" />
+    </ItemGroup>
+    <RemoveDir Directories="$(TargetDir)\crystal-reports-runner" />
+    <Copy SourceFiles="@(RunnerFiles)" DestinationFolder="$(TargetDir)\crystal-reports-runner" />
+  </Target>
 
 </Project>

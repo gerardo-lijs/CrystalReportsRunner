@@ -1,4 +1,4 @@
-﻿namespace WpfCaller;
+namespace WpfCaller;
 
 using LijsDev.CrystalReportsRunner.Abstractions;
 
@@ -8,9 +8,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
 
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
 public partial class MainWindow : Window
 {
     private readonly List<IDisposable> _disposables = new();
@@ -40,8 +37,7 @@ public partial class MainWindow : Window
             _disposables.Add(engine);
             var report = CreateReport();
 
-            var windowHandle = new WindowHandle(new WindowInteropHelper(this).EnsureHandle());
-            await engine.ShowReport(report, parent: windowHandle);
+            await engine.ShowReport(report);
         }
         catch (Exception ex)
         {
@@ -63,7 +59,7 @@ public partial class MainWindow : Window
             var report = CreateReport();
 
             var windowHandle = new WindowHandle(new WindowInteropHelper(this).EnsureHandle());
-            await engine.ShowReportDialog(report, parent: windowHandle);
+            await engine.ShowReportDialog(report, owner: windowHandle);
         }
         catch (Exception ex)
         {

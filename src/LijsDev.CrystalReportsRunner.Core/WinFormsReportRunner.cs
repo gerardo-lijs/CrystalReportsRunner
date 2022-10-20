@@ -3,14 +3,8 @@ namespace LijsDev.CrystalReportsRunner.Core;
 using LijsDev.CrystalReportsRunner.Abstractions;
 
 using System;
-using System.Data.SqlClient;
 using System.Threading;
 using System.Windows.Forms;
-
-public interface IReportViewer
-{
-    public Form GetViewerForm(Report report, ReportViewerSettings settings, DbConnection? dbConnection);
-}
 
 public class WinFormsReportRunner : ICrystalReportsRunner
 {
@@ -28,7 +22,7 @@ public class WinFormsReportRunner : ICrystalReportsRunner
     public void ShowReport(
         Report report,
         ReportViewerSettings viewerSettings,
-        WindowHandle? parent = null,
+        WindowHandle? owner = null,
         DbConnection? dbConnection = null)
     {
         using var waitHandle = new ManualResetEvent(false);
@@ -44,9 +38,9 @@ public class WinFormsReportRunner : ICrystalReportsRunner
                 waitHandle.Set();
             };
 
-            if (parent is not null)
+            if (owner is not null)
             {
-                form.Show(parent.GetWindow());
+                form.Show(owner.GetWindow());
             }
             else
             {
@@ -60,7 +54,7 @@ public class WinFormsReportRunner : ICrystalReportsRunner
     public void ShowReportDialog(
         Report report,
         ReportViewerSettings viewerSettings,
-        WindowHandle parent,
+        WindowHandle owner,
         DbConnection? dbConnection = null)
     {
         using var waitHandle = new ManualResetEvent(false);
@@ -70,50 +64,11 @@ public class WinFormsReportRunner : ICrystalReportsRunner
             var form = _viewer.GetViewerForm(report, viewerSettings, dbConnection);
             form.StartPosition = FormStartPosition.CenterParent;
 
-            form.ShowDialog(parent.GetWindow());
+            form.ShowDialog(owner.GetWindow());
 
             waitHandle.Set();
         });
 
         waitHandle.WaitOne();
-    }
-}
-
-public static class DbConnectionExtensions
-{
-    public static SqlConnectionStringBuilder GetConnectionSettings(this DbConnection dbConnection)
-    {
-        if (dbConnection.ConnectionString is not null)
-        {
-            return new SqlConnectionStringBuilder(dbConnection.ConnectionString);
-        }
-
-        return new SqlConnectionStringBuilder
-        {
-            DataSource = dbConnection.Server,
-            UserID = dbConnection.Username,
-            Password = dbConnection.Password,
-            InitialCatalog = dbConnection.Database,
-            IntegratedSecurity = dbConnection.UseIntegratedSecurity,
-        };
-    }
-}
-
-
-public static class WindowHandleExtensions
-{
-    public class Win32Window : IWin32Window
-    {
-        public IntPtr Handle { get; }
-
-        public Win32Window(IntPtr handle)
-        {
-            Handle = handle;
-        }
-    }
-
-    public static IWin32Window GetWindow(this WindowHandle handle)
-    {
-        return new Win32Window(handle.Handle);
     }
 }
