@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Authors>Muhammad Yaseen Azeez and Gerardo Lijs</Authors>
+    <Authors>Muhammad Azeez and Gerardo Lijs</Authors>
     <Company>LijsDev</Company>
     <Copyright>Copyright © LijsDev 2022</Copyright>
   </PropertyGroup>

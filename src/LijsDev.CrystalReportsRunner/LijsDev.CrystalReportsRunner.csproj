@@ -10,7 +10,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>LijsDev.CrystalReportsRunner</AssemblyName>
     <AssemblyTitle>LijsDev Crystal Reports Runner</AssemblyTitle>
-    <Authors>Muhammad Yaseen Azeez and Gerardo Lijs</Authors>
+    <Authors>Muhammad Azeez and Gerardo Lijs</Authors>
     <Company>LijsDev</Company>
     <Copyright>Copyright © LijsDev 2022</Copyright>
   </PropertyGroup>
