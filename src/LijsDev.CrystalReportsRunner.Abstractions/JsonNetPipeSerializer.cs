@@ -12,7 +12,7 @@ public class JsonNetPipeSerializer : IPipeSerializer
 {
     private readonly JsonSerializerSettings _jsonSettings = new();
 
-    public object Deserialize(byte[] data, Type type)
+    public object? Deserialize(byte[] data, Type type)
     {
         using var stream = new MemoryStream(data);
         using var reader = new StreamReader(stream, Encoding.UTF8);
@@ -20,7 +20,7 @@ public class JsonNetPipeSerializer : IPipeSerializer
 
         var serializer = JsonSerializer.CreateDefault(_jsonSettings);
 
-        return serializer.Deserialize(jsonReader, type) ?? throw new InvalidDataException();
+        return serializer.Deserialize(jsonReader, type);
     }
 
     public byte[] Serialize(object o)
