@@ -8,10 +8,14 @@ using System;
 using System.IO;
 using System.Text;
 
+/// <summary>
+/// Serializer used for named pipes communication
+/// </summary>
 public class JsonNetPipeSerializer : IPipeSerializer
 {
     private readonly JsonSerializerSettings _jsonSettings = new();
 
+    /// <inheritdoc/>
     public object? Deserialize(byte[] data, Type type)
     {
         using var stream = new MemoryStream(data);
@@ -23,6 +27,7 @@ public class JsonNetPipeSerializer : IPipeSerializer
         return serializer.Deserialize(jsonReader, type);
     }
 
+    /// <inheritdoc/>
     public byte[] Serialize(object o)
     {
         using var memoryStream = new MemoryStream();
