@@ -27,8 +27,7 @@ internal static class Program
             var viewerSettings = new ReportViewerSettings();
             var dbConnection = CrystalReportsConnectionFactory.CreateSqlConnection(".\\SQLEXPRESS", "CrystalReportsSample");
 
-            var viewerForm = reportViewer.GetViewerForm(report, viewerSettings, dbConnection);
-
+            using var viewerForm = reportViewer.GetViewerForm(report, viewerSettings, dbConnection);
             viewerForm.ShowDialog();
         }
         else

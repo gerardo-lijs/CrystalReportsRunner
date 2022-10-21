@@ -47,6 +47,8 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
             {
                 form.Show();
             }
+
+            // TODO: Add call to Dispose form when closed?
         });
 
         waitHandle.WaitOne();
@@ -62,7 +64,7 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
 
         _runOnUIThread(() =>
         {
-            var form = _viewer.GetViewerForm(report, viewerSettings, dbConnection);
+            using var form = _viewer.GetViewerForm(report, viewerSettings, dbConnection);
 
             // TODO: Add ViewerSettings for StartPosition
             form.StartPosition = FormStartPosition.CenterParent;
