@@ -114,6 +114,7 @@ public partial class MainWindow : Window
 
         // Optional we can also set culture for Crystal Reports Viewer UI to match the one used in your application
         //engine.ViewerSettings.SetUICulture(Thread.CurrentThread.CurrentUICulture);
+        //engine.ViewerSettings.SetUICulture(System.Globalization.CultureInfo.GetCultureInfo("es-ES"));
 
         return engine;
     }

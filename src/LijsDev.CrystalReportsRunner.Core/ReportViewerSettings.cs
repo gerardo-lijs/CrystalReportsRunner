@@ -81,7 +81,7 @@ public class ReportViewerSettings
     /// <summary>
     /// Specified UI culture LCID.
     /// </summary>
-    public int? UICultureLCID { get; private set; }     // TODO: Try to make private set but test that serialization doesn't break
+    public int? UICultureLCID { get; set; }
 
     /// <summary>
     /// Sets which exports formats are available.
