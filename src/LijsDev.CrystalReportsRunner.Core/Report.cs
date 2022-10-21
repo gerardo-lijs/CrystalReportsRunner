@@ -50,6 +50,9 @@ public sealed class Report
     public string? ExportFilename { get; set; }
 
     /// <inheritdoc/>
+    public CrystalReportsConnection? Connection { get; set; }
+
+    /// <inheritdoc/>
     public Dictionary<string, object> Parameters { get; set; } = new();
 
     /// <inheritdoc/>

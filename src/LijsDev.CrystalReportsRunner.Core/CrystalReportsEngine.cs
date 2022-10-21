@@ -14,33 +14,13 @@ public sealed class CrystalReportsEngine : IDisposable
 {
     private readonly string _pipeName;
     private readonly PipeServerWithCallback<ICrystalReportsRunner, ICrystalReportsCaller> _pipe;
-    private readonly CrystalReportsConnection? _connection;
 
     /// <inheritdoc/>
-    public CrystalReportsEngine() : this(null)
+    public CrystalReportsEngine()
     {
-    }
-
-    /// <inheritdoc/>
-    public CrystalReportsEngine(CrystalReportsConnection? connection)
-    {
-        // Validate CrystalReportsConnection
-        if (connection is not null)
-        {
-            // TODO: Use custom Exceptions
-            if (string.IsNullOrWhiteSpace(connection.Server)) throw new Exception("Server value for database connection is required. Set connection to null if you don't want to work with a database.");
-            if (string.IsNullOrWhiteSpace(connection.Database)) throw new Exception("Database value for database connection is required. Set connection to null if you don't want to work with a database.");
-            if (!connection.UseIntegratedSecurity)
-            {
-                if (string.IsNullOrWhiteSpace(connection.Username)) throw new Exception("Username value for database connection must be specified when Use Integrated Security is false.");
-                if (connection.Password is null) throw new Exception("Password value for database connection must be specified when Use Integrated Security is false.");
-            }
-        }
-
         _pipeName = $"lijs-dev-crystal-reports-runner-{Guid.NewGuid()}";
         _pipe = new PipeServerWithCallback<ICrystalReportsRunner, ICrystalReportsCaller>(
             new JsonNetPipeSerializer(), _pipeName, () => new DefaultCrystalReportsCaller());
-        _connection = connection;
     }
 
     /// <summary>
@@ -76,10 +56,11 @@ public sealed class CrystalReportsEngine : IDisposable
         Report report,
         WindowHandle? owner = null)
     {
+        ValidateReportConnection(report.Connection);
         await Initialize();
 
         await _pipe.InvokeAsync(runner =>
-            runner.ShowReport(report, ViewerSettings, owner, _connection));
+            runner.ShowReport(report, ViewerSettings, owner));
     }
 
     /// <summary>
@@ -100,10 +81,25 @@ public sealed class CrystalReportsEngine : IDisposable
         Report report,
         WindowHandle owner)
     {
+        ValidateReportConnection(report.Connection);
         await Initialize();
 
         await _pipe.InvokeAsync(runner =>
-            runner.ShowReportDialog(report, ViewerSettings, owner, _connection));
+            runner.ShowReportDialog(report, ViewerSettings, owner));
+    }
+
+    private void ValidateReportConnection(CrystalReportsConnection? connection)
+    {
+        if (connection is null) return;
+
+        // TODO: Use custom Exceptions
+        if (string.IsNullOrWhiteSpace(connection.Server)) throw new Exception("Server value for database connection is required. Set connection to null if you don't want to work with a database.");
+        if (string.IsNullOrWhiteSpace(connection.Database)) throw new Exception("Database value for database connection is required. Set connection to null if you don't want to work with a database.");
+        if (!connection.UseIntegratedSecurity)
+        {
+            if (string.IsNullOrWhiteSpace(connection.Username)) throw new Exception("Username value for database connection must be specified when Use Integrated Security is false.");
+            if (connection.Password is null) throw new Exception("Password value for database connection must be specified when Use Integrated Security is false.");
+        }
     }
 
     private bool _initialized = false;

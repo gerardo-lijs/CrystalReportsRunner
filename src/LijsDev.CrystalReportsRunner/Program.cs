@@ -20,7 +20,10 @@ internal static class Program
 
             var reportViewer = new ReportViewer();
 
-            var report = new Report("SampleReport.rpt", "Sample Report", "sample_export");
+            var report = new Report("SampleReport.rpt", "Sample Report", "sample_export")
+            {
+                Connection = CrystalReportsConnectionFactory.CreateSqlConnection(".\\SQLEXPRESS", "CrystalReportsSample")
+            };
             report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
             report.Parameters.Add("UserName", "Muhammad");
 
@@ -30,9 +33,7 @@ internal static class Program
                 WindowInitialPosition = ReportViewerWindowStartPosition.CenterScreen
             };
 
-            var dbConnection = CrystalReportsConnectionFactory.CreateSqlConnection(".\\SQLEXPRESS", "CrystalReportsSample");
-
-            using var viewerForm = reportViewer.GetViewerForm(report, viewerSettings, dbConnection);
+            using var viewerForm = reportViewer.GetViewerForm(report, viewerSettings);
             viewerForm.ShowDialog();
         }
         else

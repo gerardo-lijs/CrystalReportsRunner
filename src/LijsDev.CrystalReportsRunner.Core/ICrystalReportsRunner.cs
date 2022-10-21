@@ -1,18 +1,30 @@
 namespace LijsDev.CrystalReportsRunner.Core;
 
 /// <summary>
-/// Crystal Reports Runner interface
+/// Crystal Reports Runner interface for named pipes communication
 /// </summary>
 public interface ICrystalReportsRunner
 {
+    /// <summary>
+    /// Exports a report to the specified filename.
+    /// </summary>
+    /// <param name="report">Report to export</param>
+    /// <param name="exportFormat">Export format</param>
+    /// <param name="destinationFilename">Destination filename</param>
+    /// <param name="overwrite">Overwrite existing destination file if exists. Default: true</param>
+    void Export(
+        Report report,
+        ReportViewerExportFormats exportFormat,
+        string destinationFilename,
+        bool overwrite = true);
+
     /// <summary>
     /// Show report in modeless window
     /// </summary>
     void ShowReport(
         Report report,
         ReportViewerSettings viewerSettings,
-        WindowHandle? owner = null,
-        CrystalReportsConnection? connection = null);
+        WindowHandle? owner = null);
 
     /// <summary>
     /// Show report in modal window
@@ -20,8 +32,7 @@ public interface ICrystalReportsRunner
     void ShowReportDialog(
         Report report,
         ReportViewerSettings viewSettings,
-        WindowHandle owner,
-        CrystalReportsConnection? connection);
+        WindowHandle owner);
 }
 
 /// <summary>

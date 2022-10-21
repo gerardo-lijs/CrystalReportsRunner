@@ -73,7 +73,10 @@ public partial class MainWindow : Window
 
     private static Report CreateReport()
     {
-        var report = new Report("SampleReport.rpt", "Sample Report");
+        var report = new Report("SampleReport.rpt", "Sample Report")
+        {
+            Connection = CrystalReportsConnectionFactory.CreateSqlConnection(".\\SQLEXPRESS", "CrystalReportsSample")
+        };
         report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
         report.Parameters.Add("UserName", "Muhammad");
         return report;
@@ -82,8 +85,7 @@ public partial class MainWindow : Window
     private static CrystalReportsEngine CreateEngine()
     {
         // NOTE: Create CrystalReportsSample using Schema.sql in the \samples\shared folder
-        var connection = CrystalReportsConnectionFactory.CreateSqlConnection(".\\SQLEXPRESS", "CrystalReportsSample");
-        var engine = new CrystalReportsEngine(connection);
+        var engine = new CrystalReportsEngine();
 
         // Method 2: Without Connection string
         // using var engine = new CrystalReportsEngine();

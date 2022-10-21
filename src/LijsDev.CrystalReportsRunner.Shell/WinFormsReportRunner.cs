@@ -19,17 +19,24 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
         _runOnUIThread = runOnUIThread;
     }
 
+    public void Export(
+        Report report,
+        ReportViewerExportFormats exportFormat,
+        string destinationFilename,
+        bool overwrite = true)
+    {
+    }
+
     public void ShowReport(
         Report report,
         ReportViewerSettings viewerSettings,
-        WindowHandle? owner = null,
-        CrystalReportsConnection? dbConnection = null)
+        WindowHandle? owner = null)
     {
         using var waitHandle = new ManualResetEvent(false);
 
         _runOnUIThread(() =>
         {
-            var form = _viewer.GetViewerForm(report, viewerSettings, dbConnection);
+            var form = _viewer.GetViewerForm(report, viewerSettings);
             form.Load += (s, args) =>
             {
                 waitHandle.Set();
@@ -50,14 +57,13 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
     public void ShowReportDialog(
         Report report,
         ReportViewerSettings viewerSettings,
-        WindowHandle owner,
-        CrystalReportsConnection? dbConnection = null)
+        WindowHandle owner)
     {
         using var waitHandle = new ManualResetEvent(false);
 
         _runOnUIThread(() =>
         {
-            using var form = _viewer.GetViewerForm(report, viewerSettings, dbConnection);
+            using var form = _viewer.GetViewerForm(report, viewerSettings);
             form.ShowDialog(owner.GetWindow());
 
             // TODO: We might want to expose the Window Location and State somehow to the caller app once the user closes so it could be saved for interface settings in following executions.

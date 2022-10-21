@@ -12,33 +12,33 @@ using LijsDev.CrystalReportsRunner.Shell;
 
 internal class ReportViewer : IReportViewer
 {
-    public Form GetViewerForm(Report report, ReportViewerSettings viewerSettings, CrystalReportsConnection? dbConnection)
+    public Form GetViewerForm(Report report, ReportViewerSettings viewerSettings)
     {
-        var document = CreateReportDocument(report, dbConnection);
+        var document = CreateReportDocument(report);
         return new ViewerForm(document, viewerSettings)
         {
             Text = report.Title
         };
     }
 
-    private static ReportDocument CreateReportDocument(Report report, CrystalReportsConnection? dbConnection)
+    private static ReportDocument CreateReportDocument(Report report)
     {
         var document = new ReportDocument();
         document.Load(report.Filename);
 
         ConnectionInfo? crConnection;
 
-        if (dbConnection is not null)
+        if (report.Connection is not null)
         {
             var logonProperties = new NameValuePairs2()
             {
-                new NameValuePair2("Data Source", dbConnection.Server),
-                new NameValuePair2("Initial Catalog", dbConnection.Database),
-                new NameValuePair2("Integrated Security", dbConnection.UseIntegratedSecurity ? "False" : "True"),
+                new NameValuePair2("Data Source", report.Connection.Server),
+                new NameValuePair2("Initial Catalog", report.Connection.Database),
+                new NameValuePair2("Integrated Security", report.Connection.UseIntegratedSecurity ? "False" : "True"),
             };
-            if (dbConnection.LogonProperties is not null)
+            if (report.Connection.LogonProperties is not null)
             {
-                foreach (var property in dbConnection.LogonProperties)
+                foreach (var property in report.Connection.LogonProperties)
                 {
                     logonProperties.Add(new NameValuePair2(property.Key, property.Value));
                 }
@@ -47,36 +47,36 @@ internal class ReportViewer : IReportViewer
             foreach (IConnectionInfo connection in document.DataSourceConnections)
             {
                 connection.SetLogonProperties(logonProperties);
-                if (dbConnection.UseIntegratedSecurity)
+                if (report.Connection.UseIntegratedSecurity)
                 {
                     connection.SetConnection(
-                        dbConnection.Server, dbConnection.Database, useIntegratedSecurity: true);
+                        report.Connection.Server, report.Connection.Database, useIntegratedSecurity: true);
                 }
                 else
                 {
                     connection.SetConnection(
-                        dbConnection.Server,
-                        dbConnection.Database,
-                        dbConnection.Username,
-                        dbConnection.Password);
+                        report.Connection.Server,
+                        report.Connection.Database,
+                        report.Connection.Username,
+                        report.Connection.Password);
                 }
             }
 
             // Set table connection
             crConnection = new ConnectionInfo
             {
-                ServerName = dbConnection.Server,
-                DatabaseName = dbConnection.Database
+                ServerName = report.Connection.Server,
+                DatabaseName = report.Connection.Database
             };
 
-            if (dbConnection.UseIntegratedSecurity)
+            if (report.Connection.UseIntegratedSecurity)
             {
                 crConnection.IntegratedSecurity = true;
             }
             else
             {
-                crConnection.UserID = dbConnection.Username;
-                crConnection.Password = dbConnection.Password;
+                crConnection.UserID = report.Connection.Username;
+                crConnection.Password = report.Connection.Password;
             }
         }
         else
