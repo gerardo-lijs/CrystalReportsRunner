@@ -35,5 +35,5 @@ public class CrystalReportsConnection
     /// <summary>
     /// Logon Properties
     /// </summary>
-    public Dictionary<string, string> LogonProperties { get; set; } = new();
+    public Dictionary<string, string> LogonProperties { get; set; }
 }

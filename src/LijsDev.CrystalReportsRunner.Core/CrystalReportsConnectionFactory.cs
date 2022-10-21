@@ -25,7 +25,8 @@ public static class CrystalReportsConnectionFactory
         Database = database,
         Username = username,
         Password = password,
-        UseIntegratedSecurity = false
+        UseIntegratedSecurity = false,
+        LogonProperties = SqlLogonProperties
     };
 
     private static Dictionary<string, string> SqlLogonProperties => new()

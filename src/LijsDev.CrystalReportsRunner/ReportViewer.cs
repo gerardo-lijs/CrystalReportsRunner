@@ -33,9 +33,12 @@ internal class ReportViewer : IReportViewer
                 new NameValuePair2("Initial Catalog", dbConnection.Database),
                 new NameValuePair2("Integrated Security", dbConnection.UseIntegratedSecurity ? "False" : "True"),
             };
-            foreach (var property in dbConnection.LogonProperties)
+            if (dbConnection.LogonProperties is not null)
             {
-                logonProperties.Add(new NameValuePair2(property.Key, property.Value));
+                foreach (var property in dbConnection.LogonProperties)
+                {
+                    logonProperties.Add(new NameValuePair2(property.Key, property.Value));
+                }
             }
 
             foreach (IConnectionInfo connection in document.DataSourceConnections)
@@ -122,11 +125,11 @@ internal class ReportViewer : IReportViewer
         }
 
         // If no dataset is supplied, configure its connection string.
-        if (table != null)
+        if (table is not null)
         {
             crTable.SetDataSource(table);
         }
-        else if (crConnection != null)
+        else if (crConnection is not null)
         {
             var tableLogonInfo = crTable.LogOnInfo;
             tableLogonInfo.ConnectionInfo = crConnection;
