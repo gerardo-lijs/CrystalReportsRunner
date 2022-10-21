@@ -16,6 +16,12 @@
     <Copyright>Copyright © LijsDev 2022</Copyright>
   </PropertyGroup>
 
+  <ItemGroup Condition="'$(Configuration)'=='Debug'">
+    <None Include="..\..\samples\shared\SampleReport.rpt" Link="SampleReport.rpt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <ItemGroup>
     <Reference Include="CrystalDecisions.CrystalReports.Engine">
       <HintPath>..\..\dependencies\13.0.20\CrystalDecisions.CrystalReports.Engine.dll</HintPath>

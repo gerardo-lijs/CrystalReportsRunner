@@ -1,8 +1,15 @@
 {
   "profiles": {
-    "CrystalReportsViewer": {
+    "Normal": {
+      "commandName": "Project"
+    },
+    "ListenPipe": {
       "commandName": "Project",
       "commandLineArgs": "--pipe-name 123"
+    },
+    "DebugTest": {
+      "commandName": "Project",
+      "commandLineArgs": "--DebugTest"
     }
   }
 }
