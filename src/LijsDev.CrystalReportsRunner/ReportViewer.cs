@@ -15,13 +15,16 @@ internal class ReportViewer : IReportViewer
     public Form GetViewerForm(Report report, ReportViewerSettings viewerSettings, CrystalReportsConnection? dbConnection)
     {
         var document = CreateReportDocument(report, dbConnection);
-        return new ViewerForm(document, viewerSettings);
+        return new ViewerForm(document, viewerSettings)
+        {
+            Text = report.Title
+        };
     }
 
     private static ReportDocument CreateReportDocument(Report report, CrystalReportsConnection? dbConnection)
     {
         var document = new ReportDocument();
-        document.Load(report.Path);
+        document.Load(report.Filename);
 
         ConnectionInfo? crConnection;
 
@@ -104,10 +107,8 @@ internal class ReportViewer : IReportViewer
             }
         }
 
-        if (report.Title is not null)
-        {
-            document.SummaryInfo.ReportTitle = report.Title;
-        }
+        // NB: SummaryInfo.ReportTitle is used as initial value in save dialog when exporting a report.
+        document.SummaryInfo.ReportTitle = report.ExportFilename ?? report.Title;
 
         return document;
     }

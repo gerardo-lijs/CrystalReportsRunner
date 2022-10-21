@@ -22,7 +22,6 @@ internal partial class ViewerForm : Form
 
         // Set report
         crystalReportViewer1.ReportSource = document;
-        Text = document.SummaryInfo.ReportTitle;        // TODO: We are not using the specified Window title here. This is good as default
 
         // Configure Crystal Report Viewer
         if (!viewerSettings.ShowReportTabs)

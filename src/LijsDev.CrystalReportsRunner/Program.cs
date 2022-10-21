@@ -20,11 +20,12 @@ internal static class Program
 
             var reportViewer = new ReportViewer();
 
-            var report = new Report("SampleReport.rpt", "Sample Report");
+            var report = new Report("SampleReport.rpt", "Sample Report", "sample_export");
             report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
             report.Parameters.Add("UserName", "Muhammad");
 
             var viewerSettings = new ReportViewerSettings();
+
             var dbConnection = CrystalReportsConnectionFactory.CreateSqlConnection(".\\SQLEXPRESS", "CrystalReportsSample");
 
             using var viewerForm = reportViewer.GetViewerForm(report, viewerSettings, dbConnection);
