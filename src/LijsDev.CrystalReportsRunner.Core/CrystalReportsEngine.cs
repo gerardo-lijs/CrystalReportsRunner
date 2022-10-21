@@ -24,6 +24,19 @@ public sealed class CrystalReportsEngine : IDisposable
     /// <inheritdoc/>
     public CrystalReportsEngine(CrystalReportsConnection? connection)
     {
+        // Validate CrystalReportsConnection
+        if (connection is not null)
+        {
+            // TODO: Use custom Exceptions
+            if (string.IsNullOrWhiteSpace(connection.Server)) throw new Exception("Server value for database connection is required. Set connection to null if you don't want to work with a database.");
+            if (string.IsNullOrWhiteSpace(connection.Database)) throw new Exception("Database value for database connection is required. Set connection to null if you don't want to work with a database.");
+            if (!connection.UseIntegratedSecurity)
+            {
+                if (string.IsNullOrWhiteSpace(connection.Username)) throw new Exception("Username value for database connection must be specified when Use Integrated Security is false.");
+                if (connection.Password is null) throw new Exception("Password value for database connection must be specified when Use Integrated Security is false.");
+            }
+        }
+
         _pipeName = $"lijs-dev-crystal-reports-runner-{Guid.NewGuid()}";
         _pipe = new PipeServerWithCallback<ICrystalReportsRunner, ICrystalReportsCaller>(
             new JsonNetPipeSerializer(), _pipeName, () => new DefaultCrystalReportsCaller());

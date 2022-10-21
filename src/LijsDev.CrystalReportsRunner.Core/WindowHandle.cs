@@ -9,7 +9,8 @@ using Newtonsoft.Json;
 /// <summary>
 /// Generic window handle to a WinForms Form or WPF Window in the caller application.
 /// </summary>
-public class WindowHandle
+[Serializable]
+public sealed class WindowHandle
 {
     /// <inheritdoc/>
     [JsonConstructor]
@@ -19,6 +20,7 @@ public class WindowHandle
     }
 
     private long HandleInternal { get; }
+
     /// <inheritdoc/>
     public IntPtr Handle => new(HandleInternal);
 }
