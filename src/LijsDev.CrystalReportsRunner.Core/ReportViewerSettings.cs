@@ -16,10 +16,51 @@ public class ReportViewerSettings
     public int? WindowMinimumHeight { get; set; } = 500;
 
     /// <summary>
-    /// Sets the report viewer window initial state (Normal, Minimized or Maximized).
+    /// Sets the report viewer window maximum width
+    /// </summary>
+    public int? WindowMaximumWidth { get; set; }
+
+    /// <summary>
+    /// Sets the report viewer window maximum height
+    /// </summary>
+    public int? WindowMaximumHeight { get; set; }
+
+    /// <summary>
+    /// Sets the report viewer window initial state.
     /// Default: Maximized
     /// </summary>
     public ReportViewerWindowState WindowInitialState { get; set; } = ReportViewerWindowState.Maximized;
+
+    /// <summary>
+    /// Sets the report viewer window starting position.
+    /// Default: WindowsDefaultLocation
+    /// </summary>
+    public ReportViewerWindowStartPosition WindowInitialPosition { get; set; } = ReportViewerWindowStartPosition.WindowsDefaultLocation;
+
+    /// <summary>
+    /// Sets whether the user can minimize the report viewer window or not.
+    /// </summary>
+    public bool WindowAllowMinimize { get; set; } = true;
+
+    /// <summary>
+    /// Sets whether the user can maximize the report viewer window or not.
+    /// </summary>
+    public bool WindowAllowMaximize { get; set; } = true;
+
+    /// <summary>
+    /// Sets whether the user can resize the report viewer window or not.
+    /// </summary>
+    public bool WindowAllowResize { get; set; } = true;
+
+    /// <summary>
+    /// Optionally sets the report viewer window initial left location. WindowInitialPosition may override this setting.
+    /// </summary>
+    public int? WindowLocationLeft { get; set; }
+
+    /// <summary>
+    /// Optionally sets the report viewer window initial top location. WindowInitialPosition may override this setting.
+    /// </summary>
+    public int? WindowLocationTop { get; set; }
 
     /// <summary>
     /// Set the UI culture to use in the CrystalReportViewer control.
@@ -111,6 +152,4 @@ public class ReportViewerSettings
     /// Default: true
     /// </summary>
     public bool ShowParameterPanelButton { get; set; } = true;
-
-    // TODO: Add Viewer Form -> StartPosition setting
 }

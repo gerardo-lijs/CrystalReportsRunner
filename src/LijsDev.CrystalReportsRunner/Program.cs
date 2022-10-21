@@ -11,7 +11,7 @@ internal static class Program
         // TODO: Add Logging
 
 #if DEBUG
-// Parse command line parameters
+        // Parse command line parameters
         var commandLineParameters = CommandLineParameters.Parse(args);
 
         if (commandLineParameters.DebugTest)
@@ -24,7 +24,11 @@ internal static class Program
             report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
             report.Parameters.Add("UserName", "Muhammad");
 
-            var viewerSettings = new ReportViewerSettings();
+            var viewerSettings = new ReportViewerSettings
+            {
+                WindowInitialState = ReportViewerWindowState.Maximized,
+                WindowInitialPosition = ReportViewerWindowStartPosition.CenterScreen
+            };
 
             var dbConnection = CrystalReportsConnectionFactory.CreateSqlConnection(".\\SQLEXPRESS", "CrystalReportsSample");
 

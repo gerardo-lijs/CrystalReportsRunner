@@ -30,10 +30,6 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
         _runOnUIThread(() =>
         {
             var form = _viewer.GetViewerForm(report, viewerSettings, dbConnection);
-
-            // TODO: Add ViewerSettings for StartPosition
-            form.StartPosition = FormStartPosition.CenterScreen;
-
             form.Load += (s, args) =>
             {
                 waitHandle.Set();
@@ -48,6 +44,7 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
                 form.Show();
             }
 
+            // TODO: We might want to expose the Window Location and State somehow to the caller app once the user closes so it could be saved for interface settings in following executions.
             // TODO: Add call to Dispose form when closed?
         });
 
@@ -65,11 +62,9 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
         _runOnUIThread(() =>
         {
             using var form = _viewer.GetViewerForm(report, viewerSettings, dbConnection);
-
-            // TODO: Add ViewerSettings for StartPosition
-            form.StartPosition = FormStartPosition.CenterParent;
-
             form.ShowDialog(owner.GetWindow());
+
+            // TODO: We might want to expose the Window Location and State somehow to the caller app once the user closes so it could be saved for interface settings in following executions.
 
             waitHandle.Set();
         });

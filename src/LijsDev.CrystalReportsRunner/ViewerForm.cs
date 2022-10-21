@@ -18,7 +18,28 @@ internal partial class ViewerForm : Form
         {
             MinimumSize = new Size(viewerSettings.WindowMinimumWidth.Value, viewerSettings.WindowMinimumHeight.Value);
         }
-        WindowState = (FormWindowState)(int)viewerSettings.WindowInitialState;
+        if (viewerSettings.WindowMaximumWidth is not null && viewerSettings.WindowMaximumHeight is not null)
+        {
+            MaximumSize = new Size(viewerSettings.WindowMaximumWidth.Value, viewerSettings.WindowMaximumHeight.Value);
+        }
+        if (viewerSettings.WindowLocationLeft is not null)
+        {
+            Left = viewerSettings.WindowLocationLeft.Value;
+        }
+        if (viewerSettings.WindowLocationTop is not null)
+        {
+            Top = viewerSettings.WindowLocationTop.Value;
+        }
+        MinimizeBox = viewerSettings.WindowAllowMinimize;
+        MaximizeBox = viewerSettings.WindowAllowMaximize;
+        WindowState = (FormWindowState)viewerSettings.WindowInitialState;
+        StartPosition = (FormStartPosition)viewerSettings.WindowInitialPosition;
+
+        // Resize disabled
+        if (!viewerSettings.WindowAllowResize)
+        {
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+        }
 
         // Set report
         crystalReportViewer1.ReportSource = document;
