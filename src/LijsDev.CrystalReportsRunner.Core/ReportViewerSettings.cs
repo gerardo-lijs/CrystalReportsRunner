@@ -5,6 +5,8 @@ namespace LijsDev.CrystalReportsRunner.Core;
 /// </summary>
 public class ReportViewerSettings
 {
+    // TODO: Configure Form Icon
+
     /// <summary>
     /// Sets the report viewer window minimum width
     /// </summary>
@@ -38,17 +40,22 @@ public class ReportViewerSettings
     public ReportViewerWindowStartPosition WindowInitialPosition { get; set; } = ReportViewerWindowStartPosition.WindowsDefaultLocation;
 
     /// <summary>
-    /// Sets whether the user can minimize the report viewer window or not.
+    /// Sets whether the report viewer window is displayed in the Windows taskbar.
+    /// </summary>
+    public bool WindowShowInTaskbar { get; set; } = true;
+
+    /// <summary>
+    /// Sets whether the user can minimize the report viewer window.
     /// </summary>
     public bool WindowAllowMinimize { get; set; } = true;
 
     /// <summary>
-    /// Sets whether the user can maximize the report viewer window or not.
+    /// Sets whether the user can maximize the report viewer window.
     /// </summary>
     public bool WindowAllowMaximize { get; set; } = true;
 
     /// <summary>
-    /// Sets whether the user can resize the report viewer window or not.
+    /// Sets whether the user can resize the report viewer window.
     /// </summary>
     public bool WindowAllowResize { get; set; } = true;
 
@@ -74,7 +81,7 @@ public class ReportViewerSettings
     /// <summary>
     /// Specified UI culture LCID.
     /// </summary>
-    public int? UICultureLCID { get; set; }     // TODO: Try to make private set but test that serialization doesn't break
+    public int? UICultureLCID { get; private set; }     // TODO: Try to make private set but test that serialization doesn't break
 
     /// <summary>
     /// Sets which exports formats are available.

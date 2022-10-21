@@ -14,6 +14,8 @@ internal partial class ViewerForm : Form
         InitializeComponent();
 
         // Configure Form
+        ShowIcon = false;
+        ShowInTaskbar = viewerSettings.WindowShowInTaskbar;
         if (viewerSettings.WindowMinimumWidth is not null && viewerSettings.WindowMinimumHeight is not null)
         {
             MinimumSize = new Size(viewerSettings.WindowMinimumWidth.Value, viewerSettings.WindowMinimumHeight.Value);
