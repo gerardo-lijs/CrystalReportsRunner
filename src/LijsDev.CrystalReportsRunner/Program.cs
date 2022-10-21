@@ -17,9 +17,6 @@ internal static class Program
         if (commandLineParameters.DebugTest)
         {
             // NB: We can use this to test directly Reports without Named Pipes
-
-            var reportViewer = new ReportViewer();
-
             var report = new Report("SampleReport.rpt", "Sample Report", "sample_export")
             {
                 Connection = CrystalReportsConnectionFactory.CreateSqlConnection(".\\SQLEXPRESS", "CrystalReportsSample")
@@ -28,6 +25,7 @@ internal static class Program
             report.Parameters.Add("UserName", "Muhammad");
 
             // Test 1 - Show Viewer
+            var reportViewer = new ReportViewer();
             var viewerSettings = new ReportViewerSettings
             {
                 WindowInitialState = ReportViewerWindowState.Maximized,
@@ -38,11 +36,12 @@ internal static class Program
             viewerForm.ShowDialog();
 
             // Test 2 - Export Report
-            reportViewer.Export(report, ReportExportFormats.PDF, "sample_report.pdf");
+            //var reportExporter = new ReportExporter();
+            //reportExporter.Export(report, ReportExportFormats.PDF, "sample_report.pdf");
         }
         else
         {
-            var shell = new Shell.Shell(new ReportViewer());
+            var shell = new Shell.Shell(new ReportViewer(), new ReportExporter());
             shell.StartListening(args);
         }
 #else

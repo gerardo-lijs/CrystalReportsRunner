@@ -8,13 +8,16 @@ using System.Threading;
 internal class WinFormsReportRunner : ICrystalReportsRunner
 {
     private readonly IReportViewer _viewer;
+    private readonly IReportExporter _exporter;
     private readonly Action<Action> _runOnUIThread;
 
     public WinFormsReportRunner(
         IReportViewer viewer,
+        IReportExporter exporter,
         Action<Action> runOnUIThread)
     {
         _viewer = viewer;
+        _exporter = exporter;
         _runOnUIThread = runOnUIThread;
     }
 
@@ -24,7 +27,7 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
         string destinationFilename,
         bool overwrite = true)
     {
-        _viewer.Export(report, exportFormat, destinationFilename, overwrite);
+        _exporter.Export(report, exportFormat, destinationFilename, overwrite);
     }
 
     public void ShowReport(

@@ -25,12 +25,15 @@ public class Shell
 
     private readonly ManualResetEvent _waitHandle = new(false);
     private readonly IReportViewer _reportViewer;
+    private readonly IReportExporter _reportExporter;
     private Form? _mainForm;
 
     /// <inheritdoc/>
-    public Shell(IReportViewer reportViewer)
+    public Shell(IReportViewer reportViewer,
+        IReportExporter reportExporter)
     {
         _reportViewer = reportViewer;
+        _reportExporter = reportExporter;
     }
 
     /// <inheritdoc/>
@@ -87,7 +90,7 @@ public class Shell
                  new JsonNetPipeSerializer(),
                  ".",
                  options.PipeName,
-                 () => new WinFormsReportRunner(_reportViewer, RunCodeOnUIThread));
+                 () => new WinFormsReportRunner(_reportViewer, _reportExporter, RunCodeOnUIThread));
 
         _waitHandle.WaitOne();
         await pipeClient.ConnectAsync();
