@@ -40,8 +40,9 @@ public sealed class CrystalReportsEngine : IDisposable
     /// </summary>
     /// <param name="reportFilename">Crystal Reports RPT file path</param>
     /// <param name="viewerTitle">Title to display in the Viewer window</param>
-    public Task ShowReport(string reportFilename, string viewerTitle)
-        => ShowReport(new Report(reportFilename, viewerTitle));
+    /// <param name="owner">Optional owner window handle. Useful for CenterParent initial location</param>
+    public Task ShowReport(string reportFilename, string viewerTitle, WindowHandle? owner = null)
+        => ShowReport(new Report(reportFilename, viewerTitle), owner);
 
     /// <summary>
     /// Show specified Crystal Reports file in Viewer window
@@ -49,19 +50,23 @@ public sealed class CrystalReportsEngine : IDisposable
     /// <param name="reportFilename">Crystal Reports RPT file path</param>
     /// <param name="viewerTitle">Title to display in the Viewer window</param>
     /// <param name="parameters">Database query parameters</param>
-    public Task ShowReport(string reportFilename, string viewerTitle, Dictionary<string, object> parameters)
-        => ShowReport(new Report(reportFilename, viewerTitle) { Parameters = parameters });
+    /// <param name="owner">Optional owner window handle. Useful for CenterParent initial location</param>
+    public Task ShowReport(string reportFilename, string viewerTitle, Dictionary<string, object> parameters, WindowHandle? owner = null)
+        => ShowReport(new Report(reportFilename, viewerTitle) { Parameters = parameters }, owner);
 
     /// <summary>
     /// Show specified Crystal Reports in Viewer window
     /// </summary>
+    /// <param name="report">Report to show</param>
+    /// <param name="owner">Optional owner window handle. Useful for CenterParent initial location</param>
     public async Task ShowReport(
-        Report report)
+        Report report,
+        WindowHandle? owner = null)
     {
         await Initialize();
 
         await _pipe.InvokeAsync(runner =>
-            runner.ShowReport(report, ViewerSettings, null, _connection));
+            runner.ShowReport(report, ViewerSettings, owner, _connection));
     }
 
     /// <summary>
@@ -69,13 +74,15 @@ public sealed class CrystalReportsEngine : IDisposable
     /// </summary>
     /// <param name="reportFilename">Crystal Reports RPT file path</param>
     /// <param name="viewerTitle">Title to display in the Viewer window</param>
-    /// <param name="owner">Owner windows handle</param>
+    /// <param name="owner">Owner window handle</param>
     public Task ShowReportDialog(string reportFilename, string viewerTitle, WindowHandle owner)
       => ShowReportDialog(new Report(reportFilename, viewerTitle), owner);
 
     /// <summary>
     /// Show specified Crystal Reports in Viewer dialog
     /// </summary>
+    /// <param name="report">Report to show</param>
+    /// <param name="owner">Owner window handle</param>
     public async Task ShowReportDialog(
         Report report,
         WindowHandle owner)

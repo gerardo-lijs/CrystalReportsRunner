@@ -36,7 +36,8 @@ public partial class MainWindow : Window
             _disposables.Add(engine);
             var report = CreateReport();
 
-            await engine.ShowReport(report);
+            var windowHandle = new WindowHandle(new WindowInteropHelper(this).EnsureHandle());
+            await engine.ShowReport(report, owner: windowHandle);
         }
         catch (Exception ex)
         {

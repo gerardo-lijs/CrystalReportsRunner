@@ -36,13 +36,9 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
             };
 
             if (owner is not null)
-            {
                 form.Show(owner.GetWindow());
-            }
             else
-            {
                 form.Show();
-            }
 
             // TODO: We might want to expose the Window Location and State somehow to the caller app once the user closes so it could be saved for interface settings in following executions.
             // TODO: Add call to Dispose form when closed?
