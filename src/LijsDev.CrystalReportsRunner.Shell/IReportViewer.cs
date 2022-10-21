@@ -12,5 +12,18 @@ public interface IReportViewer
     /// <summary>
     /// Get Crystal Reports Viewer Form
     /// </summary>
-    public Form GetViewerForm(Report report, ReportViewerSettings settings);
+    Form GetViewerForm(Report report, ReportViewerSettings settings);
+
+    /// <summary>
+    /// Exports a report to the specified filename.
+    /// </summary>
+    /// <param name="report">Report to export</param>
+    /// <param name="exportFormat">Export format</param>
+    /// <param name="destinationFilename">Destination filename</param>
+    /// <param name="overwrite">Overwrite existing destination file if exists. Default: true</param>
+    void Export(
+        Report report,
+        ReportExportFormats exportFormat,
+        string destinationFilename,
+        bool overwrite = true);
 }

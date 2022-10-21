@@ -21,6 +21,17 @@ internal class ReportViewer : IReportViewer
         };
     }
 
+    public void Export(Report report, ReportExportFormats exportFormat, string destinationFilename, bool overwrite = true)
+    {
+        var document = CreateReportDocument(report);
+
+        // Overwrite
+        if (overwrite && File.Exists(destinationFilename)) File.Delete(destinationFilename);
+
+        // Export
+        document.ExportToDisk((ExportFormatType)exportFormat, destinationFilename);
+    }
+
     private static ReportDocument CreateReportDocument(Report report)
     {
         var document = new ReportDocument();

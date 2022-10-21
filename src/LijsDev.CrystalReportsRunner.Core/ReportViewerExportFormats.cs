@@ -7,34 +7,52 @@ namespace LijsDev.CrystalReportsRunner.Core;
 /// </summary>
 public enum ReportViewerExportFormats
 {
-    /// <inheritdoc/>
+    /// <summary>
+    /// Export disabled
+    /// </summary>
     NoFormat = 0,
-    /// <inheritdoc/>
+    /// <summary>
+    /// Portable Document Format
+    /// </summary>
     PdfFormat = 1,
-    /// <inheritdoc/>
+    /// <summary>
+    /// Microsoft Excel (97-2003) - XLS
+    /// </summary>
     ExcelFormat = 2,
-    /// <inheritdoc/>
+    /// <summary>
+    /// Microsoft Word (97-2003) - DOC
+    /// </summary>
     WordFormat = 4,
-    /// <inheritdoc/>
+    /// <summary>
+    /// Rich Text Format (RTF)
+    /// </summary>
     RtfFormat = 8,
-    /// <inheritdoc/>
-    RptFormat = 16,
-    /// <inheritdoc/>
-    ExcelRecordFormat = 32,
-    /// <inheritdoc/>
-    EditableRtfFormat = 64,
-    /// <inheritdoc/>
-    XmlFormat = 128,
-    /// <inheritdoc/>
-    RptrFormat = 256,
-    /// <inheritdoc/>
-    XLSXFormat = 512,
-    /// <inheritdoc/>
-    CsvFormat = 1024,
-    /// <inheritdoc/>
-    XLSXPagebasedFormat = 2048,
-    /// <inheritdoc/>
-    XLSXRecordFormat = 4096,
-    /// <inheritdoc/>
-    AllFormats = 268435455
+    /// <summary>
+    /// Crystal Reports
+    /// </summary>
+    RptFormat = 0x10,
+    /// <summary>
+    /// Microsoft Excel (97-2003) Data-Only - XLS
+    /// </summary>
+    ExcelRecordFormat = 0x20,
+    /// <summary>
+    /// Microsoft Word (97-2003) - Editable RTF
+    /// </summary>
+    EditableRtfFormat = 0x40,
+    /// <summary>
+    /// XML
+    /// </summary>
+    XmlFormat = 0x80,
+    /// <summary>
+    /// Microsoft Excel Workbook Data-Only - XLSX
+    /// </summary>
+    XLSXFormat = 0x200,
+    /// <summary>
+    /// Character Separated Values (CSV)
+    /// </summary>
+    CsvFormat = 0x400,
+    /// <summary>
+    /// All available formats
+    /// </summary>
+    AllFormats = 0xFFFFFFF
 }

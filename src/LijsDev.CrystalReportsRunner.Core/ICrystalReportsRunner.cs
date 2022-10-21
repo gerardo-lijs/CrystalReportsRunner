@@ -14,7 +14,7 @@ public interface ICrystalReportsRunner
     /// <param name="overwrite">Overwrite existing destination file if exists. Default: true</param>
     void Export(
         Report report,
-        ReportViewerExportFormats exportFormat,
+        ReportExportFormats exportFormat,
         string destinationFilename,
         bool overwrite = true);
 

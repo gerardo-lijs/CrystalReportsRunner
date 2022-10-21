@@ -4,7 +4,6 @@ using LijsDev.CrystalReportsRunner.Core;
 
 using System;
 using System.Threading;
-using System.Windows.Forms;
 
 internal class WinFormsReportRunner : ICrystalReportsRunner
 {
@@ -21,10 +20,11 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
 
     public void Export(
         Report report,
-        ReportViewerExportFormats exportFormat,
+        ReportExportFormats exportFormat,
         string destinationFilename,
         bool overwrite = true)
     {
+        _viewer.Export(report, exportFormat, destinationFilename, overwrite);
     }
 
     public void ShowReport(

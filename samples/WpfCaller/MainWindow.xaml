@@ -31,6 +31,13 @@
                 x:Name="ShowDialogButton"
                 Click="ShowDialogButton_Click"
                 Content="Show Report as a Dialog" />
+
+            <TextBlock Width="20" />
+
+            <Button
+                x:Name="ExportReportButton"
+                Click="ExportReportButton_Click"
+                Content="Export report" />
         </StackPanel>
 
         <Border

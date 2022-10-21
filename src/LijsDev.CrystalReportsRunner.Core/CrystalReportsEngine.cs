@@ -29,6 +29,25 @@ public sealed class CrystalReportsEngine : IDisposable
     public ReportViewerSettings ViewerSettings { get; set; } = new();
 
     /// <summary>
+    /// Exports a report to the specified filename.
+    /// </summary>
+    /// <param name="report">Report to export</param>
+    /// <param name="exportFormat">Export format</param>
+    /// <param name="destinationFilename">Destination filename</param>
+    /// <param name="overwrite">Overwrite existing destination file if exists. Default: true</param>
+    public async Task Export(
+        Report report,
+        ReportExportFormats exportFormat,
+        string destinationFilename,
+        bool overwrite = true)
+    {
+        await Initialize();
+
+        await _pipe.InvokeAsync(runner =>
+            runner.Export(report, exportFormat, destinationFilename, overwrite));
+    }
+
+    /// <summary>
     /// Show specified Crystal Reports file in Viewer window
     /// </summary>
     /// <param name="reportFilename">Crystal Reports RPT file path</param>

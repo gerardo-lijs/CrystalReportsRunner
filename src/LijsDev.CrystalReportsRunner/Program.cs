@@ -27,6 +27,7 @@ internal static class Program
             report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
             report.Parameters.Add("UserName", "Muhammad");
 
+            // Test 1 - Show Viewer
             var viewerSettings = new ReportViewerSettings
             {
                 WindowInitialState = ReportViewerWindowState.Maximized,
@@ -35,6 +36,9 @@ internal static class Program
 
             using var viewerForm = reportViewer.GetViewerForm(report, viewerSettings);
             viewerForm.ShowDialog();
+
+            // Test 2 - Export Report
+            reportViewer.Export(report, ReportExportFormats.PDF, "sample_report.pdf");
         }
         else
         {

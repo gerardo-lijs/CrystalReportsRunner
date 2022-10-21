@@ -71,6 +71,28 @@ public partial class MainWindow : Window
         }
     }
 
+    private async void ExportReportButton_Click(object sender, RoutedEventArgs e)
+    {
+        LoadingBorder.Visibility = Visibility.Visible;
+
+        try
+        {
+            using var engine = CreateEngine();
+            var report = CreateReport();
+
+            var dstFilename = "sample_report.pdf";
+            await engine.Export(report, ReportExportFormats.PDF, dstFilename, overwrite: true);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.ToString());
+        }
+        finally
+        {
+            LoadingBorder.Visibility = Visibility.Collapsed;
+        }
+    }
+
     private static Report CreateReport()
     {
         var report = new Report("SampleReport.rpt", "Sample Report")
