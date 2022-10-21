@@ -7,7 +7,8 @@ using System.Data;
 /// <summary>
 /// Report
 /// </summary>
-public class Report
+[Serializable]
+public sealed class Report
 {
     /// <inheritdoc/>
     public Report(string filename)
@@ -38,7 +39,7 @@ public class Report
 
     /// <summary>
     /// Report title to be displayed in the Report Viewer Window title.
-    /// Default: "Report"
+    /// Default: 'Report'
     /// </summary>
     public string Title { get; set; } = "Report";
 

@@ -5,7 +5,8 @@ using Newtonsoft.Json;
 /// <summary>
 /// Crystal Reports Viewer Control and Window settings
 /// </summary>
-public class ReportViewerSettings
+[Serializable]
+public sealed class ReportViewerSettings
 {
     // TODO: Configure Form Icon
 
