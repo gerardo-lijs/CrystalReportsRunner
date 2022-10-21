@@ -5,7 +5,7 @@ using LijsDev.CrystalReportsRunner.Core;
 using System;
 using System.Windows.Forms;
 
-public static class WindowHandleExtensions
+internal static class WindowHandleExtensions
 {
     public class Win32Window : IWin32Window
     {
@@ -18,7 +18,5 @@ public static class WindowHandleExtensions
     }
 
     public static IWin32Window GetWindow(this WindowHandle handle)
-    {
-        return new Win32Window(handle.Handle);
-    }
+        => new Win32Window(handle.Handle);
 }

@@ -6,7 +6,7 @@ using System;
 using System.Threading;
 using System.Windows.Forms;
 
-public class WinFormsReportRunner : ICrystalReportsRunner
+internal class WinFormsReportRunner : ICrystalReportsRunner
 {
     private readonly IReportViewer _viewer;
     private readonly Action<Action> _runOnUIThread;
@@ -31,6 +31,7 @@ public class WinFormsReportRunner : ICrystalReportsRunner
         {
             var form = _viewer.GetViewerForm(report, viewerSettings, dbConnection);
 
+            // TODO: Add ViewerSettings for StartPosition
             form.StartPosition = FormStartPosition.CenterScreen;
 
             form.Load += (s, args) =>
@@ -62,6 +63,8 @@ public class WinFormsReportRunner : ICrystalReportsRunner
         _runOnUIThread(() =>
         {
             var form = _viewer.GetViewerForm(report, viewerSettings, dbConnection);
+
+            // TODO: Add ViewerSettings for StartPosition
             form.StartPosition = FormStartPosition.CenterParent;
 
             form.ShowDialog(owner.GetWindow());

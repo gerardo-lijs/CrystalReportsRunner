@@ -111,4 +111,6 @@ public class ReportViewerSettings
     /// Default: true
     /// </summary>
     public bool ShowParameterPanelButton { get; set; } = true;
+
+    // TODO: Add Viewer Form -> StartPosition setting
 }
