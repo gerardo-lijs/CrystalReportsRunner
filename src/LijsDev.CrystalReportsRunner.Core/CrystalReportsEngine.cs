@@ -1,3 +1,5 @@
+//#define USE_PROCESSJOBTRACKER
+
 namespace LijsDev.CrystalReportsRunner.Core;
 
 using PipeMethodCalls;
@@ -122,14 +124,18 @@ public sealed class CrystalReportsEngine : IDisposable
     }
 
     private bool _initialized = false;
+#if USE_PROCESSJOBTRACKER
     private ProcessJobTracker? _tracker;
+#endif
     private Process? _process;
 
     private async Task Initialize()
     {
         if (!_initialized)
         {
+#if USE_PROCESSJOBTRACKER
             _tracker = new ProcessJobTracker();
+#endif
 
             // TODO: Make this robust using app location and not relative with issue with WorkingDir
             // TODO: Allow to specify another location for user that deploy manually
@@ -148,7 +154,9 @@ public sealed class CrystalReportsEngine : IDisposable
 
             _process = new Process { StartInfo = psi };
             _process.Start();
+#if USE_PROCESSJOBTRACKER
             _tracker.AddProcess(_process);
+#endif
 
             await _pipe.WaitForConnectionAsync();
             _initialized = true;
@@ -160,6 +168,8 @@ public sealed class CrystalReportsEngine : IDisposable
     {
         _pipe.Dispose();
         _process?.Dispose();
+#if USE_PROCESSJOBTRACKER
         _tracker?.Dispose();
+#endif
     }
 }
