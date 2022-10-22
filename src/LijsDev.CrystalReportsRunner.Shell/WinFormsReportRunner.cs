@@ -2,23 +2,24 @@ namespace LijsDev.CrystalReportsRunner.Shell;
 
 using LijsDev.CrystalReportsRunner.Core;
 
-using System;
 using System.Threading;
 
 internal class WinFormsReportRunner : ICrystalReportsRunner
 {
+    private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
     private readonly IReportViewer _viewer;
     private readonly IReportExporter _exporter;
-    private readonly Action<Action> _runOnUIThread;
+    private readonly SynchronizationContext _uiContext;
 
     public WinFormsReportRunner(
         IReportViewer viewer,
         IReportExporter exporter,
-        Action<Action> runOnUIThread)
+        SynchronizationContext uiContext)
     {
         _viewer = viewer;
         _exporter = exporter;
-        _runOnUIThread = runOnUIThread;
+        _uiContext = uiContext;
     }
 
     public void Export(
@@ -27,7 +28,9 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
         string destinationFilename,
         bool overwrite = true)
     {
+        Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::Export::Start");
         _exporter.Export(report, exportFormat, destinationFilename, overwrite);
+        Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::Export::End");
     }
 
     public void ShowReport(
@@ -35,14 +38,23 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
         ReportViewerSettings viewerSettings,
         WindowHandle? owner = null)
     {
+        Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ShowReport::Start");
+
         using var waitHandle = new ManualResetEvent(false);
 
-        _runOnUIThread(() =>
+        _uiContext.Send(s =>
         {
             var form = _viewer.GetViewerForm(report, viewerSettings);
             form.Load += (s, args) =>
             {
+                Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ShowReport::FormLoad");
                 waitHandle.Set();
+            };
+            form.FormClosed += (s, args) =>
+            {
+                Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ShowReport::FormClosed");
+
+                // TODO: We might want to communicate the Window Location and State somehow to the caller app once the user closes so it could be saved for interface settings in following executions.
             };
 
             if (owner is not null)
@@ -50,11 +62,11 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
             else
                 form.Show();
 
-            // TODO: We might want to expose the Window Location and State somehow to the caller app once the user closes so it could be saved for interface settings in following executions.
-            // TODO: Add call to Dispose form when closed?
-        });
+        }, null);
 
         waitHandle.WaitOne();
+
+        Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ShowReport::End");
     }
 
     public void ShowReportDialog(
@@ -62,9 +74,11 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
         ReportViewerSettings viewerSettings,
         WindowHandle owner)
     {
+        Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ShowReportDialog::Start");
+
         using var waitHandle = new ManualResetEvent(false);
 
-        _runOnUIThread(() =>
+        _uiContext.Send(s =>
         {
             using var form = _viewer.GetViewerForm(report, viewerSettings);
             form.ShowDialog(owner.GetWindow());
@@ -72,8 +86,10 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
             // TODO: We might want to expose the Window Location and State somehow to the caller app once the user closes so it could be saved for interface settings in following executions.
 
             waitHandle.Set();
-        });
+        }, null);
 
         waitHandle.WaitOne();
+
+        Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ShowReportDialog::End");
     }
 }

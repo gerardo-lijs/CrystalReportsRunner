@@ -3,13 +3,15 @@ namespace WpfCaller;
 using LijsDev.CrystalReportsRunner.Core;
 
 using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Interop;
 
 public partial class MainWindow : Window
 {
-    private readonly List<IDisposable> _disposables = new();
+    /// <summary>
+    /// Shared Crystal Reports Engine
+    /// </summary>
+    private CrystalReportsEngine? _engineInstance;
 
     public MainWindow()
     {
@@ -17,12 +19,12 @@ public partial class MainWindow : Window
         Closed += MainWindow_Closed;
     }
 
-    private void MainWindow_Closed(object? sender, EventArgs e)
+    private async void MainWindow_Closed(object? sender, EventArgs e)
     {
-        foreach (var disposable in _disposables.ToArray())
+        if (_engineInstance is not null)
         {
-            _disposables.Remove(disposable);
-            disposable.Dispose();
+            await _engineInstance.CloseRunner();
+            _engineInstance.Dispose();
         }
     }
 
@@ -32,12 +34,11 @@ public partial class MainWindow : Window
 
         try
         {
-            var engine = CreateEngine();
-            _disposables.Add(engine);
+            _engineInstance ??= CreateEngine();
             var report = CreateReport();
 
             var windowHandle = new WindowHandle(new WindowInteropHelper(this).EnsureHandle());
-            await engine.ShowReport(report, owner: windowHandle);
+            await _engineInstance.ShowReport(report, owner: windowHandle);
         }
         catch (Exception ex)
         {
@@ -55,11 +56,11 @@ public partial class MainWindow : Window
 
         try
         {
-            using var engine = CreateEngine();
+            _engineInstance ??= CreateEngine();
             var report = CreateReport();
 
             var windowHandle = new WindowHandle(new WindowInteropHelper(this).EnsureHandle());
-            await engine.ShowReportDialog(report, owner: windowHandle);
+            await _engineInstance.ShowReportDialog(report, owner: windowHandle);
         }
         catch (Exception ex)
         {
@@ -77,11 +78,11 @@ public partial class MainWindow : Window
 
         try
         {
-            using var engine = CreateEngine();
+            _engineInstance ??= CreateEngine();
             var report = CreateReport();
 
             var dstFilename = "sample_report.pdf";
-            await engine.Export(report, ReportExportFormats.PDF, dstFilename, overwrite: true);
+            await _engineInstance.Export(report, ReportExportFormats.PDF, dstFilename, overwrite: true);
         }
         catch (Exception ex)
         {
