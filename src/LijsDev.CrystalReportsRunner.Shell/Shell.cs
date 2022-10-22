@@ -25,10 +25,8 @@ public class Shell
         public string PipeName { get; set; } = string.Empty;
     }
 
-    private readonly ManualResetEvent _waitHandle = new(false);
     private readonly IReportViewer _reportViewer;
     private readonly IReportExporter _reportExporter;
-    private Form? _mainForm;
 
     /// <inheritdoc/>
     public Shell(IReportViewer reportViewer,
@@ -38,24 +36,47 @@ public class Shell
         _reportExporter = reportExporter;
     }
 
+    private Options? _options;
+
+    private void ThreadExceptionHandler(object s, ThreadExceptionEventArgs e)
+    {
+        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::ThreadExceptionHandler");
+        Logger.Fatal(e.Exception);
+        Application.ExitThread();
+    }
+
+    private async void StartUpHandler(object s, EventArgs e)
+    {
+        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartUpHandler");
+        Application.Idle -= StartUpHandler;
+
+        // Capture WindowsFormsSynchronizationContext UI context
+        var uiContext = SynchronizationContext.Current ?? throw new Exception($"{nameof(StartUpHandler)} needs to be run from a UI Thread.");
+        await OpenConnection(uiContext);
+    }
+
     /// <inheritdoc/>
     public void StartListening(string[] args)
     {
+        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::Start");
         var result = Parser.Default.ParseArguments<Options>(args);
 
         if (result.Tag == ParserResultType.Parsed)
         {
-            var thread = new Thread(() => OpenConnection(result.Value));
-            thread.Start();
-
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            _mainForm = CreateInvisibleForm();
-
-            Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::_waitHandle.Set");
-            _waitHandle.Set();
-
-            Application.Run(_mainForm);
+            _options = result.Value;
+            Application.ThreadException += ThreadExceptionHandler;
+            Application.Idle += StartUpHandler;
+            try
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::Application.Run");
+                Application.Run();
+            }
+            finally
+            {
+                Application.Idle -= StartUpHandler;
+            }
         }
         else
         {
@@ -65,50 +86,29 @@ public class Shell
                 Logger.Error($"\t{error}");
             }
         }
+        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::End");
     }
 
-    private Form CreateInvisibleForm()
+    private async Task OpenConnection(SynchronizationContext uiContext)
     {
-        return new Form
-        {
-            Width = 0,
-            Height = 0,
-            ShowInTaskbar = false,
-            FormBorderStyle = FormBorderStyle.None,
-            Opacity = 0,
-            WindowState = FormWindowState.Minimized,
-        };
-    }
+        if (_options is null) throw new NullReferenceException(nameof(_options));
+        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::PipeName={_options.PipeName}");
 
-    /// <inheritdoc/>
-    public void RunCodeOnUIThread(Action action)
-    {
-        if (_mainForm is not null)
-        {
-            _mainForm.BeginInvoke(action);
-        }
-    }
-
-    private async void OpenConnection(Options options)
-    {
-        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::OpenConnection::PipeName={options.PipeName}");
 
         using var pipeClient = new PipeClientWithCallback<ICrystalReportsCaller, ICrystalReportsRunner>(
                  new JsonNetPipeSerializer(),
                  ".",
-                 options.PipeName,
-                 () => new WinFormsReportRunner(_reportViewer, _reportExporter, RunCodeOnUIThread));
+        _options.PipeName,
+                 () => new WinFormsReportRunner(_reportViewer, _reportExporter, uiContext));
 
-        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::OpenConnection::WaitOne::Start");
-        _waitHandle.WaitOne();
-        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::OpenConnection::WaitOne::End");
-
-        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::OpenConnection::ConnectAsync::Start");
+        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::ConnectAsync::Start");
         await pipeClient.ConnectAsync();
-        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::OpenConnection::ConnectAsync::End");
+        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::ConnectAsync::End");
 
-        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::OpenConnection::WaitForRemotePipeCloseAsync::Start");
+        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::WaitForRemotePipeCloseAsync::Start");
         await pipeClient.WaitForRemotePipeCloseAsync();
-        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::OpenConnection::WaitForRemotePipeCloseAsync::End");
+        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::WaitForRemotePipeCloseAsync::End");
+
+        Application.ExitThread();
     }
 }
