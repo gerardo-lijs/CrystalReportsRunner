@@ -53,7 +53,8 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
             form.FormClosed += (s, args) =>
             {
                 Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ShowReport::FormClosed");
-                Application.ExitThread();
+
+                // TODO: We might want to communicate the Window Location and State somehow to the caller app once the user closes so it could be saved for interface settings in following executions.
             };
 
             if (owner is not null)
@@ -61,8 +62,6 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
             else
                 form.Show();
 
-            // TODO: We might want to expose the Window Location and State somehow to the caller app once the user closes so it could be saved for interface settings in following executions.
-            // TODO: Add call to Dispose form when closed?
         }, null);
 
         waitHandle.WaitOne();

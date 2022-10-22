@@ -92,9 +92,8 @@ public class Shell
     private async Task OpenConnection(SynchronizationContext uiContext)
     {
         if (_options is null) throw new NullReferenceException(nameof(_options));
+
         Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::PipeName={_options.PipeName}");
-
-
         using var pipeClient = new PipeClientWithCallback<ICrystalReportsCaller, ICrystalReportsRunner>(
                  new JsonNetPipeSerializer(),
                  ".",
