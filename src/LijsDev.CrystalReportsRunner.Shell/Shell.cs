@@ -85,6 +85,8 @@ public class Shell
             {
                 Logger.Error($"\t{error}");
             }
+            MessageBox.Show("Crystal Reports Runner is not meant to be run standalone.\n\nPlease use from caller app with NuGet package LijsDev.CrystalReportsRunner.Core.\nSee project documentation in GitHub to learn how to get started.", "Crystal Reports Runner",
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
         Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::End");
     }
