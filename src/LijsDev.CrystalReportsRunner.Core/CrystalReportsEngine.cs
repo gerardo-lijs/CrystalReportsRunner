@@ -1,4 +1,4 @@
-//#define USE_PROCESSJOBTRACKER
+#define USE_PROCESSJOBTRACKER
 
 namespace LijsDev.CrystalReportsRunner.Core;
 
