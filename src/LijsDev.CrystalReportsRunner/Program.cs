@@ -34,49 +34,58 @@ internal static class Program
         Logger.Info($"LijsDev::CrystalReportsRunner::Program::CrystalReportsRuntimePlatform::{CrystalReportsRuntimePlatform}");
         Logger.Info("========================================================================================================");
 
+        try
+        {
 #if DEBUG
-        Logger.Trace("LijsDev::CrystalReportsRunner::Program::Starting in DEBUG mode");
+            Logger.Trace("LijsDev::CrystalReportsRunner::Program::Starting in DEBUG mode");
 
-        // Parse command line parameters
-        var commandLineParameters = CommandLineParameters.Parse(args);
+            // Parse command line parameters
+            var commandLineParameters = CommandLineParameters.Parse(args);
 
-        if (commandLineParameters.DebugTest)
-        {
-            // NB: We can use this to test directly Reports without Named Pipes
-            var report = new Report("SampleReport.rpt", "Sample Report", "sample_export")
+            if (commandLineParameters.DebugTest)
             {
-                Connection = CrystalReportsConnectionFactory.CreateSqlConnection(".\\SQLEXPRESS", "CrystalReportsSample")
-            };
-            report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
-            report.Parameters.Add("UserName", "Muhammad");
+                // NB: We can use this to test directly Reports without Named Pipes
+                var report = new Report("SampleReport.rpt", "Sample Report", "sample_export")
+                {
+                    Connection = CrystalReportsConnectionFactory.CreateSqlConnection(".\\SQLEXPRESS", "CrystalReportsSample")
+                };
+                report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
+                report.Parameters.Add("UserName", "Muhammad");
 
-            // Test 1 - Show Viewer
-            var reportViewer = new ReportViewer();
-            var viewerSettings = new ReportViewerSettings
+                // Test 1 - Show Viewer
+                var reportViewer = new ReportViewer();
+                var viewerSettings = new ReportViewerSettings
+                {
+                    WindowInitialState = ReportViewerWindowState.Maximized,
+                    WindowInitialPosition = ReportViewerWindowStartPosition.CenterScreen
+                };
+
+                using var viewerForm = reportViewer.GetViewerForm(report, viewerSettings);
+                viewerForm.ShowDialog();
+
+                // Test 2 - Export Report
+                //var reportExporter = new ReportExporter();
+                //reportExporter.Export(report, ReportExportFormats.PDF, "sample_report.pdf");
+            }
+            else
             {
-                WindowInitialState = ReportViewerWindowState.Maximized,
-                WindowInitialPosition = ReportViewerWindowStartPosition.CenterScreen
-            };
-
-            using var viewerForm = reportViewer.GetViewerForm(report, viewerSettings);
-            viewerForm.ShowDialog();
-
-            // Test 2 - Export Report
-            //var reportExporter = new ReportExporter();
-            //reportExporter.Export(report, ReportExportFormats.PDF, "sample_report.pdf");
-        }
-        else
-        {
-            var shell = new Shell.Shell(new ReportViewer(), new ReportExporter());
-            shell.StartListening(args);
-        }
+                var shell = new Shell.Shell(new ReportViewer(), new ReportExporter());
+                shell.StartListening(args);
+            }
 #else
         var shell = new Shell.Shell(new ReportViewer(), new ReportExporter());
         shell.StartListening(args);
 #endif
-
-        Logger.Info("========================================================================================================");
-        Logger.Info("LijsDev::CrystalReportsRunner::Program::End");
-        Logger.Info("========================================================================================================");
+        }
+        catch (Exception ex)
+        {
+            Logger.Fatal(ex);
+        }
+        finally
+        {
+            Logger.Info("========================================================================================================");
+            Logger.Info("LijsDev::CrystalReportsRunner::Program::End");
+            Logger.Info("========================================================================================================");
+        }
     }
 }
