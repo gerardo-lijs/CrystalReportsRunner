@@ -52,9 +52,8 @@ public class Shell
             Application.SetCompatibleTextRenderingDefault(false);
             _mainForm = CreateInvisibleForm();
 
-            Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::_waitHandle.Set::Start");
+            Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::_waitHandle.Set");
             _waitHandle.Set();
-            Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::_waitHandle.Set::End");
 
             Application.Run(_mainForm);
         }

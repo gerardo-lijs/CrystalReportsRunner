@@ -71,7 +71,7 @@ internal static class Program
             shell.StartListening(args);
         }
 #else
-        var shell = new Shell.Shell(new ReportViewer());
+        var shell = new Shell.Shell(new ReportViewer(), new ReportExporter());
         shell.StartListening(args);
 #endif
 
