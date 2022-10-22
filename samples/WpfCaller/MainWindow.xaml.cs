@@ -164,6 +164,9 @@ public partial class MainWindow : Window
         engine.ViewerSettings.ShowCloseButton = false;
         engine.ViewerSettings.EnableRefresh = false;
 
+        // Set viewer Icon
+        engine.ViewerSettings.WindowIcon = System.IO.File.ReadAllBytes("SampleIcon.png");
+
         // Optional we can also set culture for Crystal Reports Viewer UI to match the one used in your application
         //engine.ViewerSettings.SetUICulture(Thread.CurrentThread.CurrentUICulture);
         //engine.ViewerSettings.SetUICulture(System.Globalization.CultureInfo.GetCultureInfo("es-ES"));

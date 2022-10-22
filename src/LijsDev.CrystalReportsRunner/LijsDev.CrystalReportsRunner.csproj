@@ -21,6 +21,9 @@
     <None Include="..\..\samples\shared\SampleReport.rpt" Link="SampleReport.rpt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="SampleIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

@@ -9,9 +9,27 @@ using LijsDev.CrystalReportsRunner.Core;
 
 internal partial class ViewerForm : Form
 {
+    private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
     public ViewerForm(ReportDocument document, ReportViewerSettings viewerSettings)
     {
         InitializeComponent();
+
+        // Set Icon
+        if (viewerSettings.WindowIcon is not null)
+        {
+            try
+            {
+                using var ms = new MemoryStream(viewerSettings.WindowIcon);
+                var iconBitmap = new Bitmap(ms);
+                Icon = Icon.FromHandle(iconBitmap.GetHicon());
+            }
+            catch (Exception ex)
+            {
+                // TODO: Communicate to caller app the error in a better way. For now, the log will do.
+                Logger.Fatal(ex);
+            }
+        }
 
         // Configure Form
         ShowInTaskbar = viewerSettings.WindowShowInTaskbar;

@@ -60,6 +60,9 @@ internal static class Program
                     WindowInitialPosition = ReportViewerWindowStartPosition.CenterScreen
                 };
 
+                // Set viewer Icon
+                viewerSettings.WindowIcon = File.ReadAllBytes("SampleIcon.png");
+
                 using var viewerForm = reportViewer.GetViewerForm(report, viewerSettings);
                 viewerForm.ShowDialog();
 

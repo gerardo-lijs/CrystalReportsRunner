@@ -8,7 +8,13 @@ using Newtonsoft.Json;
 [Serializable]
 public sealed class ReportViewerSettings
 {
-    // TODO: Configure Form Icon
+    /// <summary>
+    /// Sets the report viewer window icon.
+    /// Byte array must be a valid Bitmap.
+    /// Default: null (default icon)
+    /// </summary>
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+    public byte[]? WindowIcon { get; set; }
 
     /// <summary>
     /// Sets the report viewer window minimum width.
