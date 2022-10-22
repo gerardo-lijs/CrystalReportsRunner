@@ -14,12 +14,17 @@
     <Authors>Muhammad Azeez and Gerardo Lijs</Authors>
     <Company>LijsDev</Company>
     <Copyright>Copyright © LijsDev 2022</Copyright>
+    <ApplicationIcon>report.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Debug'">
     <None Include="..\..\samples\shared\SampleReport.rpt" Link="SampleReport.rpt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="report.ico" />
   </ItemGroup>
 
   <ItemGroup>
