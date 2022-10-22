@@ -2,15 +2,41 @@ namespace LijsDev.CrystalReportsRunner;
 
 using System;
 using LijsDev.CrystalReportsRunner.Core;
+using NLog;
 
 internal static class Program
 {
+    private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
+    public static string ApplicationVersion
+    {
+        get
+        {
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var fileVersionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+            return fileVersionInfo.ProductVersion;
+        }
+    }
+    public static string ApplicationLocation => System.Reflection.Assembly.GetExecutingAssembly().Location;
+
+    // TODO: Get RuntimeVersion and Platform from csproj directly
+    private const string CrystalReportsRuntimeVersion = "13.0.20";
+    private const string CrystalReportsRuntimePlatform = "x86";
+
     [STAThread]
     private static void Main(string[] args)
     {
-        // TODO: Add Logging
+        Logger.Info("========================================================================================================");
+        Logger.Info($"LijsDev::CrystalReportsRunner::Program::Start::v{ApplicationVersion}");
+        Logger.Info("========================================================================================================");
+        Logger.Info($"LijsDev::CrystalReportsRunner::Program::Location::{ApplicationLocation}");
+        Logger.Info($"LijsDev::CrystalReportsRunner::Program::CrystalReportsRuntimeVersion::{CrystalReportsRuntimeVersion}");
+        Logger.Info($"LijsDev::CrystalReportsRunner::Program::CrystalReportsRuntimePlatform::{CrystalReportsRuntimePlatform}");
+        Logger.Info("========================================================================================================");
 
 #if DEBUG
+        Logger.Trace("LijsDev::CrystalReportsRunner::Program::Starting in DEBUG mode");
+
         // Parse command line parameters
         var commandLineParameters = CommandLineParameters.Parse(args);
 
@@ -48,5 +74,9 @@ internal static class Program
         var shell = new Shell.Shell(new ReportViewer());
         shell.StartListening(args);
 #endif
+
+        Logger.Info("========================================================================================================");
+        Logger.Info("LijsDev::CrystalReportsRunner::Program::End");
+        Logger.Info("========================================================================================================");
     }
 }

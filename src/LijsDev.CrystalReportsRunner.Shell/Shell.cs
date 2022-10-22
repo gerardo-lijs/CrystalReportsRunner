@@ -15,6 +15,8 @@ using System.Windows.Forms;
 /// </summary>
 public class Shell
 {
+    private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
     /// <inheritdoc/>
     public class Options
     {
@@ -49,15 +51,19 @@ public class Shell
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             _mainForm = CreateInvisibleForm();
+
+            Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::_waitHandle.Set::Start");
             _waitHandle.Set();
+            Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::_waitHandle.Set::End");
+
             Application.Run(_mainForm);
         }
         else
         {
-            // TODO: Add logger with NLog
+            Logger.Error("LijsDev::CrystalReportsRunner::Shell::ParseArguments failed with the following errors:");
             foreach (var error in result.Errors)
             {
-                Console.WriteLine(error.ToString());
+                Logger.Error($"\t{error}");
             }
         }
     }
@@ -86,14 +92,24 @@ public class Shell
 
     private async void OpenConnection(Options options)
     {
+        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::OpenConnection::PipeName={options.PipeName}");
+
         using var pipeClient = new PipeClientWithCallback<ICrystalReportsCaller, ICrystalReportsRunner>(
                  new JsonNetPipeSerializer(),
                  ".",
                  options.PipeName,
                  () => new WinFormsReportRunner(_reportViewer, _reportExporter, RunCodeOnUIThread));
 
+        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::OpenConnection::WaitOne::Start");
         _waitHandle.WaitOne();
+        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::OpenConnection::WaitOne::End");
+
+        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::OpenConnection::ConnectAsync::Start");
         await pipeClient.ConnectAsync();
+        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::OpenConnection::ConnectAsync::End");
+
+        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::OpenConnection::WaitForRemotePipeCloseAsync::Start");
         await pipeClient.WaitForRemotePipeCloseAsync();
+        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::OpenConnection::WaitForRemotePipeCloseAsync::End");
     }
 }
