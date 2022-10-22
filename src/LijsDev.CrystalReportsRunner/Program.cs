@@ -57,7 +57,8 @@ internal static class Program
                 var viewerSettings = new ReportViewerSettings
                 {
                     WindowInitialState = ReportViewerWindowState.Maximized,
-                    WindowInitialPosition = ReportViewerWindowStartPosition.CenterScreen
+                    WindowInitialPosition = ReportViewerWindowStartPosition.CenterScreen,
+                    WindowCloseOnEscapeKey = true
                 };
 
                 // Set viewer Icon

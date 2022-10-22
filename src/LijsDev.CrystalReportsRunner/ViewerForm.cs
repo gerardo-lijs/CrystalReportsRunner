@@ -10,6 +10,7 @@ using LijsDev.CrystalReportsRunner.Core;
 internal partial class ViewerForm : Form
 {
     private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+    private readonly bool _closeOnEscapeKey;
 
     public ViewerForm(ReportDocument document, ReportViewerSettings viewerSettings)
     {
@@ -32,6 +33,7 @@ internal partial class ViewerForm : Form
         }
 
         // Configure Form
+        _closeOnEscapeKey = viewerSettings.WindowCloseOnEscapeKey;
         ShowInTaskbar = viewerSettings.WindowShowInTaskbar;
         if (viewerSettings.WindowMinimumWidth is not null && viewerSettings.WindowMinimumHeight is not null)
         {
@@ -89,6 +91,16 @@ internal partial class ViewerForm : Form
         crystalReportViewer1.ShowPrintButton = viewerSettings.ShowPrintButton;
         crystalReportViewer1.ShowExportButton = viewerSettings.ShowExportButton;
         crystalReportViewer1.ShowZoomButton = viewerSettings.ShowZoomButton;
+    }
+
+    protected override bool ProcessDialogKey(Keys keyData)
+    {
+        if (_closeOnEscapeKey && ModifierKeys is Keys.None && keyData is Keys.Escape)
+        {
+            Close();
+            return true;
+        }
+        return base.ProcessDialogKey(keyData);
     }
 
     private void SetReportTabsVisible(bool visible)

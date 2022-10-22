@@ -8,7 +8,14 @@ using Newtonsoft.Json;
 [Serializable]
 public sealed class ReportViewerSettings
 {
-    // TODO: Add WindowCloseWithEscapeKey  setting
+    /// <summary>
+    /// Sets whether the report viewer window should be closed when user presses the Escape key.
+    /// Default: false
+    /// </summary>
+    public bool WindowCloseOnEscapeKey { get; set; } = WindowCloseOnEscapeKeyDefault;
+    /// <inheritdoc/>
+    public bool ShouldSerializeWindowCloseOnEscapeKey() => WindowCloseOnEscapeKey != WindowCloseOnEscapeKeyDefault;
+    private const bool WindowCloseOnEscapeKeyDefault = false;
 
     /// <summary>
     /// Sets the report viewer window icon.
