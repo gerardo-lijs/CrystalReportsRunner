@@ -19,6 +19,27 @@ public partial class MainWindow : Window
         Closed += MainWindow_Closed;
     }
 
+    /// <summary>
+    /// Create engine if needed for first time or if runner process no longer available.
+    /// </summary>
+    private void EnsureEngineAvailable()
+    {
+        if (_engineInstance is null)
+        {
+            // Create new engine if needed
+            _engineInstance = CreateEngine();
+        }
+        else
+        {
+            // Create new engine if runner process is dead
+            if (!_engineInstance.IsRunnerProcessAvailable())
+            {
+                _engineInstance.Dispose();
+                _engineInstance = CreateEngine();
+            }
+        }
+    }
+
     private async void MainWindow_Closed(object? sender, EventArgs e)
     {
         if (_engineInstance is not null)
@@ -34,9 +55,11 @@ public partial class MainWindow : Window
 
         try
         {
-            _engineInstance ??= CreateEngine();
-            var report = CreateReport();
+            EnsureEngineAvailable();
+            if (_engineInstance is null) throw new InvalidProgramException($"{nameof(_engineInstance)} can't be null here after calling EnsureEngineAvailable.");
 
+            // Show
+            var report = CreateReport();
             var windowHandle = new WindowHandle(new WindowInteropHelper(this).EnsureHandle());
             await _engineInstance.ShowReport(report, owner: windowHandle);
         }
@@ -56,9 +79,11 @@ public partial class MainWindow : Window
 
         try
         {
-            _engineInstance ??= CreateEngine();
-            var report = CreateReport();
+            EnsureEngineAvailable();
+            if (_engineInstance is null) throw new InvalidProgramException($"{nameof(_engineInstance)} can't be null here after calling EnsureEngineAvailable.");
 
+            // Show
+            var report = CreateReport();
             var windowHandle = new WindowHandle(new WindowInteropHelper(this).EnsureHandle());
             await _engineInstance.ShowReportDialog(report, owner: windowHandle);
         }
@@ -78,9 +103,11 @@ public partial class MainWindow : Window
 
         try
         {
-            _engineInstance ??= CreateEngine();
-            var report = CreateReport();
+            EnsureEngineAvailable();
+            if (_engineInstance is null) throw new InvalidProgramException($"{nameof(_engineInstance)} can't be null here after calling EnsureEngineAvailable.");
 
+            // Export
+            var report = CreateReport();
             var dstFilename = "sample_report.pdf";
             await _engineInstance.Export(report, ReportExportFormats.PDF, dstFilename, overwrite: true);
         }

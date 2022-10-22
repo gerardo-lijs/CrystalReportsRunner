@@ -33,15 +33,10 @@ public sealed class CrystalReportsEngine : IDisposable
     public string NamedPipeName { get; }
 
     /// <summary>
-    /// Returns true if Crystal Reports Runner process is alive.
+    /// Returns true if Crystal Reports Runner process/pipe is alive (connected state).
     /// </summary>
     /// <returns></returns>
-    public bool IsRunnerProcessAlive()
-    {
-        if (_processId is null) return false;
-        var proc = Process.GetProcessById(_processId.Value);
-        return proc is not null;
-    }
+    public bool IsRunnerProcessAvailable() => _pipe.State == PipeState.Connected;
 
     /// <summary>
     /// Exports a report to the specified filename.
