@@ -3,7 +3,7 @@ namespace LijsDev.CrystalReportsRunner.Shell;
 using LijsDev.CrystalReportsRunner.Core;
 
 /// <summary>
-/// Report Viewer interface
+/// Report Exporter interface
 /// </summary>
 public interface IReportExporter
 {
