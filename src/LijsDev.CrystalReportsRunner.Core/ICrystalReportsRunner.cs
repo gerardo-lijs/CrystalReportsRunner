@@ -5,6 +5,8 @@ namespace LijsDev.CrystalReportsRunner.Core;
 /// </summary>
 public interface ICrystalReportsRunner
 {
+    // TODO: Export to Stream method for caller app to consume the PDF or Exported report without the need to write to disk/temp file.
+
     /// <summary>
     /// Exports a report to the specified filename.
     /// </summary>

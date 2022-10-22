@@ -8,6 +8,8 @@ using Newtonsoft.Json;
 [Serializable]
 public sealed class ReportViewerSettings
 {
+    // TODO: Add WindowCloseWithEscapeKey  setting
+
     /// <summary>
     /// Sets the report viewer window icon.
     /// Byte array must be a valid Bitmap.
