@@ -38,6 +38,11 @@
                 x:Name="ExportReportButton"
                 Click="ExportReportButton_Click"
                 Content="Export report" />
+
+            <Button
+                x:Name="ExportReportToStreamButton"
+                Click="ExportReportToStreamButton_Click"
+                Content="Export report to stream" />
         </StackPanel>
 
         <Border

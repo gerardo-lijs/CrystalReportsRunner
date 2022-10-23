@@ -5,8 +5,6 @@ namespace LijsDev.CrystalReportsRunner.Core;
 /// </summary>
 public interface ICrystalReportsRunner
 {
-    // TODO: Export to Stream method for caller app to consume the PDF or Exported report without the need to write to disk/temp file.
-
     /// <summary>
     /// Exports a report to the specified filename.
     /// </summary>
@@ -19,6 +17,16 @@ public interface ICrystalReportsRunner
         ReportExportFormats exportFormat,
         string destinationFilename,
         bool overwrite = true);
+
+    /// <summary>
+    /// Exports a report to a memory mapped file.
+    /// Returns the name of the memory mapped file.
+    /// </summary>
+    /// <param name="report">Report to export</param>
+    /// <param name="exportFormat">Export format</param>
+    string ExportToMemoryMappedFile(
+        Report report,
+        ReportExportFormats exportFormat);
 
     /// <summary>
     /// Show report in modeless window

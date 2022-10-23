@@ -22,6 +22,7 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
         _uiContext = uiContext;
     }
 
+    /// <inheritdoc/>
     public void Export(
         Report report,
         ReportExportFormats exportFormat,
@@ -33,6 +34,19 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
         Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::Export::End");
     }
 
+    /// <inheritdoc/>
+    public string ExportToMemoryMappedFile(
+        Report report,
+        ReportExportFormats exportFormat)
+    {
+        Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ExportToStream::Start");
+        var mmfName = _exporter.ExportToMemoryMappedFile(report, exportFormat);
+        Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ExportToStream::End");
+
+        return mmfName;
+    }
+
+    /// <inheritdoc/>
     public void ShowReport(
         Report report,
         ReportViewerSettings viewerSettings,
@@ -69,6 +83,7 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
         Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ShowReport::End");
     }
 
+    /// <inheritdoc/>
     public bool? ShowReportDialog(
         Report report,
         ReportViewerSettings viewerSettings,

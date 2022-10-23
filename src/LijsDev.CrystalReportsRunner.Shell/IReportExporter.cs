@@ -19,4 +19,14 @@ public interface IReportExporter
         ReportExportFormats exportFormat,
         string destinationFilename,
         bool overwrite = true);
+
+    /// <summary>
+    /// Exports a report to a memory mapped file.
+    /// Returns the name of the memory mapped file.
+    /// </summary>
+    /// <param name="report">Report to export</param>
+    /// <param name="exportFormat">Export format</param>
+    string ExportToMemoryMappedFile(
+        Report report,
+        ReportExportFormats exportFormat);
 }

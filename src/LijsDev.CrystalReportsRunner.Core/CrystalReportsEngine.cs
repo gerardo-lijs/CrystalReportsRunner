@@ -60,6 +60,26 @@ public sealed class CrystalReportsEngine : IDisposable
     }
 
     /// <summary>
+    /// Exports a report to a memory stream.
+    /// </summary>
+    /// <param name="report">Report to export</param>
+    /// <param name="exportFormat">Export format</param>
+    /// <param name="cancellationToken">A cancellation token that can be used to cancel the work</param>
+    public async Task<Stream> Export(
+        Report report,
+        ReportExportFormats exportFormat,
+        CancellationToken cancellationToken = default)
+    {
+        await Initialize(cancellationToken);
+
+        var mmfName = await _pipe.InvokeAsync(runner =>
+            runner.ExportToMemoryMappedFile(report, exportFormat), cancellationToken);
+
+        var mmf = System.IO.MemoryMappedFiles.MemoryMappedFile.OpenExisting(mmfName);
+        return mmf.CreateViewStream();
+    }
+
+    /// <summary>
     /// Show specified Crystal Reports file in Viewer window.
     /// Viewer will close when CrystalReportEngine is disposed unless CloseRunnerProcessAtExit is set to false.
     /// </summary>

@@ -128,6 +128,40 @@ public partial class MainWindow : Window
         }
     }
 
+    private async void ExportReportToStreamButton_Click(object sender, RoutedEventArgs e)
+    {
+        LoadingBorder.Visibility = Visibility.Visible;
+
+        try
+        {
+            EnsureEngineAvailable();
+            if (_engineInstance is null) throw new InvalidProgramException($"{nameof(_engineInstance)} can't be null here after calling EnsureEngineAvailable.");
+
+            // Export
+            var report = CreateReport();
+            using var reportStream = await _engineInstance.Export(report, ReportExportFormats.PDF);
+
+            var dstFilename = "sample_report_stream.pdf";
+            if (System.IO.File.Exists(dstFilename)) System.IO.File.Delete(dstFilename);
+            using var sw = new System.IO.FileStream(dstFilename, System.IO.FileMode.Create);
+            await reportStream.CopyToAsync(sw);
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = dstFilename,
+                UseShellExecute = true
+            });
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.ToString());
+        }
+        finally
+        {
+            LoadingBorder.Visibility = Visibility.Collapsed;
+        }
+    }
+
     private static Report CreateReport()
     {
         var report = new Report("SampleReport.rpt", "Sample Report")
