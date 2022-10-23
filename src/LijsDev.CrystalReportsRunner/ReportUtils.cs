@@ -10,15 +10,26 @@ using LijsDev.CrystalReportsRunner.Core;
 
 internal static class ReportUtils
 {
+    private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
     public static ReportDocument CreateReportDocument(Report report)
     {
+        Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Start");
+        Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Filename={report.Filename}");
+
         var document = new ReportDocument();
         document.Load(report.Filename);
+
+        Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::ReportDocument::Loaded");
 
         ConnectionInfo? crConnection;
 
         if (report.Connection is not null)
         {
+            Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Connection::Configuring");
+            Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Connection::Server={report.Connection.Server}");
+            Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Connection::Server={report.Connection.Database}");
+
             var logonProperties = new NameValuePairs2()
             {
                 new NameValuePair2("Data Source", report.Connection.Server),
@@ -92,6 +103,7 @@ internal static class ReportUtils
         {
             if (report.Parameters.TryGetValue(parameter.ParameterFieldName, out var value))
             {
+                Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::SetParameter={parameter.ParameterFieldName} | Value={value}");
                 document.SetParameterValue(parameter.ParameterFieldName, value);
             }
         }
@@ -99,6 +111,7 @@ internal static class ReportUtils
         // NB: SummaryInfo.ReportTitle is used as initial value in save dialog when exporting a report.
         document.SummaryInfo.ReportTitle = report.ExportFilename ?? report.Title;
 
+        Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::End");
         return document;
     }
 

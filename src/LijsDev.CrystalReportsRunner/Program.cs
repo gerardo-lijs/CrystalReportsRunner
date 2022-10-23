@@ -36,6 +36,9 @@ internal static class Program
 
         try
         {
+            // Enable Runtime LegacyV2 for Crystal Reports
+            RuntimePolicyHelper.LegacyV2Runtime_Enable();
+
 #if DEBUG
             Logger.Trace("LijsDev::CrystalReportsRunner::Program::Starting in DEBUG mode");
 
@@ -70,16 +73,13 @@ internal static class Program
                 // Test 2 - Export Report
                 //var reportExporter = new ReportExporter();
                 //reportExporter.Export(report, ReportExportFormats.PDF, "sample_report.pdf");
+
+                return;
             }
-            else
-            {
-                var shell = new Shell.Shell(new ReportViewer(), new ReportExporter());
-                shell.StartListening(args);
-            }
-#else
-        var shell = new Shell.Shell(new ReportViewer(), new ReportExporter());
-        shell.StartListening(args);
 #endif
+
+            var shell = new Shell.Shell(new ReportViewer(), new ReportExporter());
+            shell.StartListening(args);
         }
         catch (Exception ex)
         {
