@@ -10,15 +10,26 @@ using LijsDev.CrystalReportsRunner.Core;
 
 internal static class ReportUtils
 {
+    private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
     public static ReportDocument CreateReportDocument(Report report)
     {
+        Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Start");
+        Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Filename={report.Filename}");
+
         var document = new ReportDocument();
         document.Load(report.Filename);
+
+        Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::ReportDocument::Loaded");
 
         ConnectionInfo? crConnection;
 
         if (report.Connection is not null)
         {
+            Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Connection::Configuring");
+            Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Connection::Server={report.Connection.Server}");
+            Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Connection::Server={report.Connection.Database}");
+
             var logonProperties = new NameValuePairs2()
             {
                 new NameValuePair2("Data Source", report.Connection.Server),
@@ -74,11 +85,13 @@ internal static class ReportUtils
         }
 
         // Main Report
+        Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::ConfigureTableDataSource::MainReport");
         foreach (Table crTable in document.Database.Tables)
         {
             ConfigureTableDataSource(crTable, report.DataSets, crConnection);
         }
         // Sub Reports
+        Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::ConfigureTableDataSource::SubReports");
         foreach (ReportDocument crSubReport in document.Subreports)
         {
             foreach (Table crTable in crSubReport.Database.Tables)
@@ -88,17 +101,21 @@ internal static class ReportUtils
         }
 
         // Set parameters
+        Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::SetParameters");
         foreach (ParameterField parameter in document.ParameterFields)
         {
             if (report.Parameters.TryGetValue(parameter.ParameterFieldName, out var value))
             {
+                Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::SetParameter={parameter.ParameterFieldName} | Value={value}");
                 document.SetParameterValue(parameter.ParameterFieldName, value);
             }
         }
 
         // NB: SummaryInfo.ReportTitle is used as initial value in save dialog when exporting a report.
+        Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::ReportTitle");
         document.SummaryInfo.ReportTitle = report.ExportFilename ?? report.Title;
 
+        Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::End");
         return document;
     }
 
