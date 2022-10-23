@@ -69,7 +69,7 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
         Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ShowReport::End");
     }
 
-    public void ShowReportDialog(
+    public bool? ShowReportDialog(
         Report report,
         ReportViewerSettings viewerSettings,
         WindowHandle owner)
@@ -77,11 +77,12 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
         Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ShowReportDialog::Start");
 
         using var waitHandle = new ManualResetEvent(false);
+        bool? result = false;
 
         _uiContext.Send(s =>
         {
             using var form = _viewer.GetViewerForm(report, viewerSettings);
-            form.ShowDialog(owner.GetWindow());
+            result = ConvertToBoolean(form.ShowDialog(owner.GetWindow()));
 
             // TODO: We might want to expose the Window Location and State somehow to the caller app once the user closes so it could be saved for interface settings in following executions.
 
@@ -91,5 +92,19 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
         waitHandle.WaitOne();
 
         Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ShowReportDialog::End");
+        return result;
     }
+
+    private static bool? ConvertToBoolean(DialogResult result) => result switch
+    {
+        DialogResult.None => null,
+        DialogResult.Cancel => null,
+        DialogResult.Abort => false,
+        DialogResult.No => false,
+        DialogResult.Ignore => false,
+        DialogResult.Retry => true,
+        DialogResult.OK => true,
+        DialogResult.Yes => true,
+        _ => throw new NotImplementedException(),
+    };
 }

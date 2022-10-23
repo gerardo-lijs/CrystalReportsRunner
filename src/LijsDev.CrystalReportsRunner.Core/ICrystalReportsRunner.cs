@@ -31,7 +31,7 @@ public interface ICrystalReportsRunner
     /// <summary>
     /// Show report in modal window
     /// </summary>
-    void ShowReportDialog(
+    bool? ShowReportDialog(
         Report report,
         ReportViewerSettings viewSettings,
         WindowHandle owner);

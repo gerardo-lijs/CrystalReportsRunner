@@ -117,7 +117,8 @@ public sealed class CrystalReportsEngine : IDisposable
     /// <param name="report">Report to show</param>
     /// <param name="owner">Owner window handle</param>
     /// <param name="cancellationToken">A cancellation token that can be used to cancel the work</param>
-    public async Task ShowReportDialog(
+    /// <returns>The dialog result.</returns>
+    public async Task<bool?> ShowReportDialog(
         Report report,
         WindowHandle owner,
         CancellationToken cancellationToken = default)
@@ -125,8 +126,8 @@ public sealed class CrystalReportsEngine : IDisposable
         ValidateReportConnection(report.Connection);
         await Initialize(cancellationToken);
 
-        await _pipe.InvokeAsync(runner =>
-            runner.ShowReportDialog(report, ViewerSettings, owner), cancellationToken);
+        return await _pipe.InvokeAsync(runner =>
+             runner.ShowReportDialog(report, ViewerSettings, owner), cancellationToken);
     }
 
     private void ValidateReportConnection(CrystalReportsConnection? connection)

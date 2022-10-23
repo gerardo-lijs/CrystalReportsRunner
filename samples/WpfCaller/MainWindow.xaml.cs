@@ -86,7 +86,7 @@ public partial class MainWindow : Window
             // Show
             var report = CreateReport();
             var windowHandle = new WindowHandle(new WindowInteropHelper(this).EnsureHandle());
-            await _engineInstance.ShowReportDialog(report, owner: windowHandle);
+            var result = await _engineInstance.ShowReportDialog(report, owner: windowHandle);
         }
         catch (Exception ex)
         {
