@@ -3,6 +3,7 @@ namespace WpfCaller;
 using LijsDev.CrystalReportsRunner.Core;
 
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Interop;
 
@@ -110,6 +111,12 @@ public partial class MainWindow : Window
             var report = CreateReport();
             var dstFilename = "sample_report.pdf";
             await _engineInstance.Export(report, ReportExportFormats.PDF, dstFilename, overwrite: true);
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = dstFilename,
+                UseShellExecute = true
+            });
         }
         catch (Exception ex)
         {
