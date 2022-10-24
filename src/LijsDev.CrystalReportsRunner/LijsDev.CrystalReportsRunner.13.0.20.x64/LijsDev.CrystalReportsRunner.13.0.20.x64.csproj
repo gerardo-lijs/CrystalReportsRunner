@@ -45,6 +45,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\shared\NLog.config" Link="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="NLog" Version="5.0.4" />
     <PackageReference Include="NLog.Schema" Version="5.0.4" />
   </ItemGroup>

@@ -11,16 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\shared\SampleReport.rpt" Link="SampleReport.rpt">
-      <Generator></Generator>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\shared\Schema.sql" Link="Schema.sql">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="System.Data.SqlClient" Version="4.8.4" />
   </ItemGroup>
 
@@ -28,9 +18,15 @@
     <ProjectReference Include="..\..\src\LijsDev.CrystalReportsRunner.Core\LijsDev.CrystalReportsRunner.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="SampleReport.rpt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <Target Name="CopyFiles" AfterTargets="Build">
     <ItemGroup>
-      <RunnerFiles Include="$(SolutionDir)src\LijsDev.CrystalReportsRunner\bin\$(Configuration)\net48\**" />
+      <RunnerFiles Include="$(SolutionDir)src\LijsDev.CrystalReportsRunner\LijsDev.CrystalReportsRunner.13.0.20.x86\bin\x86\$(Configuration)\net48\**" />
     </ItemGroup>
     <RemoveDir Directories="$(TargetDir)\crystal-reports-runner" />
     <Copy SourceFiles="@(RunnerFiles)" DestinationFolder="$(TargetDir)\crystal-reports-runner" />
