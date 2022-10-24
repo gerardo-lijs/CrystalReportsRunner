@@ -8,15 +8,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfCaller", "samples\WpfCaller\WpfCaller.csproj", "{CD61D5A1-C086-44F6-8737-D475DE262115}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleCaller", "samples\SampleCaller\SampleCaller.csproj", "{C2D043C2-FBB4-4F1F-8610-A688EEBB8A90}"
-	ProjectSection(ProjectDependencies) = postProject
-		{CE02C05F-406B-4917-8C83-20390066B9E5} = {CE02C05F-406B-4917-8C83-20390066B9E5}
-	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner", "src\LijsDev.CrystalReportsRunner\LijsDev.CrystalReportsRunner.csproj", "{CE02C05F-406B-4917-8C83-20390066B9E5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.Core", "src\LijsDev.CrystalReportsRunner.Core\LijsDev.CrystalReportsRunner.Core.csproj", "{1757BD79-3D40-4B15-81AD-4AA300002AE7}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.Shell", "src\LijsDev.CrystalReportsRunner.Shell\LijsDev.CrystalReportsRunner.Shell.csproj", "{BF8790CC-3804-43A5-9D1C-9F0E7C76065C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B84ED3A1-B8D3-47CA-B77A-DBCC9ADC9A7A}"
 	ProjectSection(SolutionItems) = preProject
@@ -24,6 +15,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		nuget.config = nuget.config
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.Core", "src\LijsDev.CrystalReportsRunner.Core\LijsDev.CrystalReportsRunner.Core.csproj", "{1757BD79-3D40-4B15-81AD-4AA300002AE7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.Shell", "src\LijsDev.CrystalReportsRunner.Shell\LijsDev.CrystalReportsRunner.Shell.csproj", "{BF8790CC-3804-43A5-9D1C-9F0E7C76065C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runners", "Runners", "{2C959191-3CA7-4D4A-A5CA-820A03463BE2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.13.0.20.x86", "src\LijsDev.CrystalReportsRunner\LijsDev.CrystalReportsRunner.13.0.20.x86\LijsDev.CrystalReportsRunner.13.0.20.x86.csproj", "{D31BD056-BABF-43C4-9903-5F29404C327C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.13.0.20.x64", "src\LijsDev.CrystalReportsRunner\LijsDev.CrystalReportsRunner.13.0.20.x64\LijsDev.CrystalReportsRunner.13.0.20.x64.csproj", "{10243967-ED8E-4C0D-B38B-F2204EC5554B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.13.0.32.x64", "src\LijsDev.CrystalReportsRunner\LijsDev.CrystalReportsRunner.13.0.32.x64\LijsDev.CrystalReportsRunner.13.0.32.x64.csproj", "{84F16324-3F18-4059-B273-C987C7B72EBD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.13.0.32.x86", "src\LijsDev.CrystalReportsRunner\LijsDev.CrystalReportsRunner.13.0.32.x86\LijsDev.CrystalReportsRunner.13.0.32.x86.csproj", "{510EECF4-FF1D-4B28-85F0-FD8014C742CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,10 +44,6 @@ Global
 		{C2D043C2-FBB4-4F1F-8610-A688EEBB8A90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2D043C2-FBB4-4F1F-8610-A688EEBB8A90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2D043C2-FBB4-4F1F-8610-A688EEBB8A90}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CE02C05F-406B-4917-8C83-20390066B9E5}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{CE02C05F-406B-4917-8C83-20390066B9E5}.Debug|Any CPU.Build.0 = Debug|x86
-		{CE02C05F-406B-4917-8C83-20390066B9E5}.Release|Any CPU.ActiveCfg = Release|x86
-		{CE02C05F-406B-4917-8C83-20390066B9E5}.Release|Any CPU.Build.0 = Release|x86
 		{1757BD79-3D40-4B15-81AD-4AA300002AE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1757BD79-3D40-4B15-81AD-4AA300002AE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1757BD79-3D40-4B15-81AD-4AA300002AE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,6 +52,22 @@ Global
 		{BF8790CC-3804-43A5-9D1C-9F0E7C76065C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF8790CC-3804-43A5-9D1C-9F0E7C76065C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF8790CC-3804-43A5-9D1C-9F0E7C76065C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D31BD056-BABF-43C4-9903-5F29404C327C}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D31BD056-BABF-43C4-9903-5F29404C327C}.Debug|Any CPU.Build.0 = Debug|x86
+		{D31BD056-BABF-43C4-9903-5F29404C327C}.Release|Any CPU.ActiveCfg = Release|x86
+		{D31BD056-BABF-43C4-9903-5F29404C327C}.Release|Any CPU.Build.0 = Release|x86
+		{10243967-ED8E-4C0D-B38B-F2204EC5554B}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{10243967-ED8E-4C0D-B38B-F2204EC5554B}.Debug|Any CPU.Build.0 = Debug|x64
+		{10243967-ED8E-4C0D-B38B-F2204EC5554B}.Release|Any CPU.ActiveCfg = Release|x64
+		{10243967-ED8E-4C0D-B38B-F2204EC5554B}.Release|Any CPU.Build.0 = Release|x64
+		{84F16324-3F18-4059-B273-C987C7B72EBD}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{84F16324-3F18-4059-B273-C987C7B72EBD}.Debug|Any CPU.Build.0 = Debug|x64
+		{84F16324-3F18-4059-B273-C987C7B72EBD}.Release|Any CPU.ActiveCfg = Release|x64
+		{84F16324-3F18-4059-B273-C987C7B72EBD}.Release|Any CPU.Build.0 = Release|x64
+		{510EECF4-FF1D-4B28-85F0-FD8014C742CA}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{510EECF4-FF1D-4B28-85F0-FD8014C742CA}.Debug|Any CPU.Build.0 = Debug|x86
+		{510EECF4-FF1D-4B28-85F0-FD8014C742CA}.Release|Any CPU.ActiveCfg = Release|x86
+		{510EECF4-FF1D-4B28-85F0-FD8014C742CA}.Release|Any CPU.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +75,11 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{CD61D5A1-C086-44F6-8737-D475DE262115} = {792F8F23-2F78-46AE-A221-AB907DC782E9}
 		{C2D043C2-FBB4-4F1F-8610-A688EEBB8A90} = {792F8F23-2F78-46AE-A221-AB907DC782E9}
+		{BF8790CC-3804-43A5-9D1C-9F0E7C76065C} = {2C959191-3CA7-4D4A-A5CA-820A03463BE2}
+		{D31BD056-BABF-43C4-9903-5F29404C327C} = {2C959191-3CA7-4D4A-A5CA-820A03463BE2}
+		{10243967-ED8E-4C0D-B38B-F2204EC5554B} = {2C959191-3CA7-4D4A-A5CA-820A03463BE2}
+		{84F16324-3F18-4059-B273-C987C7B72EBD} = {2C959191-3CA7-4D4A-A5CA-820A03463BE2}
+		{510EECF4-FF1D-4B28-85F0-FD8014C742CA} = {2C959191-3CA7-4D4A-A5CA-820A03463BE2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5FC37DC-8D46-467D-A953-13551666872B}
