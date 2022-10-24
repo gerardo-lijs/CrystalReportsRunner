@@ -66,13 +66,14 @@ public class Shell
     /// <inheritdoc/>
     public void StartListening(string[] args)
     {
-        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::Start");
         var result = Parser.Default.ParseArguments<Options>(args);
 
         if (result.Tag == ParserResultType.Parsed)
         {
             _options = result.Value;
-            ConfigureNLog(_options);
+            NLogHelper.ConfigureNLog(_options.LogPath, _options.LogLevel);
+
+            Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::Start");
 
             Application.ThreadException += ThreadExceptionHandler;
             Application.Idle += StartUpHandler;
@@ -87,6 +88,8 @@ public class Shell
             {
                 Application.Idle -= StartUpHandler;
             }
+
+            Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::End");
         }
         else
         {
@@ -95,71 +98,11 @@ public class Shell
             {
                 Logger.Error($"\t{error}");
             }
+
             MessageBox.Show("Crystal Reports Runner is not meant to be run standalone.\n\nPlease use from caller app with NuGet package LijsDev.CrystalReportsRunner.Core.\nSee project documentation in GitHub to learn how to get started.", "Crystal Reports Runner",
                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
-        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::End");
     }
-
-    private void ConfigureNLog(Options options)
-    {
-        var level = ToNLog(options.LogLevel);
-
-        // from: https://gist.github.com/pmullins/f21c3d83e96b9fd8a720
-        if (level == NLog.LogLevel.Off)
-        {
-            LogManager.SuspendLogging();
-        }
-        else
-        {
-            if (!LogManager.IsLoggingEnabled())
-            {
-                LogManager.ResumeLogging();
-            }
-
-            LogManager.Configuration ??= new();
-
-            foreach (var rule in LogManager.Configuration.LoggingRules)
-            {
-                // Iterate over all levels up to and including the target, (re)enabling them.
-                for (var i = level.Ordinal; i <= 5; i++)
-                {
-                    rule.EnableLoggingForLevel(NLog.LogLevel.FromOrdinal(i));
-                }
-            }
-        }
-
-        if (!string.IsNullOrEmpty(options.LogPath))
-        {
-            // Change logfile location
-            var target = LogManager.Configuration.FindTargetByName("logfile") as NLog.Targets.FileTarget;
-            if (target is not null)
-            {
-                if (string.IsNullOrEmpty(Path.GetExtension(options.LogPath)))
-                {
-                    target.FileName = Path.Combine(options.LogPath, "${processname}-${shortdate}.log");
-                }
-                else
-                {
-                    target.FileName = options.LogPath;
-                }
-            }
-        }
-
-        LogManager.ReconfigExistingLoggers();
-    }
-
-    private NLog.LogLevel ToNLog(Core.LogLevel level) => level switch
-    {
-        Core.LogLevel.Trace => NLog.LogLevel.Trace,
-        Core.LogLevel.Debug => NLog.LogLevel.Trace,
-        Core.LogLevel.Info => NLog.LogLevel.Trace,
-        Core.LogLevel.Warn => NLog.LogLevel.Trace,
-        Core.LogLevel.Error => NLog.LogLevel.Trace,
-        Core.LogLevel.Fatal => NLog.LogLevel.Trace,
-        Core.LogLevel.Off => NLog.LogLevel.Trace,
-        _ => throw new NotImplementedException(),
-    };
 
     private async Task OpenConnection(SynchronizationContext uiContext)
     {

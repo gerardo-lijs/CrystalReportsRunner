@@ -239,10 +239,9 @@ public sealed class CrystalReportsEngine : IDisposable
             candidates.Insert(0, Path.Combine(assemblyFolder, runnerPath));
         }
 
-        var defaultPath = candidates
-            .FirstOrDefault(f => File.Exists(f));
+        var path = candidates.FirstOrDefault(f => File.Exists(f));
 
-        if (defaultPath is null)
+        if (path is null)
         {
             var builder = new StringBuilder();
             builder.AppendLine($"Crystal Report Runner was not found in: {assemblyFolder}");
@@ -265,7 +264,7 @@ public sealed class CrystalReportsEngine : IDisposable
             throw new FileNotFoundException(builder.ToString());
         }
 
-        return defaultPath;
+        return path;
     }
 
     /// <summary>
