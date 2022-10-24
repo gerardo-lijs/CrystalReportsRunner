@@ -3,7 +3,7 @@ namespace LijsDev.CrystalReportsRunner.Shell;
 using CommandLine;
 
 using LijsDev.CrystalReportsRunner.Core;
-
+using NLog;
 using PipeMethodCalls;
 
 using System;
@@ -23,6 +23,14 @@ public class Shell
         /// <inheritdoc/>
         [Option('n', "pipe-name", Required = true, HelpText = "The Named Pipe this instance should connect to.")]
         public string PipeName { get; set; } = string.Empty;
+
+        /// <inheritdoc/>
+        [Option("log-level", Required = false, HelpText = "Minimum logging level.")]
+        public Core.LogLevel LogLevel { get; set; } = Core.LogLevel.Error;
+
+        /// <inheritdoc/>
+        [Option("log-path", Required = false, HelpText = "Path for the log files.")]
+        public string? LogPath { get; set; }
     }
 
     private readonly IReportViewer _reportViewer;
@@ -64,6 +72,8 @@ public class Shell
         if (result.Tag == ParserResultType.Parsed)
         {
             _options = result.Value;
+            ConfigureNLog(_options);
+
             Application.ThreadException += ThreadExceptionHandler;
             Application.Idle += StartUpHandler;
             try
@@ -90,6 +100,66 @@ public class Shell
         }
         Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::End");
     }
+
+    private void ConfigureNLog(Options options)
+    {
+        var level = ToNLog(options.LogLevel);
+
+        // from: https://gist.github.com/pmullins/f21c3d83e96b9fd8a720
+        if (level == NLog.LogLevel.Off)
+        {
+            LogManager.SuspendLogging();
+        }
+        else
+        {
+            if (!LogManager.IsLoggingEnabled())
+            {
+                LogManager.ResumeLogging();
+            }
+
+            LogManager.Configuration ??= new();
+
+            foreach (var rule in LogManager.Configuration.LoggingRules)
+            {
+                // Iterate over all levels up to and including the target, (re)enabling them.
+                for (var i = level.Ordinal; i <= 5; i++)
+                {
+                    rule.EnableLoggingForLevel(NLog.LogLevel.FromOrdinal(i));
+                }
+            }
+        }
+
+        if (!string.IsNullOrEmpty(options.LogPath))
+        {
+            // Change logfile location
+            var target = LogManager.Configuration.FindTargetByName("logfile") as NLog.Targets.FileTarget;
+            if (target is not null)
+            {
+                if (string.IsNullOrEmpty(Path.GetExtension(options.LogPath)))
+                {
+                    target.FileName = Path.Combine(options.LogPath, "${processname}-${shortdate}.log");
+                }
+                else
+                {
+                    target.FileName = options.LogPath;
+                }
+            }
+        }
+
+        LogManager.ReconfigExistingLoggers();
+    }
+
+    private NLog.LogLevel ToNLog(Core.LogLevel level) => level switch
+    {
+        Core.LogLevel.Trace => NLog.LogLevel.Trace,
+        Core.LogLevel.Debug => NLog.LogLevel.Trace,
+        Core.LogLevel.Info => NLog.LogLevel.Trace,
+        Core.LogLevel.Warn => NLog.LogLevel.Trace,
+        Core.LogLevel.Error => NLog.LogLevel.Trace,
+        Core.LogLevel.Fatal => NLog.LogLevel.Trace,
+        Core.LogLevel.Off => NLog.LogLevel.Trace,
+        _ => throw new NotImplementedException(),
+    };
 
     private async Task OpenConnection(SynchronizationContext uiContext)
     {
