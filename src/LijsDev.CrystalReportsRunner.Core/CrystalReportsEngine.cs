@@ -5,6 +5,9 @@ using PipeMethodCalls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 
 /// <summary>
@@ -21,6 +24,22 @@ public sealed class CrystalReportsEngine : IDisposable
         _pipe = new PipeServerWithCallback<ICrystalReportsRunner, ICrystalReportsCaller>(
             new JsonNetPipeSerializer(), NamedPipeName, () => new DefaultCrystalReportsCaller());
     }
+
+    /// <summary>
+    /// The pather for the runner. By default the engine runs the first runner it finds in the main assembly directory.
+    /// </summary>
+    public string? RunnerPath { get; set; }
+
+    /// <summary>
+    /// Minimum logging level for the runner. Default: Error.
+    /// </summary>
+    public LogLevel LogLevel { get; set; } = LogLevel.Error;
+
+    /// <summary>
+    /// Path for the log files. Default: ${specialfolder:folder=CommonApplicationData}/LijsDev/CrystalReportRunner/logs/${processname}-${shortdate}.log.
+    /// For more information please refer to NLog file path documentation.
+    /// </summary>
+    public string? LogPath { get; set; }
 
     /// <summary>
     /// Viewer settings
@@ -166,7 +185,6 @@ public sealed class CrystalReportsEngine : IDisposable
 
     private bool _initialized;
     private ProcessJobTracker? _tracker;
-    private int? _processId;
     private Process? _process;
 
     private async Task Initialize(CancellationToken cancellationToken)
@@ -175,12 +193,22 @@ public sealed class CrystalReportsEngine : IDisposable
         {
             _tracker = new ProcessJobTracker();
 
-            // TODO: Make this robust using app location and not relative with issue with WorkingDir
-            // TODO: Allow to specify another location for user that deploy manually
-            var path = "crystal-reports-runner\\LijsDev.CrystalReportsRunner.exe";
+            var path = GetRunnerPath(RunnerPath);
+
+            var arguments = new List<string>
+            {
+                $"--pipe-name {NamedPipeName}",
+                $"--log-level {(int)LogLevel}",
+            };
+
+            if (!string.IsNullOrEmpty(LogPath))
+            {
+                arguments.Add($"--log-path \"{LogPath}\"");
+            }
+
             var psi = new ProcessStartInfo(path)
             {
-                Arguments = $"--pipe-name {NamedPipeName}",
+                Arguments = string.Join(" ", arguments)
             };
 
             // Check runner exists
@@ -192,12 +220,51 @@ public sealed class CrystalReportsEngine : IDisposable
 
             _process = new Process { StartInfo = psi };
             _process.Start();
-            _processId = _process.Id;
             _tracker.AddProcess(_process);
 
             await _pipe.WaitForConnectionAsync(cancellationToken);
             _initialized = true;
         }
+    }
+
+    private string GetRunnerPath(string? runnerPath)
+    {
+        var assemblyFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+
+        var candidates = Directory.EnumerateDirectories(assemblyFolder, "lijs-dev-crystal-reports-runner*")
+            .Select(d => Path.Combine(d, "LijsDev.CrystalReportsRunner.exe")).ToList();
+
+        if (runnerPath is not null)
+        {
+            candidates.Insert(0, Path.Combine(assemblyFolder, runnerPath));
+        }
+
+        var path = candidates.FirstOrDefault(f => File.Exists(f));
+
+        if (path is null)
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine($"Crystal Report Runner was not found in: {assemblyFolder}");
+            builder.AppendLine("Please check that the Crystal Report Runner Runtime is correclty deployed via NuGet package or manually.");
+
+            if (candidates.Count > 0)
+            {
+                builder.AppendLine("Candidates:");
+
+                foreach (var candidate in candidates)
+                {
+                    builder.AppendLine(candidate);
+                }
+            }
+            else
+            {
+                builder.AppendLine($"No candidates found.");
+            }
+
+            throw new FileNotFoundException(builder.ToString());
+        }
+
+        return path;
     }
 
     /// <summary>

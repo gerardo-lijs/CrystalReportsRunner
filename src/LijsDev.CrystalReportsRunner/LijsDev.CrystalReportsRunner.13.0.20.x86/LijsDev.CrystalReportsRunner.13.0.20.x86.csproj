@@ -15,6 +15,7 @@
     <Company>LijsDev</Company>
     <Copyright>Copyright © LijsDev 2022</Copyright>
     <ApplicationIcon>..\shared\report.ico</ApplicationIcon>
+    <EmbeddedResourceUseDependentUponConvention>true</EmbeddedResourceUseDependentUponConvention>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -61,9 +62,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\LijsDev.CrystalReportsRunner.Shell\LijsDev.CrystalReportsRunner.Shell.csproj" />
   </ItemGroup>
-
+  
   <ItemGroup>
-    <None Update="NLog.config">
+    <None Include="..\shared\NLog.config" Link="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

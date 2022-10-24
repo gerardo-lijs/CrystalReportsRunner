@@ -3,7 +3,7 @@ namespace LijsDev.CrystalReportsRunner.Shell;
 using CommandLine;
 
 using LijsDev.CrystalReportsRunner.Core;
-
+using NLog;
 using PipeMethodCalls;
 
 using System;
@@ -23,6 +23,14 @@ public class Shell
         /// <inheritdoc/>
         [Option('n', "pipe-name", Required = true, HelpText = "The Named Pipe this instance should connect to.")]
         public string PipeName { get; set; } = string.Empty;
+
+        /// <inheritdoc/>
+        [Option("log-level", Required = false, HelpText = "Minimum logging level.")]
+        public Core.LogLevel LogLevel { get; set; } = Core.LogLevel.Error;
+
+        /// <inheritdoc/>
+        [Option("log-path", Required = false, HelpText = "Path for the log files.")]
+        public string? LogPath { get; set; }
     }
 
     private readonly IReportViewer _reportViewer;
@@ -58,12 +66,15 @@ public class Shell
     /// <inheritdoc/>
     public void StartListening(string[] args)
     {
-        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::Start");
         var result = Parser.Default.ParseArguments<Options>(args);
 
         if (result.Tag == ParserResultType.Parsed)
         {
             _options = result.Value;
+            NLogHelper.ConfigureNLog(_options.LogPath, _options.LogLevel);
+
+            Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::Start");
+
             Application.ThreadException += ThreadExceptionHandler;
             Application.Idle += StartUpHandler;
             try
@@ -77,6 +88,8 @@ public class Shell
             {
                 Application.Idle -= StartUpHandler;
             }
+
+            Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::End");
         }
         else
         {
@@ -85,10 +98,10 @@ public class Shell
             {
                 Logger.Error($"\t{error}");
             }
+
             MessageBox.Show("Crystal Reports Runner is not meant to be run standalone.\n\nPlease use from caller app with NuGet package LijsDev.CrystalReportsRunner.Core.\nSee project documentation in GitHub to learn how to get started.", "Crystal Reports Runner",
                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
-        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::End");
     }
 
     private async Task OpenConnection(SynchronizationContext uiContext)

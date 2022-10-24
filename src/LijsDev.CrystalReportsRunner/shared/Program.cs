@@ -1,6 +1,10 @@
 namespace LijsDev.CrystalReportsRunner;
 
 using System;
+using CommandLine;
+using LijsDev.CrystalReportsRunner.Core;
+using LijsDev.CrystalReportsRunner.Shell;
+using static LijsDev.CrystalReportsRunner.Shell.Shell;
 
 internal static class Program
 {
@@ -36,7 +40,12 @@ internal static class Program
     [STAThread]
     private static void Main(string[] args)
     {
-        // TODO: We will need to parse command line parameter to enable log or not at the very start of the program.
+        var result = Parser.Default.ParseArguments<Options>(args);
+        if (result.Tag == ParserResultType.Parsed)
+        {
+            var options = result.Value;
+            NLogHelper.ConfigureNLog(options.LogPath, options.LogLevel);
+        }
 
         _logger = NLog.LogManager.GetCurrentClassLogger();
         _logger?.Info("========================================================================================================");
