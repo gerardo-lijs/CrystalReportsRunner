@@ -231,7 +231,7 @@ public sealed class CrystalReportsEngine : IDisposable
     {
         var assemblyFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
-        var candidates = Directory.EnumerateDirectories(assemblyFolder, "lijs-dev-crystal-reports-runner*")
+        var candidates = Directory.EnumerateDirectories(assemblyFolder, "CrystalReportsRunner.*")
             .Select(d => Path.Combine(d, "LijsDev.CrystalReportsRunner.exe")).ToList();
 
         if (runnerPath is not null)
