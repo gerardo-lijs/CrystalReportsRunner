@@ -73,3 +73,7 @@ sequenceDiagram
    ```
 
 For more information please refer to the [samples](./samples) included in the repo.
+
+## Guides
+
+- [Creating a custom Runner](./docs/custom-runner.md)
