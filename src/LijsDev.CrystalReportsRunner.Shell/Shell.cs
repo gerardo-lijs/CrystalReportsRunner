@@ -29,8 +29,8 @@ public class Shell
         public Core.LogLevel LogLevel { get; set; } = Core.LogLevel.Error;
 
         /// <inheritdoc/>
-        [Option("log-path", Required = false, HelpText = "Path for the log files.")]
-        public string? LogPath { get; set; }
+        [Option("log-directory", Required = false, HelpText = "The directory for the log files.")]
+        public string? LogDirectory { get; set; }
     }
 
     private readonly IReportViewer _reportViewer;
@@ -71,7 +71,7 @@ public class Shell
         if (result.Tag == ParserResultType.Parsed)
         {
             _options = result.Value;
-            NLogHelper.ConfigureNLog(_options.LogPath, _options.LogLevel);
+            NLogHelper.ConfigureNLog(_options.LogDirectory, _options.LogLevel);
 
             Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::Start");
 

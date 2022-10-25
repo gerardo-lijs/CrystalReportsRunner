@@ -39,6 +39,8 @@
                 Click="ExportReportButton_Click"
                 Content="Export report" />
 
+                <TextBlock Width="20" />
+
             <Button
                 x:Name="ExportReportToStreamButton"
                 Click="ExportReportToStreamButton_Click"

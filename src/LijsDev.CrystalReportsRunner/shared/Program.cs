@@ -45,7 +45,7 @@ internal static class Program
             if (result.Tag == ParserResultType.Parsed)
             {
                 var options = result.Value;
-                NLogHelper.ConfigureNLog(options.LogPath, options.LogLevel);
+                NLogHelper.ConfigureNLog(options.LogDirectory, options.LogLevel);
             }
         }
         catch (Exception ex)

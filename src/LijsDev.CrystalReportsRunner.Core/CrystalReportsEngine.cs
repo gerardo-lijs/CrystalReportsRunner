@@ -26,6 +26,12 @@ public sealed class CrystalReportsEngine : IDisposable
     }
 
     /// <summary>
+    /// Time out for waiting for child process to connect. Default: 60 seconds.
+    /// </summary>
+    public TimeSpan Timeout { get; set; } = TimeSpan.FromSeconds(60);
+
+    /// <summary>
+    /// The pather for the runner. By default the engine runs the first runner it finds in the main assembly directory.
     /// Full path or relative path to the assemble directory (including the filename) for the location of the executable of the runner.
     /// If you using NuGet package you can leave this with default value and it will work. Only use in advanced scenarios.
     /// Default: null - The engine uses the first runner it finds in the main assembly directory with the name 'CrystalReportsRunner.{version}.{platform}' and the runner with executable name 'LijsDev.CrystalReportsRunner.exe'
@@ -42,7 +48,7 @@ public sealed class CrystalReportsEngine : IDisposable
     /// For more information please refer to NLog file path documentation.
     /// Default: ProgramData/LijsDev/CrystalReportRunner/logs
     /// </summary>
-    public string? LogPath { get; set; }
+    public string? LogDirectory { get; set; }
 
     /// <summary>
     /// Viewer settings
@@ -204,9 +210,26 @@ public sealed class CrystalReportsEngine : IDisposable
                 $"--log-level {(int)LogLevel}",
             };
 
-            if (!string.IsNullOrEmpty(LogPath))
+            if (!string.IsNullOrEmpty(LogDirectory))
             {
-                arguments.Add($"--log-path \"{LogPath}\"");
+                if (!Uri.IsWellFormedUriString(LogDirectory, UriKind.RelativeOrAbsolute))
+                {
+                    throw new InvalidOperationException("Invalid log directory.");
+                }
+
+                if (!Directory.Exists(LogDirectory))
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(LogDirectory);
+                    }
+                    catch (Exception)
+                    {
+                        throw new InvalidOperationException("Log Directory is invalid or not-writable. Please make sure the security settings are correct.");
+                    }
+                }
+
+                arguments.Add($"--log-directory \"{LogDirectory}\"");
             }
 
             var psi = new ProcessStartInfo(path)
@@ -225,7 +248,21 @@ public sealed class CrystalReportsEngine : IDisposable
             _process.Start();
             _tracker.AddProcess(_process);
 
-            await _pipe.WaitForConnectionAsync(cancellationToken);
+            var timeoutToken = new CancellationTokenSource(Timeout).Token;
+            var compositeToken = CancellationTokenSource
+                .CreateLinkedTokenSource(timeoutToken, cancellationToken).Token;
+
+            await Task.Delay(2000);
+
+            try
+            {
+                await _pipe.WaitForConnectionAsync(compositeToken);
+            }
+            catch (TaskCanceledException)
+            {
+                throw new InvalidOperationException($"Connection to Runner process timed out after {Timeout.TotalSeconds:N1} seconds. Please make sure the process can run and check your antivirus settings.");
+            }
+
             _initialized = true;
         }
     }

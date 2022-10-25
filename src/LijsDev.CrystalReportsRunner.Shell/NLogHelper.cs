@@ -10,7 +10,7 @@ public static class NLogHelper
     /// <summary>
     /// Configures NLog according to the provided command line options.
     /// </summary>
-    public static void ConfigureNLog(string? logPath, LogLevel logLevel)
+    public static void ConfigureNLog(string? logDirectory, LogLevel logLevel)
     {
         var level = ToNLog(logLevel);
 
@@ -43,20 +43,13 @@ public static class NLogHelper
             }
         }
 
-        if (!string.IsNullOrEmpty(logPath))
+        if (!string.IsNullOrEmpty(logDirectory))
         {
             // Change logfile location
             var target = LogManager.Configuration.FindTargetByName("logfile") as NLog.Targets.FileTarget;
             if (target is not null)
             {
-                if (string.IsNullOrEmpty(Path.GetExtension(logPath)))
-                {
-                    target.FileName = Path.Combine(logPath, "${processname}-${shortdate}.log");
-                }
-                else
-                {
-                    target.FileName = logPath;
-                }
+                target.FileName = Path.Combine(logDirectory, "${processname}-${shortdate}.log");
             }
         }
 
