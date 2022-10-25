@@ -2,7 +2,7 @@
 	<ItemGroup>
 		<Content Include="$(MSBuildThisFileDirectory)..\runtimes\*.*">
 			<Link>CrystalReportsRunner.13.0.32.x86\%(Filename)%(Extension)</Link>
-			<Visible>true</Visible>
+			<Visible>false</Visible>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>

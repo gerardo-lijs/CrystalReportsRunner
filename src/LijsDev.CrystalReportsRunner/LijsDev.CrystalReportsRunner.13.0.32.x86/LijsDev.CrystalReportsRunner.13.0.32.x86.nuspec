@@ -8,16 +8,13 @@
     <owners>gerardolijs</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <projectUrl>https://github.com/gerardo-lijs/CrystalReportsRunner</projectUrl>
-    <description>Runner to allow the use of Crystal Reports in .NET Core using external process. Requires Crystal Reports Runtime v13.0.32 (x86) to be installed.</description>
+    <description>Runner to allow the use of Crystal Reports in .NET using external process. Copies runner to 'CrystalReportsRunner.13.0.32.x86' in your project output folder.  Requires Crystal Reports Runtime v13.0.32 (x86) to be installed in computer where your application will be deployed.</description>
     <tags>Crystal Reports .NET Core net48</tags>
     <dependencies>
       <group targetFramework=".NETStandard2.0">
         <dependency id="LijsDev.CrystalReportsRunner.Core" version="1.0.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>
-    <frameworkReferences>
-      <group targetFramework=".NETStandard2.0" />
-    </frameworkReferences>
   </metadata>
   <files>
     <file src="LijsDev.CrystalReportsRunner.13.0.32.x86.props" target="build" />
