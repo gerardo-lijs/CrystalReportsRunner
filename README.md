@@ -23,12 +23,11 @@ sequenceDiagram
 
 ## Quick Start
 
-1. Create a new Console Application and reference these Nuget packages:
+1. Create a new Console Application and reference this Nuget packages:
 
    ```xml
      <ItemGroup>
-       <PackageReference Include="LijsDev.CrystalReportsRunner.Core" Version="1.0.0-preview.0.51" />
-       <PackageReference Include="LijsDev.CrystalReportsRunner" Version="1.32.0-preview.0.51" />
+       <PackageReference Include="LijsDev.CrystalReportsRunner.13.0.20.x64" Version="1.1.0" />
      </ItemGroup>
    ```
 
