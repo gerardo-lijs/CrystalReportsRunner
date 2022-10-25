@@ -13,6 +13,10 @@
         <Style TargetType="Button">
             <Setter Property="Padding" Value="10,5" />
         </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Width" Value="20" />
+        </Style>
     </Window.Resources>
     <Grid>
         <StackPanel
@@ -25,21 +29,21 @@
                 Click="ShowButton_Click"
                 Content="Show Report" />
 
-            <TextBlock Width="20" />
+            <TextBlock />
 
             <Button
                 x:Name="ShowDialogButton"
                 Click="ShowDialogButton_Click"
                 Content="Show Report as a Dialog" />
 
-            <TextBlock Width="20" />
+            <TextBlock />
 
             <Button
                 x:Name="ExportReportButton"
                 Click="ExportReportButton_Click"
                 Content="Export report" />
 
-                <TextBlock Width="20" />
+            <TextBlock />
 
             <Button
                 x:Name="ExportReportToStreamButton"
