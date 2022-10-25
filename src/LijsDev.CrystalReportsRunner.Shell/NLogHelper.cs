@@ -49,7 +49,12 @@ public static class NLogHelper
             var target = LogManager.Configuration.FindTargetByName("logfile") as NLog.Targets.FileTarget;
             if (target is not null)
             {
-                target.FileName = Path.Combine(logDirectory, "${processname}-${shortdate}.log");
+                if (!logDirectory!.EndsWith("/") && !logDirectory.EndsWith("\\"))
+                {
+                    logDirectory += "\\";
+                }
+
+                target.FileName = logDirectory + "${processname}-${shortdate}.log";
             }
         }
 

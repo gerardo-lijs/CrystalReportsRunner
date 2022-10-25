@@ -212,24 +212,21 @@ public sealed class CrystalReportsEngine : IDisposable
 
             if (!string.IsNullOrEmpty(LogDirectory))
             {
-                if (!Uri.IsWellFormedUriString(LogDirectory, UriKind.RelativeOrAbsolute))
+                try
                 {
-                    throw new InvalidOperationException("Invalid log directory.");
-                }
+                    var fullPath = Path.GetFullPath(LogDirectory);
 
-                if (!Directory.Exists(LogDirectory))
-                {
-                    try
+                    if (!Directory.Exists(LogDirectory))
                     {
                         Directory.CreateDirectory(LogDirectory);
                     }
-                    catch (Exception)
-                    {
-                        throw new InvalidOperationException("Log Directory is invalid or not-writable. Please make sure the security settings are correct.");
-                    }
-                }
 
-                arguments.Add($"--log-directory \"{LogDirectory}\"");
+                    arguments.Add($"--log-directory {fullPath}");
+                }
+                catch (Exception)
+                {
+                    throw new InvalidOperationException("Log Directory is invalid or not-writable. Please make sure the security settings are correct.");
+                }
             }
 
             var psi = new ProcessStartInfo(path)
@@ -252,13 +249,11 @@ public sealed class CrystalReportsEngine : IDisposable
             var compositeToken = CancellationTokenSource
                 .CreateLinkedTokenSource(timeoutToken, cancellationToken).Token;
 
-            await Task.Delay(2000);
-
             try
             {
                 await _pipe.WaitForConnectionAsync(compositeToken);
             }
-            catch (TaskCanceledException)
+            catch (OperationCanceledException)
             {
                 throw new InvalidOperationException($"Connection to Runner process timed out after {Timeout.TotalSeconds:N1} seconds. Please make sure the process can run and check your antivirus settings.");
             }
