@@ -3,12 +3,11 @@ namespace LijsDev.CrystalReportsRunner;
 using System;
 using CommandLine;
 using LijsDev.CrystalReportsRunner.Core;
-using LijsDev.CrystalReportsRunner.Shell;
 using static LijsDev.CrystalReportsRunner.Shell.Shell;
 
 internal static class Program
 {
-    private static NLog.Logger? _logger;
+    private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
     public static string ApplicationVersion
     {
@@ -40,21 +39,27 @@ internal static class Program
     [STAThread]
     private static void Main(string[] args)
     {
-        var result = Parser.Default.ParseArguments<Options>(args);
-        if (result.Tag == ParserResultType.Parsed)
+        try
         {
-            var options = result.Value;
-            NLogHelper.ConfigureNLog(options.LogPath, options.LogLevel);
+            var result = Parser.Default.ParseArguments<Options>(args);
+            if (result.Tag == ParserResultType.Parsed)
+            {
+                var options = result.Value;
+                NLogHelper.ConfigureNLog(options.LogPath, options.LogLevel);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Fatal(ex);
         }
 
-        _logger = NLog.LogManager.GetCurrentClassLogger();
-        _logger?.Info("========================================================================================================");
-        _logger?.Info($"LijsDev::CrystalReportsRunner::Program::Start::v{ApplicationVersion}");
-        _logger?.Info("========================================================================================================");
-        _logger?.Info($"LijsDev::CrystalReportsRunner::Program::Location::{ApplicationLocation}");
-        _logger?.Info($"LijsDev::CrystalReportsRunner::Program::CrystalReportsRuntimeVersion::{CrystalReportsRuntimeVersion}");
-        _logger?.Info($"LijsDev::CrystalReportsRunner::Program::CrystalReportsRuntimePlatform::{CrystalReportsRuntimePlatform}");
-        _logger?.Info("========================================================================================================");
+        Logger.Info("========================================================================================================");
+        Logger.Info($"LijsDev::CrystalReportsRunner::Program::Start::v{ApplicationVersion}");
+        Logger.Info("========================================================================================================");
+        Logger.Info($"LijsDev::CrystalReportsRunner::Program::Location::{ApplicationLocation}");
+        Logger.Info($"LijsDev::CrystalReportsRunner::Program::CrystalReportsRuntimeVersion::{CrystalReportsRuntimeVersion}");
+        Logger.Info($"LijsDev::CrystalReportsRunner::Program::CrystalReportsRuntimePlatform::{CrystalReportsRuntimePlatform}");
+        Logger.Info("========================================================================================================");
 
         try
         {
@@ -66,13 +71,13 @@ internal static class Program
         }
         catch (Exception ex)
         {
-            _logger?.Fatal(ex);
+            Logger.Fatal(ex);
         }
         finally
         {
-            _logger?.Info("========================================================================================================");
-            _logger?.Info("LijsDev::CrystalReportsRunner::Program::End");
-            _logger?.Info("========================================================================================================");
+            Logger.Info("========================================================================================================");
+            Logger.Info("LijsDev::CrystalReportsRunner::Program::End");
+            Logger.Info("========================================================================================================");
         }
     }
 }

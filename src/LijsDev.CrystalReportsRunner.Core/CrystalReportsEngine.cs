@@ -26,7 +26,9 @@ public sealed class CrystalReportsEngine : IDisposable
     }
 
     /// <summary>
-    /// The pather for the runner. By default the engine runs the first runner it finds in the main assembly directory.
+    /// Full path or relative path to the assemble directory (including the filename) for the location of the executable of the runner.
+    /// If you using NuGet package you can leave this with default value and it will work. Only use in advanced scenarios.
+    /// Default: null - The engine uses the first runner it finds in the main assembly directory with the name 'CrystalReportsRunner.{version}.{platform}' and the runner with executable name 'LijsDev.CrystalReportsRunner.exe'
     /// </summary>
     public string? RunnerPath { get; set; }
 
@@ -38,6 +40,7 @@ public sealed class CrystalReportsEngine : IDisposable
     /// <summary>
     /// Path for the log files. Default: ${specialfolder:folder=CommonApplicationData}/LijsDev/CrystalReportRunner/logs/${processname}-${shortdate}.log.
     /// For more information please refer to NLog file path documentation.
+    /// Default: ProgramData/LijsDev/CrystalReportRunner/logs
     /// </summary>
     public string? LogPath { get; set; }
 
