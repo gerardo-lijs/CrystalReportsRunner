@@ -37,10 +37,10 @@
 
   <Target Name="CopyFiles" AfterTargets="Build">
     <ItemGroup>
-      <RunnerFiles Include="$(SolutionDir)src\LijsDev.CrystalReportsRunner\LijsDev.CrystalReportsRunner.13.0.20.x86\bin\x86\$(Configuration)\net48\**" />
+      <RunnerFiles Include="$(SolutionDir)src\LijsDev.CrystalReportsRunner\LijsDev.CrystalReportsRunner.13.0.32.x64\bin\x64\$(Configuration)\net48\**" />
     </ItemGroup>
-    <RemoveDir Directories="$(TargetDir)\CrystalReportsRunner.13.0.20.x86" />
-    <Copy SourceFiles="@(RunnerFiles)" DestinationFolder="$(TargetDir)\CrystalReportsRunner.13.0.20.x86" />
+    <RemoveDir Directories="$(TargetDir)\CrystalReportsRunner.13.0.32.x64" />
+    <Copy SourceFiles="@(RunnerFiles)" DestinationFolder="$(TargetDir)\CrystalReportsRunner.13.0.32.x64" />
   </Target>
 
 </Project>
