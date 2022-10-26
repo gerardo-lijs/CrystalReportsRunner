@@ -46,11 +46,60 @@ public interface ICrystalReportsRunner
 }
 
 /// <summary>
-/// Crystal Reports Caller interface
+/// Represents location and size of window.
 /// </summary>
-public interface ICrystalReportsCaller { }
+public class WindowLocation
+{
+    /// <summary>
+    /// Window height.
+    /// </summary>
+    public int Height { get; set; }
+    /// <summary>
+    /// Window Width.
+    /// </summary>
+    public int Width { get; set; }
+    /// <summary>
+    /// Window Top.
+    /// </summary>
+    public int Top { get; set; }
+    /// <summary>
+    /// Window Left.
+    /// </summary>
+    public int Left { get; set; }
+}
 
 /// <summary>
-/// Default Crystal Reports Caller implementation
+/// Crystal Reports Caller interface
 /// </summary>
-public class DefaultCrystalReportsCaller : ICrystalReportsCaller { }
+public interface ICrystalReportsCaller
+{
+    /// <summary>
+    /// Form Closed Event
+    /// </summary>
+    /// <param name="reportFileName"></param>
+    /// <param name="location"></param>
+    void FormClosed(string reportFileName, WindowLocation location);
+
+    /// <summary>
+    /// Form Loaded Event.
+    /// </summary>
+    /// <param name="reportFileName"></param>
+    /// <param name="windowHandle"></param>
+    void FormLoaded(string reportFileName, WindowHandle windowHandle);
+}
+
+internal class DefaultCrystalReportsCaller : ICrystalReportsCaller
+{
+    private readonly CrystalReportsEngine _engine;
+
+    internal DefaultCrystalReportsCaller(CrystalReportsEngine engine)
+    {
+        _engine = engine;
+    }
+
+    public void FormClosed(string reportFileName, WindowLocation location) =>
+        _engine.OnFormClosed(reportFileName, location);
+
+    public void FormLoaded(string reportFileName, WindowHandle windowHandle) =>
+        _engine.OnFormLoaded(reportFileName, windowHandle);
+}

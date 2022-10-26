@@ -22,7 +22,7 @@ public sealed class CrystalReportsEngine : IDisposable
     {
         NamedPipeName = $"lijs-dev-crystal-reports-runner-{Guid.NewGuid()}";
         _pipe = new PipeServerWithCallback<ICrystalReportsRunner, ICrystalReportsCaller>(
-            new JsonNetPipeSerializer(), NamedPipeName, () => new DefaultCrystalReportsCaller());
+            new JsonNetPipeSerializer(), NamedPipeName, () => new DefaultCrystalReportsCaller(this));
     }
 
     /// <summary>
@@ -322,4 +322,62 @@ public sealed class CrystalReportsEngine : IDisposable
         _process?.Dispose();
         _tracker?.Dispose();
     }
+
+    /// <summary>
+    /// Fires when a form is closed.
+    /// </summary>
+    public event EventHandler<FormClosedEventArgs>? FormClosed;
+    internal void OnFormClosed(string reportFileName, WindowLocation settings) =>
+        FormClosed?.Invoke(this, new FormClosedEventArgs(reportFileName, settings));
+
+    /// <summary>
+    /// Fires when a form is loaded.
+    /// </summary>
+    public event EventHandler<FormLoadedEventArgs>? FormLoaded;
+    internal void OnFormLoaded(string reportFileName, WindowHandle windowHandle) =>
+        FormLoaded?.Invoke(this, new FormLoadedEventArgs(reportFileName, windowHandle));
+}
+
+/// <summary>
+/// Form Closed Event Arguments.
+/// </summary>
+public class FormClosedEventArgs
+{
+    internal FormClosedEventArgs(string reportFileName, WindowLocation windowSettings)
+    {
+        ReportFileName = reportFileName;
+        WindowLocation = windowSettings;
+    }
+
+    /// <summary>
+    /// The report's filename which was shown in the form.
+    /// </summary>
+    public string ReportFileName { get; }
+
+    /// <summary>
+    /// Location of the form before it was closed.
+    /// </summary>
+    public WindowLocation WindowLocation { get; }
+}
+
+/// <summary>
+/// Form Loaded Event Arguments.
+/// </summary>
+public class FormLoadedEventArgs
+{
+    internal FormLoadedEventArgs(string reportFileName, WindowHandle windowHandle)
+    {
+        ReportFileName = reportFileName;
+        WindowHandle = windowHandle;
+    }
+
+    /// <summary>
+    /// The report's filename which was shown in the form.
+    /// </summary>
+    public string ReportFileName { get; }
+
+    /// <summary>
+    /// Handle of the form.
+    /// </summary>
+    public WindowHandle WindowHandle { get; }
 }

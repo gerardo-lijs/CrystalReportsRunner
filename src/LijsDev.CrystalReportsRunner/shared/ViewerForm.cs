@@ -43,6 +43,14 @@ internal partial class ViewerForm : Form
         {
             MaximumSize = new Size(viewerSettings.WindowMaximumWidth.Value, viewerSettings.WindowMaximumHeight.Value);
         }
+        if (viewerSettings.WindowLocationHeight is not null)
+        {
+            Height = viewerSettings.WindowLocationHeight.Value;
+        }
+        if (viewerSettings.WindowLocationWidth is not null)
+        {
+            Width = viewerSettings.WindowLocationWidth.Value;
+        }
         if (viewerSettings.WindowLocationLeft is not null)
         {
             Left = viewerSettings.WindowLocationLeft.Value;

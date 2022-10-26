@@ -11,15 +11,18 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
     private readonly IReportViewer _viewer;
     private readonly IReportExporter _exporter;
     private readonly SynchronizationContext _uiContext;
+    private readonly Shell _shell;
 
     public WinFormsReportRunner(
         IReportViewer viewer,
         IReportExporter exporter,
-        SynchronizationContext uiContext)
+        SynchronizationContext uiContext,
+        Shell shell)
     {
         _viewer = viewer;
         _exporter = exporter;
         _uiContext = uiContext;
+        _shell = shell;
     }
 
     /// <inheritdoc/>
@@ -59,16 +62,20 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
         _uiContext.Send(s =>
         {
             var form = _viewer.GetViewerForm(report, viewerSettings);
+            var reportFileName = report.Filename;
+
             form.Load += (s, args) =>
             {
                 Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ShowReport::FormLoad");
+                _shell.FormLoaded(reportFileName, new WindowHandle(form.Handle));
+
                 waitHandle.Set();
             };
+
             form.FormClosed += (s, args) =>
             {
                 Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ShowReport::FormClosed");
-
-                // TODO: We might want to communicate the Window Location and State somehow to the caller app once the user closes so it could be saved for interface settings in following executions.
+                _shell.FormClosed(reportFileName, GetFormLocation(form));
             };
 
             if (owner is not null)
@@ -93,13 +100,27 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
 
         using var waitHandle = new ManualResetEvent(false);
         bool? result = false;
+        var reportFileName = report.Filename;
 
         _uiContext.Send(s =>
         {
             using var form = _viewer.GetViewerForm(report, viewerSettings);
-            result = ConvertToBoolean(form.ShowDialog(owner.GetWindow()));
 
-            // TODO: We might want to expose the Window Location and State somehow to the caller app once the user closes so it could be saved for interface settings in following executions.
+            form.Load += (s, args) =>
+            {
+                Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ShowReportDialog::FormLoad");
+                _shell.FormLoaded(reportFileName, new WindowHandle(form.Handle));
+
+                waitHandle.Set();
+            };
+
+            form.FormClosed += (s, args) =>
+            {
+                Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ShowReportDialog::FormClosed");
+                _shell.FormClosed(reportFileName, GetFormLocation(form));
+            };
+
+            result = ConvertToBoolean(form.ShowDialog(owner.GetWindow()));
 
             waitHandle.Set();
         }, null);
@@ -122,4 +143,13 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
         DialogResult.Yes => true,
         _ => throw new NotImplementedException(),
     };
+
+    private WindowLocation GetFormLocation(Form form) =>
+        new()
+        {
+            Width = form.Width,
+            Height = form.Height,
+            Left = form.Left,
+            Top = form.Top
+        };
 }

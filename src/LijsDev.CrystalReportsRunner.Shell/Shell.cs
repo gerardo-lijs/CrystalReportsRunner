@@ -15,7 +15,7 @@ using System.Windows.Forms;
 /// </summary>
 public class Shell
 {
-    private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
     /// <inheritdoc/>
     public class Options
@@ -104,25 +104,64 @@ public class Shell
         }
     }
 
+    private PipeClientWithCallback<ICrystalReportsCaller, ICrystalReportsRunner> _pipeClient;
     private async Task OpenConnection(SynchronizationContext uiContext)
     {
         if (_options is null) throw new NullReferenceException(nameof(_options));
 
         Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::PipeName={_options.PipeName}");
-        using var pipeClient = new PipeClientWithCallback<ICrystalReportsCaller, ICrystalReportsRunner>(
+
+        _pipeClient = new PipeClientWithCallback<ICrystalReportsCaller, ICrystalReportsRunner>(
                  new JsonNetPipeSerializer(),
                  ".",
-        _options.PipeName,
-                 () => new WinFormsReportRunner(_reportViewer, _reportExporter, uiContext));
+                 _options.PipeName,
+                 () => new WinFormsReportRunner(_reportViewer, _reportExporter, uiContext, this));
 
-        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::ConnectAsync::Start");
-        await pipeClient.ConnectAsync();
-        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::ConnectAsync::End");
+        try
+        {
+            Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::ConnectAsync::Start");
+            await _pipeClient.ConnectAsync();
+            Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::ConnectAsync::End");
 
-        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::WaitForRemotePipeCloseAsync::Start");
-        await pipeClient.WaitForRemotePipeCloseAsync();
-        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::WaitForRemotePipeCloseAsync::End");
+            Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::WaitForRemotePipeCloseAsync::Start");
+            await _pipeClient.WaitForRemotePipeCloseAsync();
+            Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::WaitForRemotePipeCloseAsync::End");
+
+        }
+        finally
+        {
+            _pipeClient.Dispose();
+        }
 
         Application.ExitThread();
+    }
+
+    internal async void FormClosed(string reportFileName, WindowLocation windowLocation)
+    {
+        try
+        {
+            if (_pipeClient is not null)
+            {
+                await _pipeClient.InvokeAsync(caller => caller.FormClosed(reportFileName, windowLocation));
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "Failed sending FormClosed event through pipe.");
+        }
+    }
+    internal async void FormLoaded(string reportFileName, WindowHandle windowHandle)
+    {
+        try
+        {
+            if (_pipeClient is not null)
+            {
+                await _pipeClient.InvokeAsync(caller => caller.FormLoaded(reportFileName, windowHandle));
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "Failed sending FormLoaded event through pipe.");
+        }
     }
 }

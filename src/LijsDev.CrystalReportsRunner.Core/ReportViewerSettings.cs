@@ -112,6 +112,20 @@ public sealed class ReportViewerSettings
     private const bool WindowAllowResizeDefault = true;
 
     /// <summary>
+    /// Optionally sets the report viewer window initial height.
+    /// Default: null (not set)
+    /// </summary>
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+    public int? WindowLocationHeight { get; set; }
+
+    /// <summary>
+    /// Optionally sets the report viewer window initial width.
+    /// Default: null (not set)
+    /// </summary>
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+    public int? WindowLocationWidth { get; set; }
+
+    /// <summary>
     /// Optionally sets the report viewer window initial left location. WindowInitialPosition may override this setting.
     /// Default: null (not set)
     /// </summary>

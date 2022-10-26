@@ -13,6 +13,7 @@ public partial class MainWindow : Window
     /// Shared Crystal Reports Engine
     /// </summary>
     private CrystalReportsEngine? _engineInstance;
+    private WindowLocation? _lastLocation;
 
     public MainWindow()
     {
@@ -59,6 +60,8 @@ public partial class MainWindow : Window
             EnsureEngineAvailable();
             if (_engineInstance is null) throw new InvalidProgramException($"{nameof(_engineInstance)} can't be null here after calling EnsureEngineAvailable.");
 
+            ConfigureWindowLocationAndSize();
+
             // Show
             var report = CreateReport();
             var windowHandle = new WindowHandle(new WindowInteropHelper(this).EnsureHandle());
@@ -74,6 +77,18 @@ public partial class MainWindow : Window
         }
     }
 
+    private void ConfigureWindowLocationAndSize()
+    {
+        if (_lastLocation is not null)
+        {
+            _engineInstance!.ViewerSettings.WindowLocationLeft = _lastLocation.Left;
+            _engineInstance.ViewerSettings.WindowLocationTop = _lastLocation.Top;
+            _engineInstance.ViewerSettings.WindowLocationHeight = _lastLocation.Height;
+            _engineInstance.ViewerSettings.WindowLocationWidth = _lastLocation.Width;
+            _engineInstance.ViewerSettings.WindowInitialPosition = ReportViewerWindowStartPosition.Manual;
+        }
+    }
+
     private async void ShowDialogButton_Click(object sender, RoutedEventArgs e)
     {
         LoadingBorder.Visibility = Visibility.Visible;
@@ -82,6 +97,8 @@ public partial class MainWindow : Window
         {
             EnsureEngineAvailable();
             if (_engineInstance is null) throw new InvalidProgramException($"{nameof(_engineInstance)} can't be null here after calling EnsureEngineAvailable.");
+
+            ConfigureWindowLocationAndSize();
 
             // Show
             var report = CreateReport();
@@ -173,7 +190,7 @@ public partial class MainWindow : Window
         return report;
     }
 
-    private static CrystalReportsEngine CreateEngine()
+    private CrystalReportsEngine CreateEngine()
     {
         // NOTE: Create CrystalReportsSample using Schema.sql in the \samples\shared folder
         var engine = new CrystalReportsEngine();
@@ -204,6 +221,7 @@ public partial class MainWindow : Window
         engine.ViewerSettings.ToolPanelView = ReportViewerToolPanelViewType.None;
         engine.ViewerSettings.ShowCloseButton = false;
         engine.ViewerSettings.EnableRefresh = false;
+        engine.ViewerSettings.WindowInitialState = ReportViewerWindowState.Normal;
 
         // Set viewer Icon
         engine.ViewerSettings.WindowIcon = System.IO.File.ReadAllBytes("SampleIcon.png");
@@ -212,6 +230,25 @@ public partial class MainWindow : Window
         //engine.ViewerSettings.SetUICulture(Thread.CurrentThread.CurrentUICulture);
         //engine.ViewerSettings.SetUICulture(System.Globalization.CultureInfo.GetCultureInfo("es-ES"));
 
+        engine.FormClosed += Engine_FormClosed;
+        engine.FormLoaded += Engine_FormLoaded;
+
         return engine;
+    }
+
+    private void Engine_FormLoaded(object? sender, FormLoadedEventArgs e)
+    {
+        Dispatcher.BeginInvoke(() =>
+        {
+            LoadingBorder.Visibility = Visibility.Collapsed;
+        });
+
+        Debug.WriteLine($"Form Loaded for {e.ReportFileName}. Handle: {e.WindowHandle.Handle}.");
+    }
+
+    private void Engine_FormClosed(object? sender, FormClosedEventArgs e)
+    {
+        _lastLocation = e.WindowLocation;
+        Debug.WriteLine($"Form Closed for {e.ReportFileName}. Location: ({e.WindowLocation.Left}, {e.WindowLocation.Top}). Size: {e.WindowLocation.Width} x {e.WindowLocation.Height}.");
     }
 }
