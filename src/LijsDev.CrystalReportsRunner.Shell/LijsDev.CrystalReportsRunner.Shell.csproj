@@ -13,9 +13,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MinVer" Version="4.2.0" PrivateAssets="All" />
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="NLog" Version="5.0.4" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <MinVerTagPrefix>v</MinVerTagPrefix>
+    <MinVerMinimumMajorMinor>1.0</MinVerMinimumMajorMinor>
+    <MinVerDefaultPreReleasePhase>preview</MinVerDefaultPreReleasePhase>
+  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\LijsDev.CrystalReportsRunner.Core\LijsDev.CrystalReportsRunner.Core.csproj" />

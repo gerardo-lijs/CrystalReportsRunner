@@ -22,7 +22,13 @@
     <DefineConstants>$(DefineConstants);CR_RUNTIME_x64</DefineConstants>
     <DefineConstants>$(DefineConstants);CR_RUNTIME_13_0_32</DefineConstants>
   </PropertyGroup>
-  
+
+  <PropertyGroup>
+    <MinVerTagPrefix>v</MinVerTagPrefix>
+    <MinVerMinimumMajorMinor>1.0</MinVerMinimumMajorMinor>
+    <MinVerDefaultPreReleasePhase>preview</MinVerDefaultPreReleasePhase>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\shared\MemoryMappedFileUtils.cs" Link="MemoryMappedFileUtils.cs" />
     <Compile Include="..\shared\Program.cs" Link="Program.cs" />
@@ -40,6 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MinVer" Version="4.2.0" PrivateAssets="All" />
     <PackageReference Include="NLog" Version="5.0.4" />
     <PackageReference Include="NLog.Schema" Version="5.0.4" />
   </ItemGroup>
