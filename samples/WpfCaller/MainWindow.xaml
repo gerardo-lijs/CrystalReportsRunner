@@ -19,36 +19,61 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <StackPanel
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Orientation="Horizontal">
 
-            <Button
-                x:Name="ShowButton"
-                Click="ShowButton_Click"
-                Content="Show Report" />
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock
+                Width="500"
+                Margin="0,0,0,50"
+                FontSize="14"
+                TextWrapping="Wrap">
+                <Run FontWeight="Bold">Note:</Run>
+                <Run>
+                    When you click any of the buttons below, a new process (Runner) will be launched that targets .NET Framework 4.8 and Crystal Reports SDK.
+                    That process will take care of showing/export the report and communicating the results back. Please make sure:
+                </Run>
+                <LineBreak />
+                <LineBreak />
+                <Run>
+                    - The database is created using Schema.sql
+                </Run>
+                <LineBreak />
+                <Run>
+                    - The connection string is configured in CreateReport() of MainWindow.xaml.cs.
+                </Run>
+                <LineBreak />
+                <Run>
+                    - The sample is using the Crystal Reports version you have installed.
+                </Run>
+            </TextBlock>
 
-            <TextBlock />
+            <StackPanel Orientation="Horizontal">
 
-            <Button
-                x:Name="ShowDialogButton"
-                Click="ShowDialogButton_Click"
-                Content="Show Report as a Dialog" />
+                <Button
+                    x:Name="ShowButton"
+                    Click="ShowButton_Click"
+                    Content="Show Report" />
 
-            <TextBlock />
+                <TextBlock />
 
-            <Button
-                x:Name="ExportReportButton"
-                Click="ExportReportButton_Click"
-                Content="Export report" />
+                <Button
+                    x:Name="ShowDialogButton"
+                    Click="ShowDialogButton_Click"
+                    Content="Show Report as a Dialog" />
 
-            <TextBlock />
+                <TextBlock />
 
-            <Button
-                x:Name="ExportReportToStreamButton"
-                Click="ExportReportToStreamButton_Click"
-                Content="Export report to stream" />
+                <Button
+                    x:Name="ExportReportButton"
+                    Click="ExportReportButton_Click"
+                    Content="Export report" />
+
+                <TextBlock />
+
+                <Button
+                    x:Name="ExportReportToStreamButton"
+                    Click="ExportReportToStreamButton_Click"
+                    Content="Export report to stream" />
+            </StackPanel>
         </StackPanel>
 
         <Border
