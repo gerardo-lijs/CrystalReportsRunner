@@ -34,7 +34,7 @@ internal static class ReportUtils
             {
                 new NameValuePair2("Data Source", report.Connection.Server),
                 new NameValuePair2("Initial Catalog", report.Connection.Database),
-                new NameValuePair2("Integrated Security", report.Connection.UseIntegratedSecurity ? "False" : "True"),
+                new NameValuePair2("Integrated Security", report.Connection.UseIntegratedSecurity ? "True" : "False"),
             };
             if (report.Connection.LogonProperties is not null)
             {
