@@ -15,6 +15,8 @@ Unfortunately, Crystal Reports doesn't support .NET Core so one workaround is to
    - Crystal Reports v13.0.20 x86: [![NuGet version](https://img.shields.io/nuget/v/LijsDev.CrystalReportsRunner.13.0.20.x86.svg?style=flat&label=nuget%3A%20LijsDev.CrystalReportsRunner.13.0.20.x86)](https://www.nuget.org/packages/LijsDev.CrystalReportsRunner.13.0.20.x86)
    - You need a version that is not listed here? Please refer to [Creating a custom Runner](./docs/custom-runner.md) or contact us.
    
+   - You can download SAP Crystal Reports runtime engine for .NET Framwork from [SAP download website](https://origin.softwaredownloads.sap.com/public/site/index.html)
+
 2. Create an engine:
 
    ```csharp
