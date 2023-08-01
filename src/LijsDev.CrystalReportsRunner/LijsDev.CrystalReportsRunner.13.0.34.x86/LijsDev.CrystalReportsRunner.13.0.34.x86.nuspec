@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>LijsDev.CrystalReportsRunner.13.0.34.x86</id>
+    <version>1.2.1</version>
+    <title>LijsDev Crystal Reports Runner for Runtime v13.0.34 (x86)</title>
+    <authors>Muhammad Azeez and Gerardo Lijs</authors>
+    <owners>gerardolijs</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://github.com/gerardo-lijs/CrystalReportsRunner</projectUrl>
+    <description>Runner to allow the use of Crystal Reports in .NET using external process. Copies runner to 'CrystalReportsRunner.13.0.34.x86' in your project output folder.  Requires Crystal Reports Runtime v13.0.34 (x86) to be installed in computer where your application will be deployed.</description>
+    <tags>Crystal Reports .NET Core net48</tags>
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="LijsDev.CrystalReportsRunner.Core" version="1.2.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="LijsDev.CrystalReportsRunner.13.0.34.x86.props" target="build" />
+    <file src="bin\x86\Release\net48\*.*" target="runtimes" />
+  </files>
+</package>

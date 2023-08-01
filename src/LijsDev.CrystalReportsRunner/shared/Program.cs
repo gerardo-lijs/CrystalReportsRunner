@@ -24,6 +24,10 @@ internal static class Program
     private const string CrystalReportsRuntimeVersion = "13.0.20";
 #elif CR_RUNTIME_13_0_32
     private const string CrystalReportsRuntimeVersion = "13.0.32";
+#elif CR_RUNTIME_13_0_33
+    private const string CrystalReportsRuntimeVersion = "13.0.33";
+#elif CR_RUNTIME_13_0_34
+    private const string CrystalReportsRuntimeVersion = "13.0.34";
 #else
     private const string CrystalReportsRuntimeVersion = "Unknown";
 #endif

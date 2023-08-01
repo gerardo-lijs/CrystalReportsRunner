@@ -1,0 +1,78 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <Platforms>x86</Platforms>
+    <UseWindowsForms>true</UseWindowsForms>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>LijsDev.CrystalReportsRunner</AssemblyName>
+    <AssemblyTitle>LijsDev Crystal Reports Runner</AssemblyTitle>
+    <Authors>Muhammad Azeez and Gerardo Lijs</Authors>
+    <Company>LijsDev</Company>
+    <Copyright>Copyright © LijsDev 2022</Copyright>
+    <ApplicationIcon>..\shared\report.ico</ApplicationIcon>
+    <EmbeddedResourceUseDependentUponConvention>true</EmbeddedResourceUseDependentUponConvention>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);CR_RUNTIME_x86</DefineConstants>
+    <DefineConstants>$(DefineConstants);CR_RUNTIME_13_0_33</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <MinVerTagPrefix>v</MinVerTagPrefix>
+    <MinVerMinimumMajorMinor>1.0</MinVerMinimumMajorMinor>
+    <MinVerDefaultPreReleasePhase>preview</MinVerDefaultPreReleasePhase>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\shared\MemoryMappedFileUtils.cs" Link="MemoryMappedFileUtils.cs" />
+    <Compile Include="..\shared\Program.cs" Link="Program.cs" />
+    <Compile Include="..\shared\ReportExporter.cs" Link="ReportExporter.cs" />
+    <Compile Include="..\shared\ReportUtils.cs" Link="ReportUtils.cs" />
+    <Compile Include="..\shared\ReportViewer.cs" Link="ReportViewer.cs" />
+    <Compile Include="..\shared\RuntimePolicyHelper.cs" Link="RuntimePolicyHelper.cs" />
+    <Compile Include="..\shared\ViewerForm.cs" Link="ViewerForm.cs" />
+    <Compile Include="..\shared\ViewerForm.Designer.cs" Link="ViewerForm.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\shared\ViewerForm.resx" Link="ViewerForm.resx" />
+    <EmbeddedResource Include="..\shared\report.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MinVer" Version="4.2.0" PrivateAssets="All" />
+    <PackageReference Include="NLog" Version="5.0.4" />
+    <PackageReference Include="NLog.Schema" Version="5.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine">
+      <HintPath>..\..\..\dependencies\13.0.33\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource">
+      <HintPath>..\..\..\dependencies\13.0.33\CrystalDecisions.ReportSource.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared">
+      <HintPath>..\..\..\dependencies\13.0.33\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Windows.Forms">
+      <HintPath>..\..\..\dependencies\13.0.33\CrystalDecisions.Windows.Forms.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\LijsDev.CrystalReportsRunner.Shell\LijsDev.CrystalReportsRunner.Shell.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\shared\NLog.config" Link="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

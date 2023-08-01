@@ -42,6 +42,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunne
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.13.0.32.x86", "src\LijsDev.CrystalReportsRunner\LijsDev.CrystalReportsRunner.13.0.32.x86\LijsDev.CrystalReportsRunner.13.0.32.x86.csproj", "{510EECF4-FF1D-4B28-85F0-FD8014C742CA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.13.0.33.x64", "src\LijsDev.CrystalReportsRunner\LijsDev.CrystalReportsRunner.13.0.33.x64\LijsDev.CrystalReportsRunner.13.0.33.x64.csproj", "{084A5DFE-4E02-4989-9EAA-3341AFD5BA8F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.13.0.33.x86", "src\LijsDev.CrystalReportsRunner\LijsDev.CrystalReportsRunner.13.0.33.x86\LijsDev.CrystalReportsRunner.13.0.33.x86.csproj", "{EBF2F845-8CCC-4362-B73E-E537E05424C1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.13.0.34.x64", "src\LijsDev.CrystalReportsRunner\LijsDev.CrystalReportsRunner.13.0.34.x64\LijsDev.CrystalReportsRunner.13.0.34.x64.csproj", "{3B7847D1-38CE-4866-8A4D-749EF09DA709}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.13.0.34.x86", "src\LijsDev.CrystalReportsRunner\LijsDev.CrystalReportsRunner.13.0.34.x86\LijsDev.CrystalReportsRunner.13.0.34.x86.csproj", "{117E3A14-F1C1-4AD3-B35F-B64EE56433FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +88,22 @@ Global
 		{510EECF4-FF1D-4B28-85F0-FD8014C742CA}.Debug|Any CPU.Build.0 = Debug|x86
 		{510EECF4-FF1D-4B28-85F0-FD8014C742CA}.Release|Any CPU.ActiveCfg = Release|x86
 		{510EECF4-FF1D-4B28-85F0-FD8014C742CA}.Release|Any CPU.Build.0 = Release|x86
+		{084A5DFE-4E02-4989-9EAA-3341AFD5BA8F}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{084A5DFE-4E02-4989-9EAA-3341AFD5BA8F}.Debug|Any CPU.Build.0 = Debug|x64
+		{084A5DFE-4E02-4989-9EAA-3341AFD5BA8F}.Release|Any CPU.ActiveCfg = Release|x64
+		{084A5DFE-4E02-4989-9EAA-3341AFD5BA8F}.Release|Any CPU.Build.0 = Release|x64
+		{EBF2F845-8CCC-4362-B73E-E537E05424C1}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{EBF2F845-8CCC-4362-B73E-E537E05424C1}.Debug|Any CPU.Build.0 = Debug|x86
+		{EBF2F845-8CCC-4362-B73E-E537E05424C1}.Release|Any CPU.ActiveCfg = Release|x86
+		{EBF2F845-8CCC-4362-B73E-E537E05424C1}.Release|Any CPU.Build.0 = Release|x86
+		{3B7847D1-38CE-4866-8A4D-749EF09DA709}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{3B7847D1-38CE-4866-8A4D-749EF09DA709}.Debug|Any CPU.Build.0 = Debug|x64
+		{3B7847D1-38CE-4866-8A4D-749EF09DA709}.Release|Any CPU.ActiveCfg = Release|x64
+		{3B7847D1-38CE-4866-8A4D-749EF09DA709}.Release|Any CPU.Build.0 = Release|x64
+		{117E3A14-F1C1-4AD3-B35F-B64EE56433FC}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{117E3A14-F1C1-4AD3-B35F-B64EE56433FC}.Debug|Any CPU.Build.0 = Debug|x86
+		{117E3A14-F1C1-4AD3-B35F-B64EE56433FC}.Release|Any CPU.ActiveCfg = Release|x86
+		{117E3A14-F1C1-4AD3-B35F-B64EE56433FC}.Release|Any CPU.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +116,10 @@ Global
 		{10243967-ED8E-4C0D-B38B-F2204EC5554B} = {2C959191-3CA7-4D4A-A5CA-820A03463BE2}
 		{84F16324-3F18-4059-B273-C987C7B72EBD} = {2C959191-3CA7-4D4A-A5CA-820A03463BE2}
 		{510EECF4-FF1D-4B28-85F0-FD8014C742CA} = {2C959191-3CA7-4D4A-A5CA-820A03463BE2}
+		{084A5DFE-4E02-4989-9EAA-3341AFD5BA8F} = {2C959191-3CA7-4D4A-A5CA-820A03463BE2}
+		{EBF2F845-8CCC-4362-B73E-E537E05424C1} = {2C959191-3CA7-4D4A-A5CA-820A03463BE2}
+		{3B7847D1-38CE-4866-8A4D-749EF09DA709} = {2C959191-3CA7-4D4A-A5CA-820A03463BE2}
+		{117E3A14-F1C1-4AD3-B35F-B64EE56433FC} = {2C959191-3CA7-4D4A-A5CA-820A03463BE2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5FC37DC-8D46-467D-A953-13551666872B}
