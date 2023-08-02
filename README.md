@@ -9,6 +9,10 @@ Unfortunately, Crystal Reports doesn't support .NET Core so one workaround is to
 ## Quick Start 
 
 1. Create a new Console Application and reference one of these NuGet packages depending the Crystal Reports runtime version you're using:
+   - Crystal Reports v13.0.34 x64: [![NuGet version](https://img.shields.io/nuget/v/LijsDev.CrystalReportsRunner.13.0.34.x64.svg?style=flat&label=nuget%3A%20LijsDev.CrystalReportsRunner.13.0.34.x64)](https://www.nuget.org/packages/LijsDev.CrystalReportsRunner.13.0.34.x64)
+   - Crystal Reports v13.0.34 x86: [![NuGet version](https://img.shields.io/nuget/v/LijsDev.CrystalReportsRunner.13.0.34.x86.svg?style=flat&label=nuget%3A%20LijsDev.CrystalReportsRunner.13.0.34.x86)](https://www.nuget.org/packages/LijsDev.CrystalReportsRunner.13.0.34.x86)
+   - Crystal Reports v13.0.33 x64: [![NuGet version](https://img.shields.io/nuget/v/LijsDev.CrystalReportsRunner.13.0.33.x64.svg?style=flat&label=nuget%3A%20LijsDev.CrystalReportsRunner.13.0.33.x64)](https://www.nuget.org/packages/LijsDev.CrystalReportsRunner.13.0.33.x64)
+   - Crystal Reports v13.0.33 x86: [![NuGet version](https://img.shields.io/nuget/v/LijsDev.CrystalReportsRunner.13.0.33.x86.svg?style=flat&label=nuget%3A%20LijsDev.CrystalReportsRunner.13.0.33.x86)](https://www.nuget.org/packages/LijsDev.CrystalReportsRunner.13.0.33.x86)
    - Crystal Reports v13.0.32 x64: [![NuGet version](https://img.shields.io/nuget/v/LijsDev.CrystalReportsRunner.13.0.32.x64.svg?style=flat&label=nuget%3A%20LijsDev.CrystalReportsRunner.13.0.32.x64)](https://www.nuget.org/packages/LijsDev.CrystalReportsRunner.13.0.32.x64)
    - Crystal Reports v13.0.32 x86: [![NuGet version](https://img.shields.io/nuget/v/LijsDev.CrystalReportsRunner.13.0.32.x86.svg?style=flat&label=nuget%3A%20LijsDev.CrystalReportsRunner.13.0.32.x86)](https://www.nuget.org/packages/LijsDev.CrystalReportsRunner.13.0.32.x86)
    - Crystal Reports v13.0.20 x64: [![NuGet version](https://img.shields.io/nuget/v/LijsDev.CrystalReportsRunner.13.0.20.x64.svg?style=flat&label=nuget%3A%20LijsDev.CrystalReportsRunner.13.0.20.x64)](https://www.nuget.org/packages/LijsDev.CrystalReportsRunner.13.0.20.x64)
