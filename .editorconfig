@@ -153,7 +153,7 @@ csharp_style_prefer_not_pattern = true:warning
 csharp_style_inlined_variable_declaration = true:warning
 csharp_prefer_simple_default_expression = true:warning
 csharp_style_pattern_local_over_anonymous_function = true:warning
-csharp_style_deconstructed_variable_declaration = true:warning
+csharp_style_deconstructed_variable_declaration = true:none
 csharp_style_prefer_index_operator = true:none
 csharp_style_prefer_range_operator = true:none
 csharp_style_implicit_object_creation_when_type_is_apparent = true:warning
@@ -424,6 +424,12 @@ dotnet_diagnostic.IDE0010.severity = none
 
 # CA1305: Specify IFormatProvider
 dotnet_diagnostic.CA1305.severity = none
+
+# IDE0001: Simplify names
+dotnet_diagnostic.IDE0001.severity = none
+
+# IDE0002: Simplify (member access)
+dotnet_diagnostic.IDE0002.severity = none
 
 ##########################################
 # License

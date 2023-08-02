@@ -50,6 +50,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunne
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.13.0.34.x86", "src\LijsDev.CrystalReportsRunner\LijsDev.CrystalReportsRunner.13.0.34.x86\LijsDev.CrystalReportsRunner.13.0.34.x86.csproj", "{117E3A14-F1C1-4AD3-B35F-B64EE56433FC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0FE7E21A-1D3F-4CF4-9419-3F1FBB3439CB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.13.0.34.x64.UnitTests", "tests\LijsDev.CrystalReportsRunner.13.0.34.x64.UnitTests\LijsDev.CrystalReportsRunner.13.0.34.x64.UnitTests.csproj", "{130F4898-7495-4608-8ECF-445D2A50AE40}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +108,10 @@ Global
 		{117E3A14-F1C1-4AD3-B35F-B64EE56433FC}.Debug|Any CPU.Build.0 = Debug|x86
 		{117E3A14-F1C1-4AD3-B35F-B64EE56433FC}.Release|Any CPU.ActiveCfg = Release|x86
 		{117E3A14-F1C1-4AD3-B35F-B64EE56433FC}.Release|Any CPU.Build.0 = Release|x86
+		{130F4898-7495-4608-8ECF-445D2A50AE40}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{130F4898-7495-4608-8ECF-445D2A50AE40}.Debug|Any CPU.Build.0 = Debug|x64
+		{130F4898-7495-4608-8ECF-445D2A50AE40}.Release|Any CPU.ActiveCfg = Release|x64
+		{130F4898-7495-4608-8ECF-445D2A50AE40}.Release|Any CPU.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -120,6 +128,7 @@ Global
 		{EBF2F845-8CCC-4362-B73E-E537E05424C1} = {2C959191-3CA7-4D4A-A5CA-820A03463BE2}
 		{3B7847D1-38CE-4866-8A4D-749EF09DA709} = {2C959191-3CA7-4D4A-A5CA-820A03463BE2}
 		{117E3A14-F1C1-4AD3-B35F-B64EE56433FC} = {2C959191-3CA7-4D4A-A5CA-820A03463BE2}
+		{130F4898-7495-4608-8ECF-445D2A50AE40} = {0FE7E21A-1D3F-4CF4-9419-3F1FBB3439CB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5FC37DC-8D46-467D-A953-13551666872B}

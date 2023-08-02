@@ -8,6 +8,9 @@ using var engine = new CrystalReportsEngine();
 // Method 2: Without Connection string
 // using var engine = new CrystalReportsEngine();
 
+engine.LogDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "LijsDev", "CrystalReportRunner", "logs");
+engine.LogLevel = LogLevel.Trace;
+
 // ========== Customizing Viewer Settings ===========
 
 engine.ViewerSettings.AllowedExportFormats =
@@ -46,10 +49,10 @@ report.Parameters.Add("UserName", "Gerardo");
 await engine.ShowReport(report);
 
 // Method 2: Easy
-await engine.ShowReport("SampleReport.rpt", "Sample Report", new Dictionary<string, object>
-{
-    { "ReportFrom", new DateTime(2022, 01, 01) },
-    { "UserName",  "Gerardo" },
-});
+//await engine.ShowReport("SampleReport.rpt", "Sample Report", new Dictionary<string, object>
+//{
+//    { "ReportFrom", new DateTime(2022, 01, 01) },
+//    { "UserName",  "Gerardo" },
+//});
 
 Console.ReadKey();
