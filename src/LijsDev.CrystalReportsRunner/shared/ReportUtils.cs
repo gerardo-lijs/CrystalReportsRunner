@@ -104,7 +104,8 @@ internal static class ReportUtils
             if (report.Parameters.TryGetValue(parameter.ParameterFieldName, out var value))
             {
                 Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::SetParameter={parameter.ParameterFieldName} | Value={value}");
-                document.SetParameterValue(parameter.ParameterFieldName, value);
+                parameter.CurrentValues.Clear();
+                parameter.CurrentValues.Add(value);
             }
         }
 
