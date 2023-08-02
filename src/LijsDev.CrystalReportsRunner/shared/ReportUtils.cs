@@ -105,7 +105,7 @@ internal static class ReportUtils
             {
                 Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::SetParameter={parameter.ParameterFieldName} | Value={value}");
                 parameter.CurrentValues.Clear();
-                parameter.CurrentValues.Add(value);
+                parameter.CurrentValues.AddValue(value);
             }
         }
 
