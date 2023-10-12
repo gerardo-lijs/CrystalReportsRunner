@@ -74,6 +74,15 @@
                     Click="ExportReportToStreamButton_Click"
                     Content="Export report to stream" />
             </StackPanel>
+
+            <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+
+                <Button
+                    x:Name="ShowDataSetButton"
+                    Click="ShowDataSetButton_Click"
+                    Content="Show DataSet Report" />
+
+            </StackPanel>
         </StackPanel>
 
         <Border

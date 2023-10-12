@@ -13,7 +13,7 @@
     <AssemblyTitle>LijsDev Crystal Reports Runner</AssemblyTitle>
     <Authors>Muhammad Azeez and Gerardo Lijs</Authors>
     <Company>LijsDev</Company>
-    <Copyright>Copyright © LijsDev 2022</Copyright>
+    <Copyright>Copyright © LijsDev 2022-2023</Copyright>
     <ApplicationIcon>..\shared\report.ico</ApplicationIcon>
     <EmbeddedResourceUseDependentUponConvention>true</EmbeddedResourceUseDependentUponConvention>
   </PropertyGroup>
@@ -26,7 +26,7 @@
   <PropertyGroup>
     <MinVerTagPrefix>v</MinVerTagPrefix>
     <MinVerMinimumMajorMinor>1.0</MinVerMinimumMajorMinor>
-    <MinVerDefaultPreReleasePhase>preview</MinVerDefaultPreReleasePhase>
+    <MinVerDefaultPreReleaseIdentifiers>preview.0</MinVerDefaultPreReleaseIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
@@ -46,9 +46,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MinVer" Version="4.2.0" PrivateAssets="All" />
-    <PackageReference Include="NLog" Version="5.0.4" />
-    <PackageReference Include="NLog.Schema" Version="5.0.4" />
+    <PackageReference Include="MinVer" Version="4.3.0" PrivateAssets="All" />
+    <PackageReference Include="NLog" Version="5.2.4" />
+    <PackageReference Include="NLog.Schema" Version="5.2.4" />
   </ItemGroup>
 
   <ItemGroup>

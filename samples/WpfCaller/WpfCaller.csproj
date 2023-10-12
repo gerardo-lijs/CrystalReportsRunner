@@ -13,7 +13,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="..\shared\sampleImage1.jpg" Link="sampleImage1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\shared\sampleImage2.jpg" Link="sampleImage2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\shared\SampleReport.rpt" Link="SampleReport.rpt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\shared\SampleReportDataset.rpt" Link="SampleReportDataset.rpt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\shared\Schema.sql" Link="Schema.sql">
@@ -22,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.4" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
   <ItemGroup>
