@@ -13,7 +13,14 @@ using System.Text;
 /// </summary>
 public class JsonNetPipeSerializer : IPipeSerializer
 {
-    private readonly JsonSerializerSettings _jsonSettings = new();
+    private readonly JsonSerializerSettings _jsonSettings;
+
+    /// <inheritdoc/>
+    public JsonNetPipeSerializer()
+    {
+        _jsonSettings = new();
+        //_jsonSettings.Converters.Add(new ByteArrayConverter());
+    }
 
     /// <inheritdoc/>
     public object? Deserialize(byte[] data, Type type)
