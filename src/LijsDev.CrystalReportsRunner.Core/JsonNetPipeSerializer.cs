@@ -19,7 +19,7 @@ public class JsonNetPipeSerializer : IPipeSerializer
     public JsonNetPipeSerializer()
     {
         _jsonSettings = new();
-        //_jsonSettings.Converters.Add(new ByteArrayConverter());
+        _jsonSettings.Converters.Add(new DataSetJsonConverter());
     }
 
     /// <inheritdoc/>
