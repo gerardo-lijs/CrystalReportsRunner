@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>LijsDev.CrystalReportsRunner.13.0.34.x86</id>
-    <version>1.3.1</version>
+    <version>1.3.2</version>
     <title>LijsDev Crystal Reports Runner for Runtime v13.0.34 (x86)</title>
     <authors>Muhammad Azeez and Gerardo Lijs</authors>
     <owners>gerardolijs</owners>
@@ -12,7 +12,7 @@
     <tags>Crystal Reports .NET Core net48</tags>
     <dependencies>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="LijsDev.CrystalReportsRunner.Core" version="1.3.1" exclude="Build,Analyzers" />
+        <dependency id="LijsDev.CrystalReportsRunner.Core" version="1.3.2" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>
