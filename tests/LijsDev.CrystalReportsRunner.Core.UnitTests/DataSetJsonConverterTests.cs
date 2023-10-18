@@ -32,6 +32,7 @@ public class DataSetJsonConverterTests
         // Add rows
         personsTable.Rows.Add(1, "Gerardo 在京", "42", File.ReadAllBytes("sampleImage1.jpg"), true, long.MaxValue, new DateTime(2023, 10, 12, 21, 27, 15), 1.23, Guid.NewGuid(), null);
         personsTable.Rows.Add(2, "Khalifa", "24", File.ReadAllBytes("sampleImage2.jpg"), false, long.MinValue, new DateTime(2023, 2, 7, 1, 2, 3), double.NaN, Guid.NewGuid(), DBNull.Value);
+        personsTable.Rows.Add(3, "Albert", "22", null, false, long.MinValue, new DateTime(2023, 2, 7, 1, 2, 3), double.NaN, Guid.NewGuid(), DBNull.Value);
 
         // Serialize
         var pipeSerializer = new JsonNetPipeSerializer();

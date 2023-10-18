@@ -65,7 +65,10 @@ internal class DataTableJsonConverter : JsonConverter<DataTable>
                             if (dc.DataType == typeof(byte[]))
                             {
                                 // NB: From testing, Newtonsoft.Json seems to serialize/deserialize DataSet and DataTable correctly, except for byte[] columns.
-                                drNew[dc] = Convert.FromBase64String(jsonDataRow[i] as string);
+                                if (jsonDataRow[i] is null)
+                                    drNew[dc] = DBNull.Value;
+                                else
+                                    drNew[dc] = Convert.FromBase64String(jsonDataRow[i] as string);
                             }
                             else
                             {
