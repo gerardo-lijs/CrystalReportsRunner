@@ -12,6 +12,7 @@
     <Description>API needed to use Crystal Reports Runner from caller applications.</Description>
 
     <IsPackable>true</IsPackable>
+    <PackageProjectUrl>https://github.com/gerardo-lijs/CrystalReportsRunner</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <!--<PackageIcon>icon.png</PackageIcon>-->
     <PackageReadmeFile>README.md</PackageReadmeFile>
