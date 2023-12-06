@@ -13,7 +13,8 @@ using System.Windows.Forms;
 /// <summary>
 /// Shell implementation for Crystal Reports Runner
 /// </summary>
-public class Shell
+public class Shell(IReportViewer reportViewer,
+    IReportExporter reportExporter)
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -31,17 +32,6 @@ public class Shell
         /// <inheritdoc/>
         [Option("log-directory", Required = false, HelpText = "The directory for the log files.")]
         public string? LogDirectory { get; set; }
-    }
-
-    private readonly IReportViewer _reportViewer;
-    private readonly IReportExporter _reportExporter;
-
-    /// <inheritdoc/>
-    public Shell(IReportViewer reportViewer,
-        IReportExporter reportExporter)
-    {
-        _reportViewer = reportViewer;
-        _reportExporter = reportExporter;
     }
 
     private Options? _options;
@@ -104,7 +94,7 @@ public class Shell
         }
     }
 
-    private PipeClientWithCallback<ICrystalReportsCaller, ICrystalReportsRunner> _pipeClient;
+    private PipeClientWithCallback<ICrystalReportsCaller, ICrystalReportsRunner>? _pipeClient;
     private async Task OpenConnection(SynchronizationContext uiContext)
     {
         if (_options is null) throw new NullReferenceException(nameof(_options));
@@ -115,7 +105,7 @@ public class Shell
                  new JsonNetPipeSerializer(),
                  ".",
                  _options.PipeName,
-                 () => new WinFormsReportRunner(_reportViewer, _reportExporter, uiContext, this));
+                 () => new WinFormsReportRunner(reportViewer, reportExporter, uiContext, this));
 
         try
         {

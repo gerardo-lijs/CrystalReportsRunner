@@ -1,6 +1,5 @@
 namespace LijsDev.CrystalReportsRunner;
 
-using System.IO.MemoryMappedFiles;
 using CrystalDecisions.Shared;
 
 using LijsDev.CrystalReportsRunner.Core;

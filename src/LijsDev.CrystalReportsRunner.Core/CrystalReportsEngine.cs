@@ -274,7 +274,7 @@ public sealed class CrystalReportsEngine : IDisposable
             candidates.Insert(0, Path.Combine(assemblyFolder, runnerPath));
         }
 
-        var path = candidates.FirstOrDefault(f => File.Exists(f));
+        var path = candidates.FirstOrDefault(File.Exists);
 
         if (path is null)
         {
