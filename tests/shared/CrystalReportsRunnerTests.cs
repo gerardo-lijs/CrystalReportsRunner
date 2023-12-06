@@ -23,6 +23,19 @@ public class CrystalReportsTests
         form.ShowDialog();
     }
 
+    [TestMethod]
+    public void SampleReport_AskParameters_ShowDialog_ShouldWork()
+    {
+        var report = new Report("SampleReport.rpt", "Sample Report")
+        {
+            Connection = CrystalReportsConnectionFactory.CreateSqlConnection(".\\SQLEXPRESS", "CrystalReportsSample")
+        };
+
+        var reportViewer = new LijsDev.CrystalReportsRunner.ReportViewer();
+        var form = reportViewer.GetViewerForm(report, new ReportViewerSettings());
+        form.ShowDialog();
+    }
+
     /// <summary>
     /// Test a simple sample report without database connection, sending the DataSet with int/string/byte[] fields.
     /// </summary>
