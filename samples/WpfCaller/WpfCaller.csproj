@@ -7,6 +7,7 @@
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Authors>Muhammad Azeez and Gerardo Lijs</Authors>
     <Company>LijsDev</Company>
     <Copyright>Copyright © LijsDev 2022-2023</Copyright>

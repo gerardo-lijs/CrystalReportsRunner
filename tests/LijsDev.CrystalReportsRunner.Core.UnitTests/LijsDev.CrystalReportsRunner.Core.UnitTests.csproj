@@ -5,6 +5,7 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Authors>Gerardo Lijs</Authors>
     <Company>LijsDev</Company>
     <Copyright>Copyright © LijsDev 2023</Copyright>
