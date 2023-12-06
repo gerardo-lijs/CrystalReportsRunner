@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-    <Platforms>x64</Platforms>
+    <Platforms>x86</Platforms>
     <UseWindowsForms>true</UseWindowsForms>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
@@ -38,16 +38,16 @@
 
   <ItemGroup>
     <Reference Include="CrystalDecisions.CrystalReports.Engine">
-      <HintPath>..\..\dependencies\13.0.34\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+      <HintPath>..\..\dependencies\13.0.20\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
     </Reference>
     <Reference Include="CrystalDecisions.ReportSource">
-      <HintPath>..\..\dependencies\13.0.34\CrystalDecisions.ReportSource.dll</HintPath>
+      <HintPath>..\..\dependencies\13.0.20\CrystalDecisions.ReportSource.dll</HintPath>
     </Reference>
     <Reference Include="CrystalDecisions.Shared">
-      <HintPath>..\..\dependencies\13.0.34\CrystalDecisions.Shared.dll</HintPath>
+      <HintPath>..\..\dependencies\13.0.20\CrystalDecisions.Shared.dll</HintPath>
     </Reference>
     <Reference Include="CrystalDecisions.Windows.Forms">
-      <HintPath>..\..\dependencies\13.0.34\CrystalDecisions.Windows.Forms.dll</HintPath>
+      <HintPath>..\..\dependencies\13.0.20\CrystalDecisions.Windows.Forms.dll</HintPath>
     </Reference>
   </ItemGroup>
 
@@ -59,7 +59,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\LijsDev.CrystalReportsRunner\LijsDev.CrystalReportsRunner.13.0.34.x64\LijsDev.CrystalReportsRunner.13.0.34.x64.csproj" />
+    <ProjectReference Include="..\..\src\LijsDev.CrystalReportsRunner\LijsDev.CrystalReportsRunner.13.0.20.x86\LijsDev.CrystalReportsRunner.13.0.20.x86.csproj" />
   </ItemGroup>
 
 </Project>

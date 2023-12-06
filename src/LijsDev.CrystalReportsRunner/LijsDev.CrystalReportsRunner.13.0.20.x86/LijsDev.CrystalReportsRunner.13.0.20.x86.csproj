@@ -76,4 +76,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>LijsDev.CrystalReportsRunner.13.0.20.x86.UnitTests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 </Project>

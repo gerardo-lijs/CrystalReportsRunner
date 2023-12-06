@@ -56,6 +56,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunne
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.Core.UnitTests", "tests\LijsDev.CrystalReportsRunner.Core.UnitTests\LijsDev.CrystalReportsRunner.Core.UnitTests.csproj", "{424BC43E-490B-4793-9380-363AA08A5C55}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LijsDev.CrystalReportsRunner.13.0.20.x86.UnitTests", "tests\LijsDev.CrystalReportsRunner.13.0.20.x86.UnitTests\LijsDev.CrystalReportsRunner.13.0.20.x86.UnitTests.csproj", "{CEF76629-942E-45B2-81DD-D66A5A83ED50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -118,6 +120,10 @@ Global
 		{424BC43E-490B-4793-9380-363AA08A5C55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{424BC43E-490B-4793-9380-363AA08A5C55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{424BC43E-490B-4793-9380-363AA08A5C55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEF76629-942E-45B2-81DD-D66A5A83ED50}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{CEF76629-942E-45B2-81DD-D66A5A83ED50}.Debug|Any CPU.Build.0 = Debug|x86
+		{CEF76629-942E-45B2-81DD-D66A5A83ED50}.Release|Any CPU.ActiveCfg = Release|x86
+		{CEF76629-942E-45B2-81DD-D66A5A83ED50}.Release|Any CPU.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -136,6 +142,7 @@ Global
 		{117E3A14-F1C1-4AD3-B35F-B64EE56433FC} = {2C959191-3CA7-4D4A-A5CA-820A03463BE2}
 		{130F4898-7495-4608-8ECF-445D2A50AE40} = {0FE7E21A-1D3F-4CF4-9419-3F1FBB3439CB}
 		{424BC43E-490B-4793-9380-363AA08A5C55} = {0FE7E21A-1D3F-4CF4-9419-3F1FBB3439CB}
+		{CEF76629-942E-45B2-81DD-D66A5A83ED50} = {0FE7E21A-1D3F-4CF4-9419-3F1FBB3439CB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5FC37DC-8D46-467D-A953-13551666872B}
