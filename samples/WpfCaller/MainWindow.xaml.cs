@@ -306,4 +306,34 @@ public partial class MainWindow : Window
             LoadingBorder.Visibility = Visibility.Collapsed;
         }
     }
+
+    private async void PrintReportButton_Click(object sender, RoutedEventArgs e)
+    {
+        LoadingBorder.Visibility = Visibility.Visible;
+
+        try
+        {
+            EnsureEngineAvailable();
+            if (_engineInstance is null) throw new InvalidProgramException($"{nameof(_engineInstance)} can't be null here after calling EnsureEngineAvailable.");
+
+            // Export
+            var report = CreateReport();
+            var dstFilename = "sample_report.pdf";
+            await _engineInstance.Export(report, ReportExportFormats.PDF, dstFilename, overwrite: true);
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = dstFilename,
+                UseShellExecute = true
+            });
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.ToString());
+        }
+        finally
+        {
+            LoadingBorder.Visibility = Visibility.Collapsed;
+        }
+    }
 }

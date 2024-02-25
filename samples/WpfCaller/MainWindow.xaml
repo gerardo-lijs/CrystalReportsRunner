@@ -82,6 +82,13 @@
                     Click="ShowDataSetButton_Click"
                     Content="Show DataSet Report" />
 
+                <TextBlock />
+
+                <Button
+                    x:Name="PrintReportButton"
+                    Click="PrintReportButton_Click"
+                    Content="Print report" />
+
             </StackPanel>
         </StackPanel>
 
