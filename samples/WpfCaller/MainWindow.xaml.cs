@@ -318,14 +318,7 @@ public partial class MainWindow : Window
 
             // Export
             var report = CreateReport();
-            var dstFilename = "sample_report.pdf";
-            await _engineInstance.Export(report, ReportExportFormats.PDF, dstFilename, overwrite: true);
-
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = dstFilename,
-                UseShellExecute = true
-            });
+            await _engineInstance.Print(report);
         }
         catch (Exception ex)
         {
