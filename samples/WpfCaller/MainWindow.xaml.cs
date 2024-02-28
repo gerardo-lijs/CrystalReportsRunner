@@ -306,4 +306,27 @@ public partial class MainWindow : Window
             LoadingBorder.Visibility = Visibility.Collapsed;
         }
     }
+
+    private async void PrintReportButton_Click(object sender, RoutedEventArgs e)
+    {
+        LoadingBorder.Visibility = Visibility.Visible;
+
+        try
+        {
+            EnsureEngineAvailable();
+            if (_engineInstance is null) throw new InvalidProgramException($"{nameof(_engineInstance)} can't be null here after calling EnsureEngineAvailable.");
+
+            // Export
+            var report = CreateReport();
+            await _engineInstance.Print(report);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.ToString());
+        }
+        finally
+        {
+            LoadingBorder.Visibility = Visibility.Collapsed;
+        }
+    }
 }
