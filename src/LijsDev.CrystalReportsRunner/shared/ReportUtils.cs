@@ -99,13 +99,14 @@ internal static class ReportUtils
         }
 
         // Set parameters
-        foreach (ParameterField parameter in document.ParameterFields)
+        foreach (ParameterFieldDefinition parameter in document.DataDefinition.ParameterFields)
         {
-            if (report.Parameters.TryGetValue(parameter.ParameterFieldName, out var value))
+            if (!parameter.IsLinked() && report.Parameters.TryGetValue(parameter.ParameterFieldName, out var value))
             {
                 Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::SetParameter={parameter.ParameterFieldName} | Value={value}");
-                parameter.CurrentValues.Clear();
-                parameter.CurrentValues.AddValue(value);
+                var parameterDiscreteValue = new ParameterDiscreteValue { Value = value };
+                parameter.ApplyCurrentValues(
+                    new ParameterValues { parameterDiscreteValue });
             }
         }
 
