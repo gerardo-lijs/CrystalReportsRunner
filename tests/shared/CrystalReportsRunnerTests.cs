@@ -87,4 +87,39 @@ public class CrystalReportsTests
             parameter.CurrentValues.Count.Should().Be(1);
         }
     }
+
+    /// <summary>
+    /// Test a simple sample report without database connection, sending the DataSet with int/string/byte[] fields and parameter with multiple values
+    /// </summary>
+    [TestMethod]
+    public void SampleReportDatasetParameter_ShowDialog_ShouldWork()
+    {
+        var idListArray = new List<int> { 1, 3, 7 };
+
+        var report = new Report("SampleReportDatasetParameters.rpt", "Sample Report Dataset Parameters");
+        report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
+        report.Parameters.Add("UserName", "Gerardo");
+        report.Parameters.Add("IdList", idListArray);
+
+        // Create dataset
+        var sampleReportDataset = new System.Data.DataSet();
+
+        // Create table
+        var personsTable = new System.Data.DataTable("Persons");
+        sampleReportDataset.Tables.Add(personsTable);
+        personsTable.Columns.Add("Id", typeof(int));
+        personsTable.Columns.Add("Name", typeof(string));
+        personsTable.Columns.Add("Age", typeof(int));
+        personsTable.Columns.Add("PersonImage", typeof(byte[]));
+
+        // Add rows
+        personsTable.Rows.Add(1, "Gerardo", "42", File.ReadAllBytes("sampleImage1.jpg"));
+        personsTable.Rows.Add(2, "Khalifa", "24", File.ReadAllBytes("sampleImage2.jpg"));
+
+        report.DataSets.Add(sampleReportDataset);
+
+        var reportViewer = new LijsDev.CrystalReportsRunner.ReportViewer();
+        var form = reportViewer.GetViewerForm(report, new ReportViewerSettings());
+        form.ShowDialog();
+    }
 }
