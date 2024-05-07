@@ -24,6 +24,43 @@ public class CrystalReportsTests
     }
 
     [TestMethod]
+    public void SampleReport_ShowDialog_ShouldWork_ODBCSqlConnection()
+    {
+        var report = new Report("SampleReport.rpt", "Sample Report")
+        {
+            // NB: For this Unit Test to work you need to create a System DSN in ODBC Data Source Administrator configured with ODBC Driver 18 for SQL Server with the specified name and configure the database location there.
+            Connection = CrystalReportsConnectionFactory.CreateODBCSqlConnection("RunnerTestDSN", "CrystalReportsSample")
+        };
+
+        report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
+        report.Parameters.Add("UserName", "Gerardo");
+
+        var reportViewer = new LijsDev.CrystalReportsRunner.ReportViewer();
+        var form = reportViewer.GetViewerForm(report, new ReportViewerSettings());
+        form.ShowDialog();
+    }
+
+    [TestMethod]
+    public void SampleReport_ShowDialog_ShouldWork_ODBCSqlConnectionRegistry()
+    {
+        // NB: This Unit Test will automatically create a User DSN in Windows Registry at runtime.
+        var dsnName = "CrystalReportRunnerDSN";
+        ODBCHelper.UserDSN_SqlConnectionODBC_v17_Create(dsnName, "(local)\\SQLEXPRESS", useIntegratedSecurity: true, encrypt: true, trustServerCertificate: true);
+
+        var report = new Report("SampleReport.rpt", "Sample Report")
+        {
+            Connection = CrystalReportsConnectionFactory.CreateODBCSqlConnection(dsnName, "CrystalReportsSample")
+        };
+
+        report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
+        report.Parameters.Add("UserName", "Gerardo");
+
+        var reportViewer = new LijsDev.CrystalReportsRunner.ReportViewer();
+        var form = reportViewer.GetViewerForm(report, new ReportViewerSettings());
+        form.ShowDialog();
+    }
+
+    [TestMethod]
     public void SampleReport_AskParameters_ShowDialog_ShouldWork()
     {
         var report = new Report("SampleReport.rpt", "Sample Report")
