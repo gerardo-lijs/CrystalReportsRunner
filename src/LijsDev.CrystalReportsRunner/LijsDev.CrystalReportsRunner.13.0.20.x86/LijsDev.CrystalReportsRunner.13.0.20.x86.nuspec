@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>LijsDev.CrystalReportsRunner.13.0.20.x86</id>
-    <version>1.4.0</version>
+    <version>1.4.1</version>
     <title>LijsDev Crystal Reports Runner for Runtime v13.0.20 (x86)</title>
     <authors>Muhammad Azeez and Gerardo Lijs</authors>
     <owners></owners>
@@ -13,7 +13,7 @@
     <description>Runner to allow the use of Crystal Reports in .NET using external process. Copies runner to 'CrystalReportsRunner.13.0.20.x86' in your project output folder. Requires Crystal Reports Runtime v13.0.20 (x86) to be installed in computer where your application will be deployed.</description>
     <tags>Crystal Reports .NET Core net48</tags>
     <dependencies>
-      <dependency id="LijsDev.CrystalReportsRunner.Core" version="1.4.0" />
+      <dependency id="LijsDev.CrystalReportsRunner.Core" version="1.4.1" />
     </dependencies>
   </metadata>
   <files>
