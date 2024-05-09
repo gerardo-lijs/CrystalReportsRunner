@@ -34,5 +34,5 @@ public sealed class CrystalReportsConnection
     /// <summary>
     /// Logon Properties
     /// </summary>
-    public Dictionary<string, string>? LogonProperties { get; set; }
+    public Dictionary<string, string> LogonProperties { get; set; } = [];
 }
