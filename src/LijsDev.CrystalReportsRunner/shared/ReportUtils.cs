@@ -105,7 +105,7 @@ internal static class ReportUtils
             {
                 Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::SetParameter={parameter.ParameterFieldName} | Value={value}");
                 parameter.CurrentValues.Clear();
-                if (value is System.Collections.IEnumerable valueEnumerable)
+                if (value.GetType() != typeof(string) && value is System.Collections.IEnumerable valueEnumerable)
                 {
                     foreach (var valueItem in valueEnumerable)
                     {
