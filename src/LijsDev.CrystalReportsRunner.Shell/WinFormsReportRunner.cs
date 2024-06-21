@@ -33,6 +33,15 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
         _exporter.Print(report);
         Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::Print::End");
     }
+    /// <inheritdoc/>
+    public void PrintToPrinter(
+        Report report, string printer)
+    {
+        Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::PrintToPrinter::Start");
+        _exporter.PrintToPrinter(report, printer);
+        Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::PrintToPrinter::End");
+    }
+
 
     /// <inheritdoc/>
     public void Export(

@@ -123,6 +123,25 @@ public sealed class CrystalReportsEngine : IDisposable
     }
 
     /// <summary>
+    /// Prints a report to the specified printer.
+    /// </summary>
+    /// <param name="report">Report to print</param>
+    /// <param name="printer">Printer name or path</param>
+    /// <param name="cancellationToken">A cancellation token that can be used to cancel the work</param>
+    public async Task PrintToPrinter(
+        Report report,
+        string printer,
+        CancellationToken cancellationToken = default)
+    {
+        await Initialize(cancellationToken);
+
+        await _pipe.InvokeAsync(runner =>
+            runner.PrintToPrinter(report, printer), cancellationToken);
+    }
+
+
+
+    /// <summary>
     /// Show specified Crystal Reports file in Viewer window.
     /// Viewer will close when CrystalReportEngine is disposed unless CloseRunnerProcessAtExit is set to false.
     /// </summary>

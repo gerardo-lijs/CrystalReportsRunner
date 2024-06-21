@@ -15,6 +15,14 @@ internal class ReportExporter : IReportExporter
         // Print
         document.PrintToPrinter(nCopies: 1, collated: false, startPageN: 0, endPageN: 0);
     }
+    /// <inheritdoc/>
+    public void PrintToPrinter(Report report, string printer)
+    {
+        var document = ReportUtils.CreateReportDocument(report);
+        document.PrintOptions.PrinterName = printer;
+        // Print
+        document.PrintToPrinter(nCopies: 1, collated: false, startPageN: 0, endPageN: 0);
+    }
 
     /// <inheritdoc/>
     public void Export(Report report, ReportExportFormats exportFormat, string destinationFilename, bool overwrite = true)

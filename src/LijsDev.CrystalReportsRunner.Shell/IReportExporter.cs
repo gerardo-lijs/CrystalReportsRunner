@@ -14,6 +14,13 @@ public interface IReportExporter
     void Print(Report report);
 
     /// <summary>
+    /// Prints a report to the default printer.
+    /// </summary>
+    /// <param name="report">Report to print</param>
+    /// <param name="printer">Printer name or path</param>
+    void PrintToPrinter(Report report, string printer);
+
+    /// <summary>
     /// Exports a report to the specified filename.
     /// </summary>
     /// <param name="report">Report to export</param>

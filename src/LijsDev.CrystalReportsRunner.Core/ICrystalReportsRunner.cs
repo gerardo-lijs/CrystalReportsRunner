@@ -13,6 +13,14 @@ public interface ICrystalReportsRunner
         Report report);
 
     /// <summary>
+    /// Prints a report to the specified printer.
+    /// </summary>
+    /// <param name="report">Report to export</param>
+    /// <param name="printer">Printer name/path to print to</param>
+    void PrintToPrinter(
+        Report report, string printer);
+
+    /// <summary>
     /// Exports a report to the specified filename.
     /// </summary>
     /// <param name="report">Report to export</param>
