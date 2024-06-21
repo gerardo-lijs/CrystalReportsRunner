@@ -11,14 +11,8 @@ public interface IReportExporter
     /// Prints a report to the default printer.
     /// </summary>
     /// <param name="report">Report to print</param>
-    void Print(Report report);
-
-    /// <summary>
-    /// Prints a report to the default printer.
-    /// </summary>
-    /// <param name="report">Report to print</param>
-    /// <param name="printer">Printer name or path</param>
-    void PrintToPrinter(Report report, string printer);
+    /// <param name="printerName">Printer name/path to print to. Null uses default printer.</param>
+    void Print(Report report, string? printerName);
 
     /// <summary>
     /// Exports a report to the specified filename.

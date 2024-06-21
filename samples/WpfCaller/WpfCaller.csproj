@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
@@ -10,7 +10,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Authors>Muhammad Azeez and Gerardo Lijs</Authors>
     <Company>LijsDev</Company>
-    <Copyright>Copyright © LijsDev 2022-2023</Copyright>
+    <Copyright>Copyright © LijsDev 2022-2024</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
@@ -50,10 +50,10 @@
 
   <Target Name="CopyFiles" AfterTargets="Build">
     <ItemGroup>
-      <RunnerFiles Include="$(SolutionDir)src\LijsDev.CrystalReportsRunner\LijsDev.CrystalReportsRunner.13.0.34.x64\bin\x64\$(Configuration)\net48\**" />
+      <RunnerFiles Include="$(SolutionDir)src\LijsDev.CrystalReportsRunner\LijsDev.CrystalReportsRunner.13.0.35.x64\bin\x64\$(Configuration)\net48\**" />
     </ItemGroup>
-    <RemoveDir Directories="$(TargetDir)\CrystalReportsRunner.13.0.34.x64" />
-    <Copy SourceFiles="@(RunnerFiles)" DestinationFolder="$(TargetDir)\CrystalReportsRunner.13.0.34.x64" />
+    <RemoveDir Directories="$(TargetDir)\CrystalReportsRunner.13.0.35.x64" />
+    <Copy SourceFiles="@(RunnerFiles)" DestinationFolder="$(TargetDir)\CrystalReportsRunner.13.0.35.x64" />
   </Target>
 
 </Project>

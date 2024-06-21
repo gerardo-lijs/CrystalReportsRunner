@@ -8,18 +8,16 @@ using LijsDev.CrystalReportsRunner.Shell;
 internal class ReportExporter : IReportExporter
 {
     /// <inheritdoc/>
-    public void Print(Report report)
+    public void Print(Report report, string? printerName)
     {
         var document = ReportUtils.CreateReportDocument(report);
 
-        // Print
-        document.PrintToPrinter(nCopies: 1, collated: false, startPageN: 0, endPageN: 0);
-    }
-    /// <inheritdoc/>
-    public void PrintToPrinter(Report report, string printer)
-    {
-        var document = ReportUtils.CreateReportDocument(report);
-        document.PrintOptions.PrinterName = printer;
+        // Specified printer
+        if (!string.IsNullOrWhiteSpace(printerName))
+        {
+            document.PrintOptions.PrinterName = printerName;
+        }
+
         // Print
         document.PrintToPrinter(nCopies: 1, collated: false, startPageN: 0, endPageN: 0);
     }

@@ -6,19 +6,11 @@ namespace LijsDev.CrystalReportsRunner.Core;
 public interface ICrystalReportsRunner
 {
     /// <summary>
-    /// Prints a report to the default printer.
+    /// Prints a report.
     /// </summary>
     /// <param name="report">Report to export</param>
-    void Print(
-        Report report);
-
-    /// <summary>
-    /// Prints a report to the specified printer.
-    /// </summary>
-    /// <param name="report">Report to export</param>
-    /// <param name="printer">Printer name/path to print to</param>
-    void PrintToPrinter(
-        Report report, string printer);
+    /// <param name="printerName">Printer name/path to print to. Null uses default printer.</param>
+    void Print(Report report, string? printerName = null);
 
     /// <summary>
     /// Exports a report to the specified filename.
