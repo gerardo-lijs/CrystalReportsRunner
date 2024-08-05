@@ -1,0 +1,9 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup>
+		<Content Include="$(MSBuildThisFileDirectory)..\app\*.*">
+			<Link>CrystalReportsRunner.13.0.31.x64\%(Filename)%(Extension)</Link>
+			<Visible>false</Visible>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+</Project>
