@@ -22,68 +22,32 @@ internal static class ReportUtils
 
         Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::ReportDocument::Loaded");
 
-        ConnectionInfo? crConnection;
-
         if (report.Connection is not null)
         {
             Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Connection::Configuring");
             Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Connection::Server={report.Connection.Server}");
             Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Connection::Server={report.Connection.Database}");
 
-            var logonProperties = new NameValuePairs2()
-            {
-                new NameValuePair2("Data Source", report.Connection.Server),
-                new NameValuePair2("Initial Catalog", report.Connection.Database),
-                new NameValuePair2("Integrated Security", report.Connection.UseIntegratedSecurity ? "True" : "False"),
-            };
-            if (report.Connection.LogonProperties is not null)
-            {
-                foreach (var property in report.Connection.LogonProperties)
-                {
-                    logonProperties.Add(new NameValuePair2(property.Key, property.Value));
-                }
-            }
+            document.DataSourceConnections.Clear();
+            SetDataSourceConnection(report.Connection, document.DataSourceConnections[0]);
 
-            foreach (IConnectionInfo connection in document.DataSourceConnections)
-            {
-                connection.SetLogonProperties(logonProperties);
-                if (report.Connection.UseIntegratedSecurity)
-                {
-                    connection.SetConnection(
-                        report.Connection.Server, report.Connection.Database, useIntegratedSecurity: true);
-                }
-                else
-                {
-                    connection.SetConnection(
-                        report.Connection.Server,
-                        report.Connection.Database,
-                        report.Connection.Username,
-                        report.Connection.Password);
-                }
-            }
+            // NB: We need to set data source configuration twice, otherwise it does not work. Very strange Crystal Reports behaviour. Could be improved with the right code/order to set connections.
+            SetDataSourceConnection(report.Connection, document.DataSourceConnections[0]);
 
-            // Set table connection
-            crConnection = new ConnectionInfo
+            foreach (ReportDocument subReport in document.Subreports)
             {
-                ServerName = report.Connection.Server,
-                DatabaseName = report.Connection.Database
-            };
+                if (subReport.DataSourceConnections.Count > 0)
+                {
+                    subReport.DataSourceConnections.Clear();
+                    SetDataSourceConnection(report.Connection, subReport.DataSourceConnections[0]);
 
-            if (report.Connection.UseIntegratedSecurity)
-            {
-                crConnection.IntegratedSecurity = true;
-            }
-            else
-            {
-                crConnection.UserID = report.Connection.Username;
-                crConnection.Password = report.Connection.Password;
+                    // NB: We need to set data source configuration twice, otherwise it does not work. Very strange Crystal Reports behaviour. Could be improved with the right code/order to set connections.
+                    SetDataSourceConnection(report.Connection, subReport.DataSourceConnections[0]);
+                }
             }
         }
-        else
-        {
-            crConnection = null;
-        }
 
+        var crConnection = report.Connection is not null ? document.DataSourceConnections[0] as ConnectionInfo : null;
         // Main Report
         foreach (Table crTable in document.Database.Tables)
         {
@@ -124,6 +88,44 @@ internal static class ReportUtils
 
         Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::End");
         return document;
+    }
+
+    private static void SetDataSourceConnection(CrystalReportsConnection crystalReportsConnection, IConnectionInfo connection)
+    {
+        var logonProperties = new NameValuePairs2()
+        {
+            new NameValuePair2("Data Source", crystalReportsConnection.Server),
+            new NameValuePair2("Initial Catalog", crystalReportsConnection.Database),
+            new NameValuePair2("Integrated Security", crystalReportsConnection.UseIntegratedSecurity),
+        };
+        if (crystalReportsConnection.LogonProperties is not null)
+        {
+            foreach (var property in crystalReportsConnection.LogonProperties)
+            {
+                logonProperties.Add(new NameValuePair2(property.Key, property.Value));
+            }
+        }
+
+        // Apply logon properties
+        connection.SetLogonProperties(logonProperties);
+
+        // Apply connection
+        connection.IntegratedSecurity = crystalReportsConnection.UseIntegratedSecurity;
+        if (crystalReportsConnection.UseIntegratedSecurity)
+        {
+            connection.SetConnection(
+                crystalReportsConnection.Server, crystalReportsConnection.Database, useIntegratedSecurity: true);
+        }
+        else
+        {
+            connection.SetLogon(crystalReportsConnection.Username, crystalReportsConnection.Password);
+
+            connection.SetConnection(
+                crystalReportsConnection.Server,
+                crystalReportsConnection.Database,
+                crystalReportsConnection.Username,
+                crystalReportsConnection.Password);
+        }
     }
 
     private static void ConfigureTableDataSource(Table crTable, List<DataSet> datasets, ConnectionInfo? crConnection)
