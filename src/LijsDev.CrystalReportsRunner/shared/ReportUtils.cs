@@ -28,11 +28,14 @@ internal static class ReportUtils
             Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Connection::Server={report.Connection.Server}");
             Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Connection::Server={report.Connection.Database}");
 
-            document.DataSourceConnections.Clear();
-            SetDataSourceConnection(report.Connection, document.DataSourceConnections[0]);
+            if (document.DataSourceConnections.Count > 0)
+            {
+                document.DataSourceConnections.Clear();
+                SetDataSourceConnection(report.Connection, document.DataSourceConnections[0]);
 
-            // NB: We need to set data source configuration twice, otherwise it does not work. Very strange Crystal Reports behaviour. Could be improved with the right code/order to set connections.
-            SetDataSourceConnection(report.Connection, document.DataSourceConnections[0]);
+                // NB: We need to set data source configuration twice, otherwise it does not work. Very strange Crystal Reports behaviour. Could be improved with the right code/order to set connections.
+                SetDataSourceConnection(report.Connection, document.DataSourceConnections[0]);
+            }
 
             foreach (ReportDocument subReport in document.Subreports)
             {
@@ -47,7 +50,7 @@ internal static class ReportUtils
             }
         }
 
-        var crConnection = report.Connection is not null ? document.DataSourceConnections[0] as ConnectionInfo : null;
+        var crConnection = report.Connection is not null ? (document.DataSourceConnections.Count > 0 ? document.DataSourceConnections[0] as ConnectionInfo : null) : null;
         // Main Report
         foreach (Table crTable in document.Database.Tables)
         {
