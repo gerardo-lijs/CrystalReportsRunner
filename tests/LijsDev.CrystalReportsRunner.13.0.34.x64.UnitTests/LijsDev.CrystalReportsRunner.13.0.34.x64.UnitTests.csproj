@@ -37,6 +37,9 @@
     <None Include="..\shared\SampleReportDatasetParameters.rpt" Link="SampleReportDatasetParameters.rpt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\shared\SampleReportTwoDataSources.rpt" Link="SampleReportTwoDataSources.rpt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

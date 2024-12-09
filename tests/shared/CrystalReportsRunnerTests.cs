@@ -73,6 +73,21 @@ public class CrystalReportsTests
         form.ShowDialog();
     }
 
+    [TestMethod]
+    public void SampleReportTwoDataSources_ShowDialog_ShouldWork()
+    {
+        var report = new Report("SampleReportTwoDataSources.rpt", "Sample Report with two datasources")
+        {
+            Connection = CrystalReportsConnectionFactory.CreateSqlConnection(".\\SQLEXPRESS", "CrystalReportsSample")
+        };
+        report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
+        report.Parameters.Add("UserName", "Gerardo");
+
+        var reportViewer = new LijsDev.CrystalReportsRunner.ReportViewer();
+        var form = reportViewer.GetViewerForm(report, new ReportViewerSettings());
+        form.ShowDialog();
+    }
+
     /// <summary>
     /// Test a simple sample report without database connection, sending the DataSet with int/string/byte[] fields.
     /// </summary>

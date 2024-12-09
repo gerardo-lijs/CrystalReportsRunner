@@ -28,24 +28,22 @@ internal static class ReportUtils
             Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Connection::Server={report.Connection.Server}");
             Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Connection::Server={report.Connection.Database}");
 
-            if (document.DataSourceConnections.Count > 0)
+            for (var i = 0; i < document.DataSourceConnections.Count; i++)
             {
-                document.DataSourceConnections.Clear();
-                SetDataSourceConnection(report.Connection, document.DataSourceConnections[0]);
+                SetDataSourceConnection(report.Connection, document.DataSourceConnections[i]);
 
                 // NB: We need to set data source configuration twice, otherwise it does not work. Very strange Crystal Reports behaviour. Could be improved with the right code/order to set connections.
-                SetDataSourceConnection(report.Connection, document.DataSourceConnections[0]);
+                SetDataSourceConnection(report.Connection, document.DataSourceConnections[i]);
             }
 
             foreach (ReportDocument subReport in document.Subreports)
             {
-                if (subReport.DataSourceConnections.Count > 0)
+                for (var i = 0; i < subReport.DataSourceConnections.Count; i++)
                 {
-                    subReport.DataSourceConnections.Clear();
-                    SetDataSourceConnection(report.Connection, subReport.DataSourceConnections[0]);
+                    SetDataSourceConnection(report.Connection, subReport.DataSourceConnections[i]);
 
                     // NB: We need to set data source configuration twice, otherwise it does not work. Very strange Crystal Reports behaviour. Could be improved with the right code/order to set connections.
-                    SetDataSourceConnection(report.Connection, subReport.DataSourceConnections[0]);
+                    SetDataSourceConnection(report.Connection, subReport.DataSourceConnections[i]);
                 }
             }
         }
