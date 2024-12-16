@@ -22,6 +22,9 @@ internal static class ReportUtils
 
         Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::ReportDocument::Loaded");
 
+        // Cache logon properties
+        var logonProperties = report.Connection is not null ? CreateLogonPropertiesFromConnection(report.Connection) : null;
+
         if (report.Connection is not null)
         {
             Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Connection::Configuring");
@@ -30,36 +33,37 @@ internal static class ReportUtils
 
             for (var i = 0; i < document.DataSourceConnections.Count; i++)
             {
-                SetDataSourceConnection(report.Connection, document.DataSourceConnections[i]);
+                ConfigureDataSourceConnection(document.DataSourceConnections[i], report.Connection, logonProperties);
 
                 // NB: We need to set data source configuration twice, otherwise it does not work. Very strange Crystal Reports behaviour. Could be improved with the right code/order to set connections.
-                SetDataSourceConnection(report.Connection, document.DataSourceConnections[i]);
+                ConfigureDataSourceConnection(document.DataSourceConnections[i], report.Connection, logonProperties);
             }
 
             foreach (ReportDocument subReport in document.Subreports)
             {
                 for (var i = 0; i < subReport.DataSourceConnections.Count; i++)
                 {
-                    SetDataSourceConnection(report.Connection, subReport.DataSourceConnections[i]);
+                    ConfigureDataSourceConnection(subReport.DataSourceConnections[i], report.Connection, logonProperties);
 
                     // NB: We need to set data source configuration twice, otherwise it does not work. Very strange Crystal Reports behaviour. Could be improved with the right code/order to set connections.
-                    SetDataSourceConnection(report.Connection, subReport.DataSourceConnections[i]);
+                    ConfigureDataSourceConnection(subReport.DataSourceConnections[i], report.Connection, logonProperties);
                 }
             }
         }
 
-        var crConnection = report.Connection is not null ? (document.DataSourceConnections.Count > 0 ? document.DataSourceConnections[0] as ConnectionInfo : null) : null;
         // Main Report
         foreach (Table crTable in document.Database.Tables)
         {
-            ConfigureTableDataSource(crTable, report.DataSets, crConnection);
+            ConfigureTableConnection(crTable, report.Connection, logonProperties);
+            ConfigureTableDataSource(crTable, report.DataSets);
         }
         // Sub Reports
         foreach (ReportDocument crSubReport in document.Subreports)
         {
             foreach (Table crTable in crSubReport.Database.Tables)
             {
-                ConfigureTableDataSource(crTable, report.DataSets, crConnection);
+                ConfigureTableConnection(crTable, report.Connection, logonProperties);
+                ConfigureTableDataSource(crTable, report.DataSets);
             }
         }
 
@@ -91,7 +95,7 @@ internal static class ReportUtils
         return document;
     }
 
-    private static void SetDataSourceConnection(CrystalReportsConnection crystalReportsConnection, IConnectionInfo connection)
+    private static NameValuePairs2 CreateLogonPropertiesFromConnection(CrystalReportsConnection crystalReportsConnection)
     {
         var logonProperties = new NameValuePairs2()
         {
@@ -107,8 +111,18 @@ internal static class ReportUtils
             }
         }
 
+        return logonProperties;
+    }
+
+    private static void ConfigureDataSourceConnection(IConnectionInfo connection, CrystalReportsConnection? crystalReportsConnection, NameValuePairs2? logonProperties)
+    {
+        if (crystalReportsConnection is null) return;
+
         // Apply logon properties
-        connection.SetLogonProperties(logonProperties);
+        if (logonProperties is not null)
+        {
+            connection.SetLogonProperties(logonProperties);
+        }
 
         // Apply connection
         connection.IntegratedSecurity = crystalReportsConnection.UseIntegratedSecurity;
@@ -129,28 +143,33 @@ internal static class ReportUtils
         }
     }
 
-    private static void ConfigureTableDataSource(Table crTable, List<DataSet> datasets, ConnectionInfo? crConnection)
+    private static void ConfigureTableConnection(Table crTable, CrystalReportsConnection? crystalReportsConnection, NameValuePairs2? logonProperties)
     {
-        DataTable? table = null;
+        if (crystalReportsConnection is null) return;
+
+        crTable.LogOnInfo.ConnectionInfo.ServerName = crystalReportsConnection.Server;
+        crTable.LogOnInfo.ConnectionInfo.DatabaseName = crystalReportsConnection.Database;
+        crTable.LogOnInfo.ConnectionInfo.UserID = crystalReportsConnection.Username;
+        crTable.LogOnInfo.ConnectionInfo.Password = crystalReportsConnection.Password;
+        crTable.LogOnInfo.ConnectionInfo.IntegratedSecurity = crystalReportsConnection.UseIntegratedSecurity;
+
+        if (logonProperties is not null)
+        {
+            crTable.LogOnInfo.ConnectionInfo.LogonProperties = logonProperties;
+        }
+
+        crTable.ApplyLogOnInfo(crTable.LogOnInfo);
+    }
+
+    private static void ConfigureTableDataSource(Table crTable, List<DataSet> datasets)
+    {
         foreach (var item in datasets)
         {
             if (item.Tables.Contains(crTable.Name))
             {
-                table = item.Tables[crTable.Name];
-                break;
+                crTable.SetDataSource(item.Tables[crTable.Name]);
+                return;
             }
-        }
-
-        // If no dataset is supplied, configure its connection string.
-        if (table is not null)
-        {
-            crTable.SetDataSource(table);
-        }
-        else if (crConnection is not null)
-        {
-            var tableLogonInfo = crTable.LogOnInfo;
-            tableLogonInfo.ConnectionInfo = crConnection;
-            crTable.ApplyLogOnInfo(tableLogonInfo);
         }
     }
 }
