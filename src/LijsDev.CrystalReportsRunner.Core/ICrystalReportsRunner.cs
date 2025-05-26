@@ -10,7 +10,7 @@ public interface ICrystalReportsRunner
     /// </summary>
     /// <param name="report">Report to export</param>
     /// <param name="printerName">Printer name/path to print to. Null uses default printer.</param>
-    void Print(Report report, string? printerName = null);
+    public void Print(Report report, string? printerName = null);
 
     /// <summary>
     /// Exports a report to the specified filename.
@@ -19,7 +19,7 @@ public interface ICrystalReportsRunner
     /// <param name="exportFormat">Export format</param>
     /// <param name="destinationFilename">Destination filename</param>
     /// <param name="overwrite">Overwrite existing destination file if exists. Default: true</param>
-    void Export(
+    public void Export(
         Report report,
         ReportExportFormats exportFormat,
         string destinationFilename,
@@ -31,14 +31,14 @@ public interface ICrystalReportsRunner
     /// </summary>
     /// <param name="report">Report to export</param>
     /// <param name="exportFormat">Export format</param>
-    string ExportToMemoryMappedFile(
+    public string ExportToMemoryMappedFile(
         Report report,
         ReportExportFormats exportFormat);
 
     /// <summary>
     /// Show report in modeless window
     /// </summary>
-    void ShowReport(
+    public void ShowReport(
         Report report,
         ReportViewerSettings viewerSettings,
         WindowHandle? owner = null);
@@ -46,67 +46,8 @@ public interface ICrystalReportsRunner
     /// <summary>
     /// Show report in modal window
     /// </summary>
-    bool? ShowReportDialog(
+    public bool? ShowReportDialog(
         Report report,
         ReportViewerSettings viewSettings,
         WindowHandle owner);
-}
-
-/// <summary>
-/// Represents location and size of window.
-/// </summary>
-public class WindowLocation
-{
-    /// <summary>
-    /// Window height.
-    /// </summary>
-    public int Height { get; set; }
-    /// <summary>
-    /// Window Width.
-    /// </summary>
-    public int Width { get; set; }
-    /// <summary>
-    /// Window Top.
-    /// </summary>
-    public int Top { get; set; }
-    /// <summary>
-    /// Window Left.
-    /// </summary>
-    public int Left { get; set; }
-}
-
-/// <summary>
-/// Crystal Reports Caller interface
-/// </summary>
-public interface ICrystalReportsCaller
-{
-    /// <summary>
-    /// Form Closed Event
-    /// </summary>
-    /// <param name="reportFileName"></param>
-    /// <param name="location"></param>
-    void FormClosed(string reportFileName, WindowLocation location);
-
-    /// <summary>
-    /// Form Loaded Event.
-    /// </summary>
-    /// <param name="reportFileName"></param>
-    /// <param name="windowHandle"></param>
-    void FormLoaded(string reportFileName, WindowHandle windowHandle);
-}
-
-internal class DefaultCrystalReportsCaller : ICrystalReportsCaller
-{
-    private readonly CrystalReportsEngine _engine;
-
-    internal DefaultCrystalReportsCaller(CrystalReportsEngine engine)
-    {
-        _engine = engine;
-    }
-
-    public void FormClosed(string reportFileName, WindowLocation location) =>
-        _engine.OnFormClosed(reportFileName, location);
-
-    public void FormLoaded(string reportFileName, WindowHandle windowHandle) =>
-        _engine.OnFormLoaded(reportFileName, windowHandle);
 }

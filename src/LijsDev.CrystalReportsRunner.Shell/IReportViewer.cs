@@ -12,5 +12,5 @@ public interface IReportViewer
     /// <summary>
     /// Get Crystal Reports Viewer Form
     /// </summary>
-    Form GetViewerForm(Report report, ReportViewerSettings settings);
+    public Form GetViewerForm(Report report, ReportViewerSettings settings);
 }

@@ -12,7 +12,7 @@ public interface IReportExporter
     /// </summary>
     /// <param name="report">Report to print</param>
     /// <param name="printerName">Printer name/path to print to. Null uses default printer.</param>
-    void Print(Report report, string? printerName);
+    public void Print(Report report, string? printerName);
 
     /// <summary>
     /// Exports a report to the specified filename.
@@ -21,7 +21,7 @@ public interface IReportExporter
     /// <param name="exportFormat">Export format</param>
     /// <param name="destinationFilename">Destination filename</param>
     /// <param name="overwrite">Overwrite existing destination file if exists. Default: true</param>
-    void Export(
+    public void Export(
         Report report,
         ReportExportFormats exportFormat,
         string destinationFilename,
@@ -33,7 +33,7 @@ public interface IReportExporter
     /// </summary>
     /// <param name="report">Report to export</param>
     /// <param name="exportFormat">Export format</param>
-    string ExportToMemoryMappedFile(
+    public string ExportToMemoryMappedFile(
         Report report,
         ReportExportFormats exportFormat);
 }
