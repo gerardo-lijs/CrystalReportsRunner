@@ -7,28 +7,36 @@ using LijsDev.CrystalReportsRunner.Shell;
 internal class ReportExporter : IReportExporter
 {
     /// <inheritdoc/>
-    public void Print(Report report, string? printerName)
+    public void Print(Report report, ReportPrintOptions printOptions)
     {
         var document = ReportUtils.CreateReportDocument(report);
 
+        // Print options
+        document.PrintOptions.PaperOrientation = (PaperOrientation)printOptions.PaperOrientation;
+
         // Specified printer
-        if (!string.IsNullOrWhiteSpace(printerName))
+        if (!string.IsNullOrWhiteSpace(printOptions.PrinterName))
         {
             var printSettings = new System.Drawing.Printing.PrinterSettings
             {
-                PrinterName = printerName,
-                Copies = 1,
-                Collate = false
+                PrinterName = printOptions.PrinterName,
+                Copies = printOptions.Copies,
+                Collate = printOptions.Collated
             };
 
-            document.PrintToPrinter(printSettings, new System.Drawing.Printing.PageSettings(), false);
+            if (printOptions.StartPageNumber != 0 && printOptions.EndPageNumber != 0)
+            {
+                printSettings.PrintRange = System.Drawing.Printing.PrintRange.SomePages;
+                printSettings.FromPage = printOptions.StartPageNumber;
+                printSettings.ToPage = printOptions.EndPageNumber;
+            }
 
+            document.PrintToPrinter(printSettings, new System.Drawing.Printing.PageSettings(), false);
         }
         else
         {
-
             // Print
-            document.PrintToPrinter(nCopies: 1, collated: false, startPageN: 0, endPageN: 0);
+            document.PrintToPrinter(printOptions.Copies, printOptions.Collated, printOptions.StartPageNumber, printOptions.EndPageNumber);
         }
     }
 

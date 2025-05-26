@@ -119,7 +119,7 @@ public sealed class CrystalReportsEngine : IDisposable
         await Initialize(cancellationToken);
 
         await _pipe.InvokeAsync(runner =>
-            runner.Print(report, null), cancellationToken);
+            runner.Print(report, new ReportPrintOptions()), cancellationToken);
     }
 
     /// <summary>
@@ -136,7 +136,24 @@ public sealed class CrystalReportsEngine : IDisposable
         await Initialize(cancellationToken);
 
         await _pipe.InvokeAsync(runner =>
-            runner.Print(report, printerName), cancellationToken);
+            runner.Print(report, new ReportPrintOptions() { PrinterName = printerName }), cancellationToken);
+    }
+
+    /// <summary>
+    /// Prints a report using the specified printer options.
+    /// </summary>
+    /// <param name="report">Report to print</param>
+    /// <param name="printOptions">Report printer options</param>
+    /// <param name="cancellationToken">A cancellation token that can be used to cancel the work</param>
+    public async Task Print(
+        Report report,
+        ReportPrintOptions printOptions,
+        CancellationToken cancellationToken = default)
+    {
+        await Initialize(cancellationToken);
+
+        await _pipe.InvokeAsync(runner =>
+            runner.Print(report, printOptions), cancellationToken);
     }
 
     /// <summary>

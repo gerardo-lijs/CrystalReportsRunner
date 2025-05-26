@@ -8,11 +8,11 @@ using LijsDev.CrystalReportsRunner.Core;
 public interface IReportExporter
 {
     /// <summary>
-    /// Prints a report to the default printer.
+    /// Prints a report using the specified printer options.
     /// </summary>
     /// <param name="report">Report to print</param>
-    /// <param name="printerName">Printer name/path to print to. Null uses default printer.</param>
-    public void Print(Report report, string? printerName);
+    /// <param name="printOptions">Report printer options</param>
+    public void Print(Report report, ReportPrintOptions printOptions);
 
     /// <summary>
     /// Exports a report to the specified filename.
