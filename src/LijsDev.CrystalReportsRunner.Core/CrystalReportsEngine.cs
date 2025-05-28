@@ -84,7 +84,29 @@ public sealed class CrystalReportsEngine : IDisposable
         await Initialize(cancellationToken);
 
         await _pipe.InvokeAsync(runner =>
-            runner.Export(report, exportFormat, destinationFilename, overwrite), cancellationToken);
+            runner.Export(report, new()
+            {
+                ExportFormat = exportFormat,
+                DestinationFilename = destinationFilename,
+                Overwrite = overwrite
+            }), cancellationToken);
+    }
+
+    /// <summary>
+    /// Exports a report with the specified export options.
+    /// </summary>
+    /// <param name="report">Report to export</param>
+    /// <param name="reportExportOptions">Report export options</param>
+    /// <param name="cancellationToken">A cancellation token that can be used to cancel the work</param>
+    public async Task Export(
+        Report report,
+        ReportExportOptions reportExportOptions,
+        CancellationToken cancellationToken = default)
+    {
+        await Initialize(cancellationToken);
+
+        await _pipe.InvokeAsync(runner =>
+            runner.Export(report, reportExportOptions), cancellationToken);
     }
 
     /// <summary>
@@ -101,7 +123,27 @@ public sealed class CrystalReportsEngine : IDisposable
         await Initialize(cancellationToken);
 
         var mmfName = await _pipe.InvokeAsync(runner =>
-            runner.ExportToMemoryMappedFile(report, exportFormat), cancellationToken);
+            runner.ExportToMemoryMappedFile(report, new() { ExportFormat = exportFormat }), cancellationToken);
+
+        var mmf = System.IO.MemoryMappedFiles.MemoryMappedFile.OpenExisting(mmfName);
+        return mmf.CreateViewStream();
+    }
+
+    /// <summary>
+    /// Exports a report to a memory stream with the specified export options.
+    /// </summary>
+    /// <param name="report">Report to export</param>
+    /// <param name="reportExportToMemoryMappedFileOptions">Report export to memory mapped file options</param>
+    /// <param name="cancellationToken">A cancellation token that can be used to cancel the work</param>
+    public async Task<Stream> Export(
+        Report report,
+        ReportExportToMemoryMappedFileOptions reportExportToMemoryMappedFileOptions,
+        CancellationToken cancellationToken = default)
+    {
+        await Initialize(cancellationToken);
+
+        var mmfName = await _pipe.InvokeAsync(runner =>
+            runner.ExportToMemoryMappedFile(report, reportExportToMemoryMappedFileOptions), cancellationToken);
 
         var mmf = System.IO.MemoryMappedFiles.MemoryMappedFile.OpenExisting(mmfName);
         return mmf.CreateViewStream();

@@ -12,28 +12,26 @@ public interface IReportExporter
     /// </summary>
     /// <param name="report">Report to print</param>
     /// <param name="printOptions">Report printer options</param>
-    public void Print(Report report, ReportPrintOptions printOptions);
+    public void Print(
+        Report report,
+        ReportPrintOptions printOptions);
 
     /// <summary>
     /// Exports a report to the specified filename.
     /// </summary>
     /// <param name="report">Report to export</param>
-    /// <param name="exportFormat">Export format</param>
-    /// <param name="destinationFilename">Destination filename</param>
-    /// <param name="overwrite">Overwrite existing destination file if exists. Default: true</param>
+    /// <param name="reportExportOptions">Report export options</param>
     public void Export(
         Report report,
-        ReportExportFormats exportFormat,
-        string destinationFilename,
-        bool overwrite = true);
+        ReportExportOptions reportExportOptions);
 
     /// <summary>
     /// Exports a report to a memory mapped file.
     /// Returns the name of the memory mapped file.
     /// </summary>
     /// <param name="report">Report to export</param>
-    /// <param name="exportFormat">Export format</param>
+    /// <param name="reportExportToMemoryMappedFileOptions">Report export to memory mapped file options</param>
     public string ExportToMemoryMappedFile(
         Report report,
-        ReportExportFormats exportFormat);
+        ReportExportToMemoryMappedFileOptions reportExportToMemoryMappedFileOptions);
 }

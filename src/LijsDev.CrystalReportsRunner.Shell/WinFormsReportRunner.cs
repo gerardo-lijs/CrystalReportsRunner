@@ -36,22 +36,20 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
     /// <inheritdoc/>
     public void Export(
         Report report,
-        ReportExportFormats exportFormat,
-        string destinationFilename,
-        bool overwrite = true)
+        ReportExportOptions reportExportOptions)
     {
         Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::Export::Start");
-        _exporter.Export(report, exportFormat, destinationFilename, overwrite);
+        _exporter.Export(report, reportExportOptions);
         Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::Export::End");
     }
 
     /// <inheritdoc/>
     public string ExportToMemoryMappedFile(
         Report report,
-        ReportExportFormats exportFormat)
+        ReportExportToMemoryMappedFileOptions reportExportToMemoryMappedFileOptions)
     {
         Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ExportToStream::Start");
-        var mmfName = _exporter.ExportToMemoryMappedFile(report, exportFormat);
+        var mmfName = _exporter.ExportToMemoryMappedFile(report, reportExportToMemoryMappedFileOptions);
         Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ExportToStream::End");
 
         return mmfName;

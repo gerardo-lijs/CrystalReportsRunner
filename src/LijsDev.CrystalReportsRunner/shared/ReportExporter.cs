@@ -41,24 +41,30 @@ internal class ReportExporter : IReportExporter
     }
 
     /// <inheritdoc/>
-    public void Export(Report report, ReportExportFormats exportFormat, string destinationFilename, bool overwrite = true)
+    public void Export(Report report, ReportExportOptions reportExportOptions)
     {
         var document = ReportUtils.CreateReportDocument(report);
 
+        // Print options
+        document.PrintOptions.PaperOrientation = (PaperOrientation)reportExportOptions.PaperOrientation;
+
         // Overwrite
-        if (overwrite && File.Exists(destinationFilename)) File.Delete(destinationFilename);
+        if (reportExportOptions.Overwrite && File.Exists(reportExportOptions.DestinationFilename)) File.Delete(reportExportOptions.DestinationFilename);
 
         // Export
-        document.ExportToDisk((ExportFormatType)exportFormat, destinationFilename);
+        document.ExportToDisk((ExportFormatType)reportExportOptions.ExportFormat, reportExportOptions.DestinationFilename);
     }
 
     /// <inheritdoc/>
-    public string ExportToMemoryMappedFile(Report report, ReportExportFormats exportFormat)
+    public string ExportToMemoryMappedFile(Report report, ReportExportToMemoryMappedFileOptions reportExportToMemoryMappedFileOptions)
     {
         var document = ReportUtils.CreateReportDocument(report);
 
+        // Print options
+        document.PrintOptions.PaperOrientation = (PaperOrientation)reportExportToMemoryMappedFileOptions.PaperOrientation;
+
         // Export
-        var reportStream = document.ExportToStream((ExportFormatType)exportFormat);
+        var reportStream = document.ExportToStream((ExportFormatType)reportExportToMemoryMappedFileOptions.ExportFormat);
 
         // Create MemoryMappedFile from Stream
         var mmfName = $"CrystalReportsRunner_Export_{Guid.NewGuid()}";
