@@ -49,12 +49,17 @@ public sealed class Report
     /// </summary>
     public string? ExportFilename { get; set; }
 
+    /// <summary>
+    /// Gets or sets the paper orientation for displaying the report (e.g., Portrait or Landscape).
+    /// </summary>
+    public PaperOrientations PaperOrientation { get; set; }
+
     /// <inheritdoc/>
     public CrystalReportsConnection? Connection { get; set; }
 
     /// <inheritdoc/>
-    public Dictionary<string, object> Parameters { get; set; } = new();
+    public Dictionary<string, object> Parameters { get; set; } = [];
 
     /// <inheritdoc/>
-    public List<DataSet> DataSets { get; set; } = new();
+    public List<DataSet> DataSets { get; set; } = [];
 }

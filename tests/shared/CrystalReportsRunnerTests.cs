@@ -17,6 +17,7 @@ public class CrystalReportsTests
         };
         report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
         report.Parameters.Add("UserName", "Gerardo");
+        report.PaperOrientation = PaperOrientations.Landscape;
 
         var reportViewer = new LijsDev.CrystalReportsRunner.ReportViewer();
         var form = reportViewer.GetViewerForm(report, new ReportViewerSettings());
