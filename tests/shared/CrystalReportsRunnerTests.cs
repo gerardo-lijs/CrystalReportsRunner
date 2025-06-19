@@ -120,6 +120,41 @@ public class CrystalReportsTests
         form.ShowDialog();
     }
 
+    /// <summary>
+    /// Test a simple sample landscape report without database connection, sending the DataSet with int/string/byte[] fields.
+    /// </summary>
+    [TestMethod]
+    public void SampleReportDataset_ShowDialog_WithLandscape_ShouldWork()
+    {
+        var report = new Report("SampleReportDataset.rpt", "Sample Report Dataset");
+        report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
+        report.Parameters.Add("UserName", "Gerardo");
+        // Set landcape orientation
+        report.PaperOrientation = PaperOrientations.Landscape;
+
+        // Create dataset
+        var sampleReportDataset = new System.Data.DataSet();
+
+        // Create table
+        var personsTable = new System.Data.DataTable("Persons");
+        sampleReportDataset.Tables.Add(personsTable);
+        personsTable.Columns.Add("Id", typeof(int));
+        personsTable.Columns.Add("Name", typeof(string));
+        personsTable.Columns.Add("Age", typeof(int));
+        personsTable.Columns.Add("PersonImage", typeof(byte[]));
+
+        // Add rows
+        personsTable.Rows.Add(1, "Gerardo", "42", File.ReadAllBytes("sampleImage1.jpg"));
+        personsTable.Rows.Add(2, "Khalifa", "24", File.ReadAllBytes("sampleImage2.jpg"));
+
+        report.DataSets.Add(sampleReportDataset);
+
+        var reportViewer = new LijsDev.CrystalReportsRunner.ReportViewer();
+        var form = reportViewer.GetViewerForm(report, new ReportViewerSettings());
+        form.ShowDialog();
+    }
+
+
     [TestMethod]
     public void SampleReport_CreateReportDocument_ShouldWork()
     {
