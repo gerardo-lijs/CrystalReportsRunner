@@ -356,13 +356,33 @@ public sealed class CrystalReportsEngine : IDisposable
     private string GetRunnerPath(string? runnerPath)
     {
         var assemblyFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        assemblyFolder ??= Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        if (runnerPath is null && assemblyFolder is null) throw new InvalidProgramException("Could not get assemblyFolder location with GetEntryAssembly nor GetExecutingAssembly. Please specify runnerPath explicitly with a full path.");
 
-        var candidates = Directory.EnumerateDirectories(assemblyFolder, "CrystalReportsRunner.*")
-            .Select(d => Path.Combine(d, "LijsDev.CrystalReportsRunner.exe")).ToList();
+        List<string> candidates = [];
 
+        // Add explicit runner path
         if (runnerPath is not null)
         {
-            candidates.Insert(0, Path.Combine(assemblyFolder, runnerPath));
+            if (File.Exists(runnerPath))
+            {
+                // Fullpath provided
+                candidates.Add(runnerPath);
+            }
+            else
+            {
+                // Relative path provided
+                candidates.Add(Path.Combine(assemblyFolder, runnerPath));
+            }
+        }
+
+        // Add subfolders in app entry assembly folder
+        if (assemblyFolder is not null)
+        {
+            foreach (var directory in Directory.EnumerateDirectories(assemblyFolder, "CrystalReportsRunner.*"))
+            {
+                candidates.Add(Path.Combine(directory, "LijsDev.CrystalReportsRunner.exe"));
+            }
         }
 
         var path = candidates.FirstOrDefault(File.Exists);
