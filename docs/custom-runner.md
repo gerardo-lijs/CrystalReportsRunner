@@ -81,7 +81,7 @@ Maybe you need a version of the Crystal Reports runtime that we don't support or
 
     Reference Implementations:
 
-    - [`ViewerForm`](../src/LijsDev.CrystalReportsRunner/ViewerForm.cs)
+    - [`ViewerForm`](../src/LijsDev.CrystalReportsRunner/shared/ViewerForm.cs)
 
 4. And an implementation of `IReportExporter`:
 
@@ -130,7 +130,7 @@ Maybe you need a version of the Crystal Reports runtime that we don't support or
     
     Reference Implementations:
     
-    - [`ReportUtils`](../src/LijsDev.CrystalReportsRunner/ReportUtils.cs)
-    - [`MemoryMappedFileUtils`](../src/LijsDev.CrystalReportsRunner/MemoryMappedFileUtils.cs)
+    - [`ReportUtils`](../src/LijsDev.CrystalReportsRunner/shared/ReportUtils.cs)
+    - [`MemoryMappedFileUtils`](../src/LijsDev.CrystalReportsRunner/shared/MemoryMappedFileUtils.cs)
 
 4. Make sure you copy the sample runner executable to `crystal-reports-runner\runner.exe` along with its dependencies in the output folder of the Caller assembly.
