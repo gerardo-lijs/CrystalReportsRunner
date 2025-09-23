@@ -39,6 +39,7 @@
     <Compile Include="..\shared\Program.cs" Link="Program.cs" />
     <Compile Include="..\shared\ReportExporter.cs" Link="ReportExporter.cs" />
     <Compile Include="..\shared\ReportUtils.cs" Link="ReportUtils.cs" />
+    <Compile Include="..\shared\CustomReportDocument.cs" Link="CustomReportDocument.cs" />
     <Compile Include="..\shared\ReportViewer.cs" Link="ReportViewer.cs" />
     <Compile Include="..\shared\RuntimePolicyHelper.cs" Link="RuntimePolicyHelper.cs" />
     <Compile Include="..\shared\ViewerForm.cs" Link="ViewerForm.cs" />

@@ -1,8 +1,7 @@
 namespace LijsDev.CrystalReportsRunner.Core;
 
-using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Data;
+using Newtonsoft.Json;
 
 /// <summary>
 /// Report
@@ -59,6 +58,11 @@ public sealed class Report
 
     /// <inheritdoc/>
     public Dictionary<string, object> Parameters { get; set; } = [];
+
+    /// <summary>
+    /// String that can be used to extend the RecordSelectionFormula with an additional Filter
+    /// </summary>
+    public string WhereStatement { get; set; } = string.Empty;
 
     /// <inheritdoc/>
     public List<DataSet> DataSets { get; set; } = [];
