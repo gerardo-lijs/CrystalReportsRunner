@@ -1,24 +1,27 @@
 namespace LijsDev.CrystalReportsRunner;
 
-using System;
+using System.Diagnostics;
+using System.Reflection;
 using CommandLine;
-using LijsDev.CrystalReportsRunner.Core;
-using static LijsDev.CrystalReportsRunner.Shell.Shell;
+using Core;
+using NLog;
+using static Shell.Shell;
 
 internal static class Program
 {
-    private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
     public static string ApplicationVersion
     {
         get
         {
-            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            var fileVersionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+            var assembly = Assembly.GetExecutingAssembly();
+            var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
             return fileVersionInfo.ProductVersion;
         }
     }
-    public static string ApplicationLocation => System.Reflection.Assembly.GetExecutingAssembly().Location;
+
+    public static string ApplicationLocation => Assembly.GetExecutingAssembly().Location;
 
 #if CR_RUNTIME_13_0_20
     private const string CrystalReportsRuntimeVersion = "13.0.20";
@@ -28,6 +31,8 @@ internal static class Program
     private const string CrystalReportsRuntimeVersion = "13.0.33";
 #elif CR_RUNTIME_13_0_34
     private const string CrystalReportsRuntimeVersion = "13.0.34";
+#elif CR_RUNTIME_13_0_36
+    private const string CrystalReportsRuntimeVersion = "13.0.36";
 #else
     private const string CrystalReportsRuntimeVersion = "Unknown";
 #endif
