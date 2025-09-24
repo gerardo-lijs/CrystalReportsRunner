@@ -22,6 +22,23 @@ public sealed class Report
         Title = title;
     }
 
+    /// <summary>
+    /// Constructor that allows to specify the where-statement as well as the parameters at instantiation.
+    /// All parameters will be added to the internal dictionary.
+    /// </summary>
+    /// <param name="filename"></param>
+    /// <param name="where"></param>
+    /// <param name="parameters"></param>
+    public Report(string filename, string where, List<KeyValuePair<string, object>> parameters)
+    {
+        Filename = filename;
+        WhereStatement = where;
+        foreach (var parameter in parameters)
+        {
+            Parameters.Add(parameter.Key, parameter.Value);
+        }
+    }
+
     /// <inheritdoc/>
     [JsonConstructor]
     public Report(string filename, string title, string exportFilename)
