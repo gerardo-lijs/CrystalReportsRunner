@@ -7,10 +7,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Authors>Muhammad Azeez and Gerardo Lijs</Authors>
-    <Company>LijsDev</Company>
-    <Copyright>Copyright © LijsDev 2022-2024</Copyright>
+    <Authors>sharecomm ag</Authors>
+    <Company>sharecomm ag</Company>
+    <Copyright>Copyright © sharecomm ag 2022-2025</Copyright>
     <Description>API needed to use Crystal Reports Runner from caller applications.</Description>
+    <PackageId>Remec.CrystalReportsRunner.Core</PackageId>
+    <Version>2.0.0</Version>
 
     <IsPackable>true</IsPackable>
     <PackageProjectUrl>https://github.com/gerardo-lijs/CrystalReportsRunner</PackageProjectUrl>
@@ -39,16 +41,9 @@
     <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <MinVerTagPrefix>v</MinVerTagPrefix>
-    <MinVerMinimumMajorMinor>1.0</MinVerMinimumMajorMinor>
-    <MinVerDefaultPreReleaseIdentifiers>preview.0</MinVerDefaultPreReleaseIdentifiers>
-  </PropertyGroup>
-
   <ItemGroup>
     <SourceRoot Include="$(MSBuildThisFileDirectory)/" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-    <PackageReference Include="MinVer" Version="4.3.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
   </ItemGroup>
   
