@@ -9,13 +9,20 @@ using Newtonsoft.Json;
 [Serializable]
 public sealed class Report
 {
-    /// <inheritdoc/>
+    /// <summary>
+    /// Constructor with default window title
+    /// </summary>
+    /// <param name="filename"></param>
     public Report(string filename)
     {
         Filename = filename;
     }
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Constructor with custom window title
+    /// </summary>
+    /// <param name="filename"></param>
+    /// <param name="title"></param>
     public Report(string filename, string title)
     {
         Filename = filename;
@@ -29,7 +36,7 @@ public sealed class Report
     /// <param name="filename"></param>
     /// <param name="where"></param>
     /// <param name="parameters"></param>
-    public Report(string filename, string where, List<KeyValuePair<string, object>> parameters)
+    public Report(string filename, string where, IEnumerable<KeyValuePair<string, object>> parameters)
     {
         Filename = filename;
         WhereStatement = where;
@@ -39,7 +46,12 @@ public sealed class Report
         }
     }
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Constructor for serialization
+    /// </summary>
+    /// <param name="filename"></param>
+    /// <param name="title"></param>
+    /// <param name="exportFilename"></param>
     [JsonConstructor]
     public Report(string filename, string title, string exportFilename)
     {
@@ -70,10 +82,15 @@ public sealed class Report
     /// </summary>
     public PaperOrientations PaperOrientation { get; set; }
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Holds the database connection properties.
+    /// </summary>
     public CrystalReportsConnection? Connection { get; set; }
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// All report parameters, that the report needs.
+    /// One can provide more parameters, than the report needs. The unused ones will be discarded.
+    /// </summary>
     public Dictionary<string, object> Parameters { get; set; } = [];
 
     /// <summary>
@@ -81,6 +98,8 @@ public sealed class Report
     /// </summary>
     public string WhereStatement { get; set; } = string.Empty;
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Used for the sample projects.
+    /// </summary>
     public List<DataSet> DataSets { get; set; } = [];
 }
