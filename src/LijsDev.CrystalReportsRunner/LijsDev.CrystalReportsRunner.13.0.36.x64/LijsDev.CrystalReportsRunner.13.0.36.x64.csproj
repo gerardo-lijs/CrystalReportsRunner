@@ -11,7 +11,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <version>1.6.3</version>
+    <Version>1.6.3</Version>
     <AssemblyVersion>1.6.3.0</AssemblyVersion>
     <FileVersion>1.6.3.0</FileVersion>
     <AssemblyName>LijsDev.CrystalReportsRunner</AssemblyName>
