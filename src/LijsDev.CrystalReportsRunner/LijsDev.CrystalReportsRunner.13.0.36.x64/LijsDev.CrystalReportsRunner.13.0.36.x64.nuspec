@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>LijsDev.CrystalReportsRunner.13.0.36.x64</id>
-    <version>1.6.0</version>
-    <title>LijsDev Crystal Reports Runner for Runtime v13.0.36 (x64)</title>
-    <authors>Remec AG</authors>
-    <owners></owners>
+    <id>Remec.CrystalReportsRunner.13.0.36.x64</id>
+    <version>$version$</version>
+    <title>Remec Crystal Reports Runner for Runtime v13.0.36 (x64)</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="file">LICENSE.md</license>
     <readme>README.md</readme>
@@ -13,7 +13,7 @@
     <description>Runner to allow the use of Crystal Reports in .NET using external process. Copies runner to 'CrystalReportsRunner.13.0.36.x64' in your project output folder.  Requires Crystal Reports Runtime v13.0.36 (x64) to be installed in computer where your application will be deployed.</description>
     <tags>Crystal Reports .NET Core net48</tags>
     <dependencies>
-      <dependency id="LijsDev.CrystalReportsRunner.Core" version="1.5.0" />
+      <dependency id="Remec.CrystalReportsRunner.Core" version="2.0.0" />
     </dependencies>
   </metadata>
   <files>

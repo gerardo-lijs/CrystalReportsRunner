@@ -11,11 +11,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <version>1.6.3</version>
+    <AssemblyVersion>1.6.3.0</AssemblyVersion>
+    <FileVersion>1.6.3.0</FileVersion>
     <AssemblyName>LijsDev.CrystalReportsRunner</AssemblyName>
     <AssemblyTitle>LijsDev Crystal Reports Runner</AssemblyTitle>
-    <Authors>Muhammad Azeez and Gerardo Lijs</Authors>
-    <Company>LijsDev</Company>
-    <Copyright>Copyright © LijsDev 2022-2024</Copyright>
+    <Authors>sharecomm ag</Authors>
+    <Company>sharecomm ag</Company>
+    <Copyright>Copyright © sharecomm ag 2022-2025</Copyright>
     <ApplicationIcon>..\shared\report.ico</ApplicationIcon>
     <EmbeddedResourceUseDependentUponConvention>true</EmbeddedResourceUseDependentUponConvention>
   </PropertyGroup>
