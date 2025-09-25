@@ -1,12 +1,18 @@
 namespace LijsDev.CrystalReportsRunner;
 
+using Core;
 using CrystalDecisions.CrystalReports.Engine;
+using NLog;
 using Shell;
 
 internal static class ReportUtils
 {
-    public static CustomReportDocument CreateReportDocument(Core.Report report)
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+    public static CustomReportDocument CreateReportDocument(Report report)
     {
+        Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Filename={report.Filename}");
+
         var doc = new CustomReportDocument();
         try
         {
@@ -57,12 +63,10 @@ internal static class ReportUtils
                     {
                         doc.VerifyDatabase();
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        // TODO: Figure out why this catch is empty
+                        Logger.Error(ex, "Could not verify the database connection.");
                     }
-
-                    //SetReportParameters(doc, whereStatement, parameters);
                 }
 
                 doc.SaveAs(report.Filename, false);
