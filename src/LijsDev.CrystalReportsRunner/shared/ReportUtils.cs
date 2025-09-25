@@ -1,174 +1,138 @@
 namespace LijsDev.CrystalReportsRunner;
 
+using Core;
 using CrystalDecisions.CrystalReports.Engine;
-using CrystalDecisions.Shared;
-
-using System.Collections.Generic;
-using System.Data;
-
-using LijsDev.CrystalReportsRunner.Core;
+using NLog;
+using Shell;
 
 internal static class ReportUtils
 {
-    private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-    public static ReportDocument CreateReportDocument(Report report)
+    public static CustomReportDocument CreateReportDocument(Report report)
     {
-        Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Start");
         Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Filename={report.Filename}");
 
-        var document = new ReportDocument();
-        document.Load(report.Filename);
-
-        Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::ReportDocument::Loaded");
-
-        // Cache logon properties
-        var logonProperties = report.Connection is not null ? CreateLogonPropertiesFromConnection(report.Connection) : null;
-
-        if (report.Connection is not null)
+        var doc = new CustomReportDocument();
+        try
         {
-            Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Connection::Configuring");
-            Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Connection::Server={report.Connection.Server}");
-            Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::Connection::Server={report.Connection.Database}");
+            var dbChanged = false;
 
-            for (var i = 0; i < document.DataSourceConnections.Count; i++)
+            doc.Load(report.Filename);
+
+            //Check Report Datenbankverbindung geändert?
+            if (report.Connection is not null)
             {
-                ConfigureDataSourceConnection(document.DataSourceConnections[i], report.Connection, logonProperties);
-
-                // NB: We need to set data source configuration twice, otherwise it does not work. Very strange Crystal Reports behaviour. Could be improved with the right code/order to set connections.
-                ConfigureDataSourceConnection(document.DataSourceConnections[i], report.Connection, logonProperties);
-            }
-
-            foreach (ReportDocument subReport in document.Subreports)
-            {
-                for (var i = 0; i < subReport.DataSourceConnections.Count; i++)
+                if (doc.DataSourceConnections[0].ServerName != report.Connection.Server
+                    || doc.DataSourceConnections[0].DatabaseName != report.Connection.Database
+                    || doc.DataSourceConnections[0].IntegratedSecurity != report.Connection.UseIntegratedSecurity)
                 {
-                    ConfigureDataSourceConnection(subReport.DataSourceConnections[i], report.Connection, logonProperties);
+                    doc.DataSourceConnections.Clear();
+                    doc.DataSourceConnections[0]
+                        .SetConnection(report.Connection.Server, report.Connection.Database, report.Connection.UseIntegratedSecurity);
+                    dbChanged = true;
+                }
 
-                    // NB: We need to set data source configuration twice, otherwise it does not work. Very strange Crystal Reports behaviour. Could be improved with the right code/order to set connections.
-                    ConfigureDataSourceConnection(subReport.DataSourceConnections[i], report.Connection, logonProperties);
+                //Hat die Datenbankverbindung in den Subreports geändert?
+                foreach (ReportDocument subReport in doc.Subreports)
+                {
+                    subReport.DataSourceConnections.Clear();
+                    if (subReport.DataSourceConnections[0].ServerName != report.Connection.Server
+                        || subReport.DataSourceConnections[0].DatabaseName != report.Connection.Database
+                        || subReport.DataSourceConnections[0].IntegratedSecurity != report.Connection.UseIntegratedSecurity)
+                    {
+                        subReport.DataSourceConnections[0]
+                            .SetConnection(report.Connection.Server, report.Connection.Database, report.Connection.UseIntegratedSecurity);
+                        dbChanged = true;
+                    }
                 }
             }
-        }
 
-        // Main Report
-        foreach (Table crTable in document.Database.Tables)
-        {
-            ConfigureTableConnection(crTable, report.Connection, logonProperties);
-            ConfigureTableDataSource(crTable, report.DataSets);
-        }
-        // Sub Reports
-        foreach (ReportDocument crSubReport in document.Subreports)
-        {
-            foreach (Table crTable in crSubReport.Database.Tables)
+            //Benutzername und Passwort, falls SQL-Authentifizierung
+            if (!doc.DataSourceConnections[0].IntegratedSecurity)
             {
-                ConfigureTableConnection(crTable, report.Connection, logonProperties);
-                ConfigureTableDataSource(crTable, report.DataSets);
+                doc.DataSourceConnections[0].SetLogon(report.Connection?.Username, report.Connection?.Password);
             }
+
+            //Changed?
+            if (dbChanged)
+            {
+                if (report.Connection?.UseIntegratedSecurity != true)
+                {
+                    try
+                    {
+                        doc.VerifyDatabase();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex, "Could not verify the database connection.");
+                    }
+                }
+
+                doc.SaveAs(report.Filename, false);
+            }
+
+            //Parameter setzen
+            SetReportParameters(doc, report.WhereStatement, report.Parameters);
+        }
+        catch (Exception ex)
+        {
+            var logon = "";
+            if (doc != null)
+            {
+                if (doc.IsLoaded)
+                {
+                    logon = doc.DataSourceConnections[0].ServerName + "\r\n" +
+                            doc.DataSourceConnections[0].DatabaseName + "\r\n" +
+                            doc.DataSourceConnections[0].Type;
+                }
+            }
+
+            var mess = ex.Message;
+            if (ex.InnerException != null)
+            {
+                mess = ex.InnerException.Message;
+            }
+
+            throw new Exception("Failed to open report:" + "'" + report.Filename + "'\r\n" + logon + "\r\n Exception:" + mess);
         }
 
-        // Set parameters
-        foreach (ParameterField parameter in document.ParameterFields)
+        return doc;
+    }
+
+    private static void SetReportParameters(CustomReportDocument reportDocument, string whereStatement, Dictionary<string, object> parameters)
+    {
+        var reportParameters = parameters;
+
+        //StandardParameter vordefinieren
+        foreach (var parameter in reportParameters)
         {
-            if (report.Parameters.TryGetValue(parameter.ParameterFieldName, out var value))
+            reportDocument.SetParameterValueIfExists(parameter.Key, parameter.Value);
+        }
+
+        //WHERE Setzen
+        if (whereStatement.Length > 0)
+        {
+            if (whereStatement.Contains("{"))
             {
-                Logger.Trace($"LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::SetParameter={parameter.ParameterFieldName} | Value={value}");
-                parameter.CurrentValues.Clear();
-                if (value.GetType() != typeof(string) && value is System.Collections.IEnumerable valueEnumerable)
+                if (reportDocument.RecordSelectionFormula.Length > 0)
                 {
-                    foreach (var valueItem in valueEnumerable)
-                    {
-                        parameter.CurrentValues.AddValue(valueItem);
-                    }
+                    reportDocument.RecordSelectionFormula = "(" + reportDocument.RecordSelectionFormula +
+                                                            ")  AND  (" + whereStatement + ")";
                 }
                 else
                 {
-                    parameter.CurrentValues.AddValue(value);
+                    reportDocument.RecordSelectionFormula = whereStatement;
                 }
             }
-        }
-
-        // NB: SummaryInfo.ReportTitle is used as initial value in save dialog when exporting a report.
-        document.SummaryInfo.ReportTitle = report.ExportFilename ?? report.Title;
-
-        Logger.Trace("LijsDev::CrystalReportsRunner::ReportUtils::CreateReportDocument::End");
-        return document;
-    }
-
-    private static NameValuePairs2 CreateLogonPropertiesFromConnection(CrystalReportsConnection crystalReportsConnection)
-    {
-        var logonProperties = new NameValuePairs2()
-        {
-            new NameValuePair2("Data Source", crystalReportsConnection.Server),
-            new NameValuePair2("Initial Catalog", crystalReportsConnection.Database),
-            new NameValuePair2("Integrated Security", crystalReportsConnection.UseIntegratedSecurity),
-        };
-        if (crystalReportsConnection.LogonProperties is not null)
-        {
-            foreach (var property in crystalReportsConnection.LogonProperties)
+            else
             {
-                logonProperties.Add(new NameValuePair2(property.Key, property.Value));
-            }
-        }
-
-        return logonProperties;
-    }
-
-    private static void ConfigureDataSourceConnection(IConnectionInfo connection, CrystalReportsConnection? crystalReportsConnection, NameValuePairs2? logonProperties)
-    {
-        if (crystalReportsConnection is null) return;
-
-        // Apply logon properties
-        if (logonProperties is not null)
-        {
-            connection.SetLogonProperties(logonProperties);
-        }
-
-        // Apply connection
-        connection.IntegratedSecurity = crystalReportsConnection.UseIntegratedSecurity;
-        if (crystalReportsConnection.UseIntegratedSecurity)
-        {
-            connection.SetConnection(
-                crystalReportsConnection.Server, crystalReportsConnection.Database, useIntegratedSecurity: true);
-        }
-        else
-        {
-            connection.SetLogon(crystalReportsConnection.Username, crystalReportsConnection.Password);
-
-            connection.SetConnection(
-                crystalReportsConnection.Server,
-                crystalReportsConnection.Database,
-                crystalReportsConnection.Username,
-                crystalReportsConnection.Password);
-        }
-    }
-
-    private static void ConfigureTableConnection(Table crTable, CrystalReportsConnection? crystalReportsConnection, NameValuePairs2? logonProperties)
-    {
-        if (crystalReportsConnection is null) return;
-
-        crTable.LogOnInfo.ConnectionInfo.ServerName = crystalReportsConnection.Server;
-        crTable.LogOnInfo.ConnectionInfo.DatabaseName = crystalReportsConnection.Database;
-        crTable.LogOnInfo.ConnectionInfo.UserID = crystalReportsConnection.Username;
-        crTable.LogOnInfo.ConnectionInfo.Password = crystalReportsConnection.Password;
-        crTable.LogOnInfo.ConnectionInfo.IntegratedSecurity = crystalReportsConnection.UseIntegratedSecurity;
-
-        if (logonProperties is not null)
-        {
-            crTable.LogOnInfo.ConnectionInfo.LogonProperties = logonProperties;
-        }
-
-        crTable.ApplyLogOnInfo(crTable.LogOnInfo);
-    }
-
-    private static void ConfigureTableDataSource(Table crTable, List<DataSet> datasets)
-    {
-        foreach (var item in datasets)
-        {
-            if (item.Tables.Contains(crTable.Name))
-            {
-                crTable.SetDataSource(item.Tables[crTable.Name]);
-                return;
+                var splitParameter = whereStatement.Split('=');
+                var whereParameter = reportDocument.ParameterFields.Find(splitParameter[0], "");
+                if (whereParameter != null)
+                {
+                    reportDocument.SetParameterValue(splitParameter[0], splitParameter[1]);
+                }
             }
         }
     }
