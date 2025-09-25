@@ -4,8 +4,8 @@
     <id>Remec.CrystalReportsRunner.13.0.36.x64</id>
     <version>$version$</version>
     <title>Remec Crystal Reports Runner for Runtime v13.0.36 (x64)</title>
-    <authors>$author$</authors>
-    <owners>$author$</owners>
+    <authors>sharecomm ag</authors>
+    <owners>sharecomm ag</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="file">LICENSE.md</license>
     <readme>README.md</readme>
