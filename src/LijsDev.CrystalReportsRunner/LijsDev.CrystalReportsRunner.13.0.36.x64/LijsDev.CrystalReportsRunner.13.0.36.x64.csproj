@@ -11,14 +11,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Version>1.6.4</Version>
-    <AssemblyVersion>1.6.4.0</AssemblyVersion>
-    <FileVersion>1.6.4.0</FileVersion>
-    <AssemblyName>LijsDev.CrystalReportsRunner</AssemblyName>
-    <AssemblyTitle>LijsDev Crystal Reports Runner</AssemblyTitle>
-    <Authors>sharecomm ag</Authors>
-    <Company>sharecomm ag</Company>
-    <Copyright>Copyright © sharecomm ag 2022-2025</Copyright>
+    <Version>1.6.5</Version>
+    <AssemblyVersion>1.6.5.0</AssemblyVersion>
+    <FileVersion>1.6.5.0</FileVersion>
+    <AssemblyName>Remec.CrystalReportsRunner</AssemblyName>
+    <AssemblyTitle>Remec Crystal Reports Runner</AssemblyTitle>
+    <Authors>Muhammad Azeez and Gerardo Lijs and sharecomm ag</Authors>
+    <Company>Muhammad Azeez and Gerardo Lijs and sharecomm ag</Company>
+    <Copyright>Copyright © LijsDev and sharecomm ag 2022-2025</Copyright>
     <ApplicationIcon>..\shared\report.ico</ApplicationIcon>
     <EmbeddedResourceUseDependentUponConvention>true</EmbeddedResourceUseDependentUponConvention>
   </PropertyGroup>
@@ -56,7 +56,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MinVer" Version="4.3.0" PrivateAssets="All" />
     <PackageReference Include="NLog" Version="5.2.8" />
     <PackageReference Include="NLog.Schema" Version="5.2.8" />
   </ItemGroup>

@@ -7,15 +7,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Authors>sharecomm ag</Authors>
-    <Company>sharecomm ag</Company>
-    <Copyright>Copyright © sharecomm ag 2022-2025</Copyright>
+    <Authors>Muhammad Azeez and Gerardo Lijs and sharecomm ag</Authors>
+    <Company>Muhammad Azeez and Gerardo Lijs and sharecomm ag</Company>
+    <Copyright>Copyright © LijsDev and sharecomm ag 2022-2025</Copyright>
     <Description>API needed to use Crystal Reports Runner from caller applications.</Description>
     <PackageId>Remec.CrystalReportsRunner.Core</PackageId>
     <AssemblyName>Remec.CrystalReportsRunner.Core</AssemblyName>
-    <Version>2.0.1</Version>
-    <AssemblyVersion>2.0.1.0</AssemblyVersion>
-    <FileVersion>2.0.1.0</FileVersion>
+    <Version>2.0.2</Version>
+    <AssemblyVersion>2.0.2.0</AssemblyVersion>
+    <FileVersion>2.0.2.0</FileVersion>
 
 
     <IsPackable>true</IsPackable>
