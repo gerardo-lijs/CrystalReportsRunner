@@ -18,7 +18,6 @@
     <PackageProjectUrl>https://github.com/gerardo-lijs/CrystalReportsRunner</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <!--<PackageIcon>icon.png</PackageIcon>-->
-    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
   </PropertyGroup>

@@ -18,6 +18,7 @@
     <Copyright>Copyright © LijsDev 2023</Copyright>
     <ApplicationIcon>..\shared\report.ico</ApplicationIcon>
     <EmbeddedResourceUseDependentUponConvention>true</EmbeddedResourceUseDependentUponConvention>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
 
   <PropertyGroup>
