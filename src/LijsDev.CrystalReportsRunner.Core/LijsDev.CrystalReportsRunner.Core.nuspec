@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Remec.CrystalReportsRunner.Core</id>
+    <version>$version$</version>
+    <title>Remec.CrystalReportsRunner.Core</title>
+    <authors>sharecomm ag</authors>
+    <owners>sharecomm ag</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>API needed to use Crystal Reports Runner from caller applications.</description>
+    <copyright>Copyright © sharecomm ag 2022-2025</copyright>
+    <projectUrl>https://github.com/bennoremec/CrystalReportsRunner</projectUrl>
+    <license type="file">LICENSE.md</license>
+    <readme>README.md</readme>
+
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Microsoft.Win32.Registry" version="5.0.0" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" />
+        <dependency id="PipeMethodCalls" version="4.0.1" />
+      </group>
+    </dependencies>
+  </metadata>
+
+  <files>
+    <file src="bin\Release\netstandard2.0\Remec.CrystalReportsRunner.Core.dll"
+          target="lib\netstandard2.0\" />
+    <file src="bin\Release\netstandard2.0\Remec.CrystalReportsRunner.Core.xml"
+          target="lib\netstandard2.0\" />
+    <file src="bin\Release\netstandard2.0\Remec.CrystalReportsRunner.Core.pdb"
+          target="lib\netstandard2.0\" />
+    <file src="..\..\LICENSE.md" target="" />
+    <file src="README.md" target="" />
+  </files>
+</package>

@@ -11,9 +11,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Version>1.6.3</Version>
-    <AssemblyVersion>1.6.3.0</AssemblyVersion>
-    <FileVersion>1.6.3.0</FileVersion>
+    <Version>1.6.4</Version>
+    <AssemblyVersion>1.6.4.0</AssemblyVersion>
+    <FileVersion>1.6.4.0</FileVersion>
     <AssemblyName>LijsDev.CrystalReportsRunner</AssemblyName>
     <AssemblyTitle>LijsDev Crystal Reports Runner</AssemblyTitle>
     <Authors>sharecomm ag</Authors>
@@ -90,8 +90,4 @@
     </Reference>
   </ItemGroup>
 
-  <!-- Workaround for https://github.com/dotnet/roslyn-project-system/issues/1739 -->
-  <PropertyGroup>
-    <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
-  </PropertyGroup>
 </Project>

@@ -12,7 +12,11 @@
     <Copyright>Copyright © sharecomm ag 2022-2025</Copyright>
     <Description>API needed to use Crystal Reports Runner from caller applications.</Description>
     <PackageId>Remec.CrystalReportsRunner.Core</PackageId>
-    <Version>2.0.0</Version>
+    <AssemblyName>Remec.CrystalReportsRunner.Core</AssemblyName>
+    <Version>2.0.1</Version>
+    <AssemblyVersion>2.0.1.0</AssemblyVersion>
+    <FileVersion>2.0.1.0</FileVersion>
+
 
     <IsPackable>true</IsPackable>
     <PackageProjectUrl>https://github.com/gerardo-lijs/CrystalReportsRunner</PackageProjectUrl>
