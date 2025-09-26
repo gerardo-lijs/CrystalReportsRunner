@@ -13,7 +13,7 @@
     <description>Runner to allow the use of Crystal Reports in .NET using external process. Copies runner to 'CrystalReportsRunner.13.0.36.x64' in your project output folder.  Requires Crystal Reports Runtime v13.0.36 (x64) to be installed in computer where your application will be deployed.</description>
     <tags>Crystal Reports .NET Core net48</tags>
     <dependencies>
-      <dependency id="Remec.CrystalReportsRunner.Core" version="2.0.1" />
+      <dependency id="Remec.CrystalReportsRunner.Core" version="[2.0.1, )" />
     </dependencies>
   </metadata>
   <files>
