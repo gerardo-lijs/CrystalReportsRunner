@@ -1,14 +1,10 @@
 namespace LijsDev.CrystalReportsRunner.Core;
 
-using PipeMethodCalls;
-
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
+using System.IO.MemoryMappedFiles;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
+using PipeMethodCalls;
 
 /// <summary>
 /// Crystal Reports Engine
@@ -84,12 +80,7 @@ public sealed class CrystalReportsEngine : IDisposable
         await Initialize(cancellationToken);
 
         await _pipe.InvokeAsync(runner =>
-            runner.Export(report, new()
-            {
-                ExportFormat = exportFormat,
-                DestinationFilename = destinationFilename,
-                Overwrite = overwrite
-            }), cancellationToken);
+            runner.Export(report, new() { ExportFormat = exportFormat, DestinationFilename = destinationFilename, Overwrite = overwrite }), cancellationToken);
     }
 
     /// <summary>
@@ -125,7 +116,7 @@ public sealed class CrystalReportsEngine : IDisposable
         var mmfName = await _pipe.InvokeAsync(runner =>
             runner.ExportToMemoryMappedFile(report, new() { ExportFormat = exportFormat }), cancellationToken);
 
-        var mmf = System.IO.MemoryMappedFiles.MemoryMappedFile.OpenExisting(mmfName);
+        var mmf = MemoryMappedFile.OpenExisting(mmfName);
         return mmf.CreateViewStream();
     }
 
@@ -145,7 +136,7 @@ public sealed class CrystalReportsEngine : IDisposable
         var mmfName = await _pipe.InvokeAsync(runner =>
             runner.ExportToMemoryMappedFile(report, reportExportToMemoryMappedFileOptions), cancellationToken);
 
-        var mmf = System.IO.MemoryMappedFiles.MemoryMappedFile.OpenExisting(mmfName);
+        var mmf = MemoryMappedFile.OpenExisting(mmfName);
         return mmf.CreateViewStream();
     }
 
@@ -218,7 +209,8 @@ public sealed class CrystalReportsEngine : IDisposable
     /// <param name="parameters">Database query parameters</param>
     /// <param name="owner">Optional owner window handle. Useful for CenterParent initial location</param>
     /// <param name="cancellationToken">A cancellation token that can be used to cancel the work</param>
-    public Task ShowReport(string reportFilename, string viewerTitle, Dictionary<string, object> parameters, WindowHandle? owner = null, CancellationToken cancellationToken = default)
+    public Task ShowReport(string reportFilename, string viewerTitle, Dictionary<string, object> parameters, WindowHandle? owner = null,
+        CancellationToken cancellationToken = default)
         => ShowReport(new Report(reportFilename, viewerTitle) { Parameters = parameters }, owner, cancellationToken);
 
     /// <summary>
@@ -248,7 +240,7 @@ public sealed class CrystalReportsEngine : IDisposable
     /// <param name="owner">Owner window handle</param>
     /// <param name="cancellationToken">A cancellation token that can be used to cancel the work</param>
     public Task ShowReportDialog(string reportFilename, string viewerTitle, WindowHandle owner, CancellationToken cancellationToken = default)
-      => ShowReportDialog(new Report(reportFilename, viewerTitle), owner, cancellationToken);
+        => ShowReportDialog(new Report(reportFilename, viewerTitle), owner, cancellationToken);
 
     /// <summary>
     /// Show specified Crystal Reports in Viewer dialog
@@ -266,7 +258,7 @@ public sealed class CrystalReportsEngine : IDisposable
         await Initialize(cancellationToken);
 
         return await _pipe.InvokeAsync(runner =>
-             runner.ShowReportDialog(report, ViewerSettings, owner), cancellationToken);
+            runner.ShowReportDialog(report, ViewerSettings, owner), cancellationToken);
     }
 
     private void ValidateReportConnection(CrystalReportsConnection? connection)
@@ -274,12 +266,16 @@ public sealed class CrystalReportsEngine : IDisposable
         if (connection is null) return;
 
         // TODO: Use custom Exceptions
-        if (string.IsNullOrWhiteSpace(connection.Server)) throw new Exception("Server value for database connection is required. Set connection to null if you don't want to work with a database.");
-        if (string.IsNullOrWhiteSpace(connection.Database)) throw new Exception("Database value for database connection is required. Set connection to null if you don't want to work with a database.");
+        if (string.IsNullOrWhiteSpace(connection.Server))
+            throw new Exception("Server value for database connection is required. Set connection to null if you don't want to work with a database.");
+        if (string.IsNullOrWhiteSpace(connection.Database))
+            throw new Exception("Database value for database connection is required. Set connection to null if you don't want to work with a database.");
         if (!connection.UseIntegratedSecurity)
         {
-            if (string.IsNullOrWhiteSpace(connection.Username)) throw new Exception("Username value for database connection must be specified when Use Integrated Security is false.");
-            if (connection.Password is null) throw new Exception("Password value for database connection must be specified when Use Integrated Security is false.");
+            if (string.IsNullOrWhiteSpace(connection.Username))
+                throw new Exception("Username value for database connection must be specified when Use Integrated Security is false.");
+            if (connection.Password is null)
+                throw new Exception("Password value for database connection must be specified when Use Integrated Security is false.");
         }
     }
 
@@ -295,11 +291,7 @@ public sealed class CrystalReportsEngine : IDisposable
 
             var path = GetRunnerPath(RunnerPath);
 
-            var arguments = new List<string>
-            {
-                $"--pipe-name {NamedPipeName}",
-                $"--log-level {(int)LogLevel}",
-            };
+            var arguments = new List<string> { $"--pipe-name {NamedPipeName}", $"--log-level {(int)LogLevel}" };
 
             if (!string.IsNullOrEmpty(LogDirectory))
             {
@@ -320,16 +312,14 @@ public sealed class CrystalReportsEngine : IDisposable
                 }
             }
 
-            var psi = new ProcessStartInfo(path)
-            {
-                Arguments = string.Join(" ", arguments)
-            };
+            var psi = new ProcessStartInfo(path) { Arguments = string.Join(" ", arguments) };
 
             // Check runner exists
             if (!File.Exists(path))
             {
                 // TODO: Use custom exceptions
-                throw new Exception($"Crystal Report Runner was not found in: {path}.\n\nPlease check that the Crystal Report Runner Runtime is correclty deployed via NuGet package or manually.");
+                throw new Exception(
+                    $"Crystal Report Runner was not found in: {path}.\n\nPlease check that the Crystal Report Runner Runtime is correclty deployed via NuGet package or manually.");
             }
 
             _process = new Process { StartInfo = psi };
@@ -346,7 +336,8 @@ public sealed class CrystalReportsEngine : IDisposable
             }
             catch (OperationCanceledException)
             {
-                throw new InvalidOperationException($"Connection to Runner process timed out after {Timeout.TotalSeconds:N1} seconds. Please make sure the process can run and check your antivirus settings.");
+                throw new InvalidOperationException(
+                    $"Connection to Runner process timed out after {Timeout.TotalSeconds:N1} seconds. Please make sure the process can run and check your antivirus settings.");
             }
 
             _initialized = true;
@@ -357,7 +348,9 @@ public sealed class CrystalReportsEngine : IDisposable
     {
         var assemblyFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
         assemblyFolder ??= Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        if (runnerPath is null && assemblyFolder is null) throw new InvalidProgramException("Could not get assemblyFolder location with GetEntryAssembly nor GetExecutingAssembly. Please specify runnerPath explicitly with a full path.");
+        if (runnerPath is null && assemblyFolder is null)
+            throw new InvalidProgramException(
+                "Could not get assemblyFolder location with GetEntryAssembly nor GetExecutingAssembly. Please specify runnerPath explicitly with a full path.");
 
         List<string> candidates = [];
 
@@ -381,7 +374,7 @@ public sealed class CrystalReportsEngine : IDisposable
         {
             foreach (var directory in Directory.EnumerateDirectories(assemblyFolder, "CrystalReportsRunner.*"))
             {
-                candidates.Add(Path.Combine(directory, "LijsDev.CrystalReportsRunner.exe"));
+                candidates.Add(Path.Combine(directory, "Remec.CrystalReportsRunner.exe"));
             }
         }
 
@@ -438,6 +431,7 @@ public sealed class CrystalReportsEngine : IDisposable
     /// Fires when a form is closed.
     /// </summary>
     public event EventHandler<FormClosedEventArgs>? FormClosed;
+
     internal void OnFormClosed(string reportFileName, WindowLocation settings) =>
         FormClosed?.Invoke(this, new FormClosedEventArgs(reportFileName, settings));
 
@@ -445,6 +439,7 @@ public sealed class CrystalReportsEngine : IDisposable
     /// Fires when a form is loaded.
     /// </summary>
     public event EventHandler<FormLoadedEventArgs>? FormLoaded;
+
     internal void OnFormLoaded(string reportFileName, WindowHandle windowHandle) =>
         FormLoaded?.Invoke(this, new FormLoadedEventArgs(reportFileName, windowHandle));
 }
