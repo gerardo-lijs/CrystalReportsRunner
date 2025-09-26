@@ -19,7 +19,7 @@
   <files>
     <file src="..\shared\README.md" target="\" />
     <file src="..\..\..\LICENSE.md" target="\" />
-    <file src="LijsDev.CrystalReportsRunner.13.0.36.x64.props" target="build" />
+    <file src="Remec.CrystalReportsRunner.13.0.36.x64.props" target="build" />
     <file src="bin\x64\Release\net48\*.*" target="app" />
   </files>
 </package>
