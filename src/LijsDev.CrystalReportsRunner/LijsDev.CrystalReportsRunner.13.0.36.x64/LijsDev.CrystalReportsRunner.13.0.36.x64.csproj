@@ -49,10 +49,11 @@
     <Compile Include="..\shared\ReportViewer.cs" Link="ReportViewer.cs" />
     <Compile Include="..\shared\ReportViewerWindow.xaml.cs" Link="ReportViewerWindow.xaml.cs" />
     <Compile Include="..\shared\ReportViewerWindowVM.cs" Link="ReportViewerWindowVM.cs" />
+    <Compile Include="..\shared\Resources\Lokalisierung.Designer.cs" />
     <Compile Include="..\shared\RuntimePolicyHelper.cs" Link="RuntimePolicyHelper.cs" />
     <Compile Include="..\shared\ViewerForm.cs" Link="ViewerForm.cs" />
     <Compile Include="..\shared\ViewerForm.Designer.cs" Link="ViewerForm.Designer.cs" />
-    <Compile Update="Resources\Lokalisierung.Designer.cs">
+    <Compile Update="..\shared\Resources\Lokalisierung.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Lokalisierung.resx</DependentUpon>
@@ -112,15 +113,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Images\" />
+    <Resource Include="..\shared\Images\*.png" Link="Images\%(Filename)%(Extension)" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\Lokalisierung.resx">
+    <EmbeddedResource Include="..\shared\Resources\Lokalisierung.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Lokalisierung.Designer.cs</LastGenOutput>
       <CustomToolNamespace>LijsDev.CrystalReportsRunner.Resources</CustomToolNamespace>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

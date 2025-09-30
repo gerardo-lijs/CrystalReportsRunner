@@ -39,7 +39,7 @@ namespace LijsDev.CrystalReportsRunner.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LijsDev.CrystalReportsRunner.Resources.Lokalisierung", typeof(Lokalisierung).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LijsDev.CrystalReportsRunner.Lokalisierung", typeof(Lokalisierung).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -75,6 +75,15 @@ namespace LijsDev.CrystalReportsRunner.Resources {
         internal static string ReportNotInitialised {
             get {
                 return ResourceManager.GetString("ReportNotInitialised", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drucken.
+        /// </summary>
+        internal static string ToolTipPrint {
+            get {
+                return ResourceManager.GetString("ToolTipPrint", resourceCulture);
             }
         }
     }

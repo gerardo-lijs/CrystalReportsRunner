@@ -35,7 +35,7 @@
         <Button Grid.Row="0" Margin="2,2,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"
                 Width="32" Height="32" Command="{Binding PrintCommand}"
                 Background="#eef5fd" BorderBrush="Transparent">
-            <Image Source="/Images/print_crystal_reports.PNG" ToolTip="{lex:Loc Drucken}" />
+            <Image Source="./Images/print_crystal_reports.png" ToolTip="{lex:Loc ToolTipPrint}" />
         </Button>
 
         <!--<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">

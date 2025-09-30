@@ -123,4 +123,7 @@
   <data name="ReportNotInitialised" xml:space="preserve">
     <value>Report nicht initialisiert.</value>
   </data>
+  <data name="ToolTipPrint" xml:space="preserve">
+    <value>Drucken</value>
+  </data>
 </root>
