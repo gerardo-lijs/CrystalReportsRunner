@@ -1,15 +1,14 @@
 namespace LijsDev.CrystalReportsRunner;
 
-using System.Windows.Forms;
-
+using System.IO;
+using Core;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Windows.Forms;
-
-using LijsDev.CrystalReportsRunner.Core;
+using NLog;
 
 internal partial class ViewerForm : Form
 {
-    private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private readonly bool _closeOnEscapeKey;
 
     public ViewerForm(ReportDocument document, ReportViewerSettings viewerSettings)
@@ -39,26 +38,32 @@ internal partial class ViewerForm : Form
         {
             MinimumSize = new Size(viewerSettings.WindowMinimumWidth.Value, viewerSettings.WindowMinimumHeight.Value);
         }
+
         if (viewerSettings.WindowMaximumWidth is not null && viewerSettings.WindowMaximumHeight is not null)
         {
             MaximumSize = new Size(viewerSettings.WindowMaximumWidth.Value, viewerSettings.WindowMaximumHeight.Value);
         }
+
         if (viewerSettings.WindowLocationHeight is not null)
         {
             Height = viewerSettings.WindowLocationHeight.Value;
         }
+
         if (viewerSettings.WindowLocationWidth is not null)
         {
             Width = viewerSettings.WindowLocationWidth.Value;
         }
+
         if (viewerSettings.WindowLocationLeft is not null)
         {
             Left = viewerSettings.WindowLocationLeft.Value;
         }
+
         if (viewerSettings.WindowLocationTop is not null)
         {
             Top = viewerSettings.WindowLocationTop.Value;
         }
+
         MinimizeBox = viewerSettings.WindowAllowMinimize;
         MaximizeBox = viewerSettings.WindowAllowMaximize;
         WindowState = (FormWindowState)viewerSettings.WindowInitialState;
@@ -108,6 +113,7 @@ internal partial class ViewerForm : Form
             Close();
             return true;
         }
+
         return base.ProcessDialogKey(keyData);
     }
 

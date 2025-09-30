@@ -1,6 +1,7 @@
 namespace LijsDev.CrystalReportsRunner.Shell;
 
 using System.Drawing.Printing;
+using System.IO;
 using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
 using PaperSource = CrystalDecisions.Shared.PaperSource;
@@ -94,13 +95,13 @@ public class CustomReportDocument : ReportDocument
     /// <param name="ps">Druckereinstellungen</param>
     public void LoadPrinterData(PrinterSettings ps)
     {
-        ps.PrinterName = this.PrintOptions.PrinterName;
-        if (((this.SummaryInfo.ReportTitle == null) ? 0 : this.SummaryInfo.ReportTitle.Length) > 0)
+        ps.PrinterName = PrintOptions.PrinterName;
+        if (((SummaryInfo.ReportTitle == null) ? 0 : SummaryInfo.ReportTitle.Length) > 0)
         {
-            ps.PrintFileName = this.SummaryInfo.ReportTitle;
+            ps.PrintFileName = SummaryInfo.ReportTitle;
         }
 
-        switch (this.PrintOptions.PrinterDuplex)
+        switch (PrintOptions.PrinterDuplex)
         {
             case PrinterDuplex.Default:
                 ps.Duplex = Duplex.Default;
@@ -118,7 +119,7 @@ public class CustomReportDocument : ReportDocument
 
         //Papersource laden
         var paperSource = PaperSourceKind.AutomaticFeed;
-        switch (this.PrintOptions.PaperSource)
+        switch (PrintOptions.PaperSource)
         {
             case PaperSource.Cassette:
                 paperSource = PaperSourceKind.Cassette;
@@ -146,8 +147,8 @@ public class CustomReportDocument : ReportDocument
             }
         }
 
-        ps.DefaultPageSettings.Landscape = this.PrintOptions.PaperOrientation == PaperOrientation.Landscape;
-        //ps.DefaultPageSettings.PaperSize = (PaperSize)this.PrintOptions.PaperSize;
+        ps.DefaultPageSettings.Landscape = PrintOptions.PaperOrientation == PaperOrientation.Landscape;
+        //ps.DefaultPageSettings.PaperSize = (PaperSize)PrintOptions.PaperSize;
     }
 
     /// <summary>
@@ -156,20 +157,20 @@ public class CustomReportDocument : ReportDocument
     /// <param name="ps"></param>
     public void SavePrinterData(PrinterSettings ps)
     {
-        this.PrintOptions.PrinterName = ps.PrinterName;
+        PrintOptions.PrinterName = ps.PrinterName;
         switch (ps.Duplex)
         {
             case Duplex.Default:
-                this.PrintOptions.PrinterDuplex = PrinterDuplex.Default;
+                PrintOptions.PrinterDuplex = PrinterDuplex.Default;
                 break;
             case Duplex.Simplex:
-                this.PrintOptions.PrinterDuplex = PrinterDuplex.Simplex;
+                PrintOptions.PrinterDuplex = PrinterDuplex.Simplex;
                 break;
             case Duplex.Horizontal:
-                this.PrintOptions.PrinterDuplex = PrinterDuplex.Horizontal;
+                PrintOptions.PrinterDuplex = PrinterDuplex.Horizontal;
                 break;
             case Duplex.Vertical:
-                this.PrintOptions.PrinterDuplex = PrinterDuplex.Vertical;
+                PrintOptions.PrinterDuplex = PrinterDuplex.Vertical;
                 break;
         }
 
@@ -177,29 +178,29 @@ public class CustomReportDocument : ReportDocument
         switch (ps.DefaultPageSettings.PaperSource.Kind)
         {
             case PaperSourceKind.AutomaticFeed:
-                this.PrintOptions.PaperSource = PaperSource.Auto;
+                PrintOptions.PaperSource = PaperSource.Auto;
                 break;
             case PaperSourceKind.Cassette:
-                this.PrintOptions.PaperSource = PaperSource.Cassette;
+                PrintOptions.PaperSource = PaperSource.Cassette;
                 break;
             case PaperSourceKind.Manual:
-                this.PrintOptions.PaperSource = PaperSource.Manual;
+                PrintOptions.PaperSource = PaperSource.Manual;
                 break;
             case PaperSourceKind.Upper:
-                this.PrintOptions.PaperSource = PaperSource.Upper;
+                PrintOptions.PaperSource = PaperSource.Upper;
                 break;
             case PaperSourceKind.Lower:
-                this.PrintOptions.PaperSource = PaperSource.Lower;
+                PrintOptions.PaperSource = PaperSource.Lower;
                 break;
             case PaperSourceKind.Middle:
-                this.PrintOptions.PaperSource = PaperSource.Middle;
+                PrintOptions.PaperSource = PaperSource.Middle;
                 break;
             default:
-                this.PrintOptions.PaperSource = PaperSource.Auto;
+                PrintOptions.PaperSource = PaperSource.Auto;
                 break;
         }
 
-        this.PrintOptions.PaperOrientation = ps.DefaultPageSettings.Landscape ? PaperOrientation.Landscape : PaperOrientation.Portrait;
-        //this.PrintOptions.PaperSize = (CrystalDecisions.Shared.PaperSize)ps.DefaultPageSettings.PaperSize;
+        PrintOptions.PaperOrientation = ps.DefaultPageSettings.Landscape ? PaperOrientation.Landscape : PaperOrientation.Portrait;
+        //PrintOptions.PaperSize = (CrystalDecisions.Shared.PaperSize)ps.DefaultPageSettings.PaperSize;
     }
 }

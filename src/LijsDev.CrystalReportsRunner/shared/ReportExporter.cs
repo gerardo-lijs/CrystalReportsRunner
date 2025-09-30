@@ -1,8 +1,10 @@
 namespace LijsDev.CrystalReportsRunner;
-using CrystalDecisions.Shared;
 
-using LijsDev.CrystalReportsRunner.Core;
-using LijsDev.CrystalReportsRunner.Shell;
+using System.Drawing.Printing;
+using System.IO;
+using Core;
+using CrystalDecisions.Shared;
+using Shell;
 
 internal class ReportExporter : IReportExporter
 {
@@ -17,21 +19,16 @@ internal class ReportExporter : IReportExporter
         // Specified printer
         if (!string.IsNullOrWhiteSpace(printOptions.PrinterName))
         {
-            var printSettings = new System.Drawing.Printing.PrinterSettings
-            {
-                PrinterName = printOptions.PrinterName,
-                Copies = printOptions.Copies,
-                Collate = printOptions.Collated
-            };
+            var printSettings = new PrinterSettings { PrinterName = printOptions.PrinterName, Copies = printOptions.Copies, Collate = printOptions.Collated };
 
             if (printOptions.StartPageNumber != 0 && printOptions.EndPageNumber != 0)
             {
-                printSettings.PrintRange = System.Drawing.Printing.PrintRange.SomePages;
+                printSettings.PrintRange = PrintRange.SomePages;
                 printSettings.FromPage = printOptions.StartPageNumber;
                 printSettings.ToPage = printOptions.EndPageNumber;
             }
 
-            document.PrintToPrinter(printSettings, new System.Drawing.Printing.PageSettings(), false);
+            document.PrintToPrinter(printSettings, new PageSettings(), false);
         }
         else
         {
