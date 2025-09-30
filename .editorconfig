@@ -52,6 +52,8 @@ csharp_style_prefer_utf8_string_literals = true:suggestion
 csharp_style_inlined_variable_declaration = true:warning
 csharp_style_deconstructed_variable_declaration = true:none
 csharp_style_prefer_switch_expression = true:silent
+csharp_style_pattern_matching_over_is_with_cast_check = true:warning
+csharp_space_after_cast = true
 
 ##########################################
 # File Extension Settings

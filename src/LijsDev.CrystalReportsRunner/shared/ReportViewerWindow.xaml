@@ -1,0 +1,47 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Viewer="clr-namespace:SAPBusinessObjects.WPF.Viewer;assembly=SAPBusinessObjects.WPF.Viewer"
+    x:Class="LijsDev.CrystalReportsRunner.ReportViewerWindow"
+    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:crystalReportsRunner="clr-namespace:LijsDev.CrystalReportsRunner"
+    lex:LocalizeDictionary.DesignCulture="de"
+    lex:ResxLocalizationProvider.DefaultAssembly="Remec.CrystalReportsRunner"
+    lex:ResxLocalizationProvider.DefaultDictionary="Lokalisierung"
+    mc:Ignorable="d"
+    Title="{Binding WindowTitle}" Height="600" Width="800"
+    WindowStartupLocation="CenterScreen" WindowState="Maximized"
+    Icon="{Binding ReportViewerSettings.WindowIcon}"
+    d:DataContext="{d:DesignInstance crystalReportsRunner:ReportViewerWindowVM}">
+
+    <Grid>
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="Loaded">
+                <i:InvokeCommandAction Command="{Binding SetCrystalReportsViewerCommand}"
+                                       CommandParameter="{Binding ElementName=CrystalReportsViewer1}" />
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Viewer:CrystalReportsViewer Grid.Row="0" x:Name="CrystalReportsViewer1" ToggleSidePanel="ParameterPanel" />
+
+        <Button Grid.Row="0" Margin="2,2,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"
+                Width="32" Height="32" Command="{Binding PrintCommand}"
+                Background="#eef5fd" BorderBrush="Transparent">
+            <Image Source="/Images/print_crystal_reports.PNG" ToolTip="{lex:Loc Drucken}" />
+        </Button>
+
+        <!--<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
+            <Button Content="{lex:Loc Schliessen}" Margin="5" Padding="5" Command="{Binding CloseCommand}" />
+            <Button Content="{lex:Loc Drucken}" Margin="5" Padding="5" Command="{Binding PrintCommand}" />
+        </StackPanel>-->
+
+    </Grid>
+</Window>
