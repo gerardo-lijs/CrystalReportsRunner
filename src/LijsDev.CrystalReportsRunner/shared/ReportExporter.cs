@@ -1,6 +1,5 @@
 namespace LijsDev.CrystalReportsRunner;
 
-using System.Drawing.Printing;
 using System.IO;
 using Core;
 using CrystalDecisions.Shared;
@@ -12,29 +11,7 @@ internal class ReportExporter : IReportExporter
     public void Print(Report report, ReportPrintOptions printOptions)
     {
         var document = ReportUtils.CreateReportDocument(report);
-
-        // Print options
-        document.PrintOptions.PaperOrientation = (PaperOrientation)printOptions.PaperOrientation;
-
-        // Specified printer
-        if (!string.IsNullOrWhiteSpace(printOptions.PrinterName))
-        {
-            var printSettings = new PrinterSettings { PrinterName = printOptions.PrinterName, Copies = printOptions.Copies, Collate = printOptions.Collated };
-
-            if (printOptions.StartPageNumber != 0 && printOptions.EndPageNumber != 0)
-            {
-                printSettings.PrintRange = PrintRange.SomePages;
-                printSettings.FromPage = printOptions.StartPageNumber;
-                printSettings.ToPage = printOptions.EndPageNumber;
-            }
-
-            document.PrintToPrinter(printSettings, new PageSettings(), false);
-        }
-        else
-        {
-            // Print
-            document.PrintToPrinter(printOptions.Copies, printOptions.Collated, printOptions.StartPageNumber, printOptions.EndPageNumber);
-        }
+        document.Print();
     }
 
     /// <inheritdoc/>
