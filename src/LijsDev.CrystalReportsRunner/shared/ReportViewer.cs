@@ -1,11 +1,10 @@
 namespace LijsDev.CrystalReportsRunner;
 
-using System.Windows.Forms;
-
+using System.Globalization;
+using System.Windows;
+using Core;
 using CrystalDecisions.Shared;
-
-using LijsDev.CrystalReportsRunner.Core;
-using LijsDev.CrystalReportsRunner.Shell;
+using Shell;
 
 internal class ReportViewer : IReportViewer
 {
@@ -14,7 +13,7 @@ internal class ReportViewer : IReportViewer
         // Fix Crystal Report param dialog with culture English (World)
         if (Thread.CurrentThread.CurrentCulture.IetfLanguageTag == "en-001")
         {
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en");
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en");
         }
 
         var document = ReportUtils.CreateReportDocument(report);
@@ -26,9 +25,19 @@ internal class ReportViewer : IReportViewer
             document.PrintOptions.DissociatePageSizeAndPrinterPaperSize = false;
         }
 
-        return new ViewerForm(document, viewerSettings)
+        return new ViewerForm(document, viewerSettings) { Text = report.Title };
+    }
+
+    public Window GetViewerWindow(Report report, ReportViewerSettings settings)
+    {
+        // Fix Crystal Report param dialog with culture English (World)
+        if (Thread.CurrentThread.CurrentCulture.IetfLanguageTag == "gsw-CH")
         {
-            Text = report.Title
-        };
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("de-CH");
+        }
+
+        var document = ReportUtils.CreateReportDocument(report);
+        var viewModel = new ReportViewerWindowVM(document, settings);
+        return new ReportViewerWindow { DataContext = viewModel };
     }
 }

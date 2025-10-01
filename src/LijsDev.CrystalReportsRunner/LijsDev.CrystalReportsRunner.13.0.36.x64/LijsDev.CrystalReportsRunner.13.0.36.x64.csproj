@@ -6,14 +6,16 @@
     <Platforms>x64</Platforms>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <UseWindowsForms>true</UseWindowsForms>
+    <UseWpf>true</UseWpf>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
     <Version>1.6.5</Version>
     <AssemblyVersion>1.6.5.0</AssemblyVersion>
     <FileVersion>1.6.5.0</FileVersion>
+    <RootNamespace>LijsDev.CrystalReportsRunner</RootNamespace>
     <AssemblyName>Remec.CrystalReportsRunner</AssemblyName>
     <AssemblyTitle>Remec Crystal Reports Runner</AssemblyTitle>
     <Authors>Muhammad Azeez and Gerardo Lijs and sharecomm ag</Authors>
@@ -45,9 +47,17 @@
     <Compile Include="..\shared\ReportUtils.cs" Link="ReportUtils.cs" />
     <Compile Include="..\shared\CustomReportDocument.cs" Link="CustomReportDocument.cs" />
     <Compile Include="..\shared\ReportViewer.cs" Link="ReportViewer.cs" />
+    <Compile Include="..\shared\ReportViewerWindow.xaml.cs" Link="ReportViewerWindow.xaml.cs" />
+    <Compile Include="..\shared\ReportViewerWindowVM.cs" Link="ReportViewerWindowVM.cs" />
+    <Compile Include="..\shared\Resources\Lokalisierung.Designer.cs" />
     <Compile Include="..\shared\RuntimePolicyHelper.cs" Link="RuntimePolicyHelper.cs" />
     <Compile Include="..\shared\ViewerForm.cs" Link="ViewerForm.cs" />
     <Compile Include="..\shared\ViewerForm.Designer.cs" Link="ViewerForm.Designer.cs" />
+    <Compile Update="..\shared\Resources\Lokalisierung.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Lokalisierung.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -56,8 +66,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
     <PackageReference Include="NLog" Version="5.2.8" />
     <PackageReference Include="NLog.Schema" Version="5.2.8" />
+    <PackageReference Include="Prism.Core" Version="8.1.97" />
+    <PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -68,6 +81,10 @@
     <None Include="..\shared\NLog.config" Link="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="..\shared\ReportViewerWindow.xaml" Link="ReportViewerWindow.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -87,6 +104,28 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SAPBusinessObjects.WPF.Viewer, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="SAPBusinessObjects.WPF.ViewerShared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="..\shared\Images\*.png" Link="Images\%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\shared\Resources\Lokalisierung.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Lokalisierung.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>LijsDev.CrystalReportsRunner.Resources</CustomToolNamespace>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

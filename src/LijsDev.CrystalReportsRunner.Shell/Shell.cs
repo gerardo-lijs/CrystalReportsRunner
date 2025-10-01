@@ -1,19 +1,16 @@
 namespace LijsDev.CrystalReportsRunner.Shell;
 
 using CommandLine;
-
-using LijsDev.CrystalReportsRunner.Core;
+using Core;
 using NLog;
 using PipeMethodCalls;
-
-using System;
-using System.Threading;
-using System.Windows.Forms;
+using LogLevel = Core.LogLevel;
 
 /// <summary>
 /// Shell implementation for Crystal Reports Runner
 /// </summary>
-public class Shell(IReportViewer reportViewer,
+public class Shell(
+    IReportViewer reportViewer,
     IReportExporter reportExporter)
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -27,7 +24,7 @@ public class Shell(IReportViewer reportViewer,
 
         /// <inheritdoc/>
         [Option("log-level", Required = false, HelpText = "Minimum logging level.")]
-        public Core.LogLevel LogLevel { get; set; } = Core.LogLevel.Error;
+        public LogLevel LogLevel { get; set; } = LogLevel.Error;
 
         /// <inheritdoc/>
         [Option("log-directory", Required = false, HelpText = "The directory for the log files.")]
@@ -89,12 +86,15 @@ public class Shell(IReportViewer reportViewer,
                 Logger.Error($"\t{error}");
             }
 
-            MessageBox.Show("Crystal Reports Runner is not meant to be run standalone.\n\nPlease use from caller app with NuGet package LijsDev.CrystalReportsRunner.Core.\nSee project documentation in GitHub to learn how to get started.", "Crystal Reports Runner",
+            MessageBox.Show(
+                "Crystal Reports Runner is not meant to be run standalone.\n\nPlease use from caller app with NuGet package LijsDev.CrystalReportsRunner.Core.\nSee project documentation in GitHub to learn how to get started.",
+                "Crystal Reports Runner",
                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 
     private PipeClientWithCallback<ICrystalReportsCaller, ICrystalReportsRunner>? _pipeClient;
+
     private async Task OpenConnection(SynchronizationContext uiContext)
     {
         if (_options is null) throw new NullReferenceException(nameof(_options));
@@ -102,10 +102,10 @@ public class Shell(IReportViewer reportViewer,
         Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::PipeName={_options.PipeName}");
 
         _pipeClient = new PipeClientWithCallback<ICrystalReportsCaller, ICrystalReportsRunner>(
-                 new JsonNetPipeSerializer(),
-                 ".",
-                 _options.PipeName,
-                 () => new WinFormsReportRunner(reportViewer, reportExporter, uiContext, this));
+            new JsonNetPipeSerializer(),
+            ".",
+            _options.PipeName,
+            () => new WpfWindowReportRunner(reportViewer, reportExporter, uiContext, this));
 
         try
         {
@@ -116,7 +116,6 @@ public class Shell(IReportViewer reportViewer,
             Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::WaitForRemotePipeCloseAsync::Start");
             await _pipeClient.WaitForRemotePipeCloseAsync();
             Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::WaitForRemotePipeCloseAsync::End");
-
         }
         finally
         {
@@ -140,6 +139,7 @@ public class Shell(IReportViewer reportViewer,
             Logger.Error(ex, "Failed sending FormClosed event through pipe.");
         }
     }
+
     internal async void FormLoaded(string reportFileName, WindowHandle windowHandle)
     {
         try
