@@ -198,8 +198,6 @@ public class ReportViewerWindowVM : BindableBase
                 //Show Print Dialog
                 if (printDialog.ShowDialog() == DialogResult.OK)
                 {
-                    //Cursor
-                    //Cursor = Cursors.WaitCursor;
                     //Hat sich der Drucker geändert?
                     if (_crystalReportsViewer != null &&
                         (_reportDocument.PrintOptions.PrinterName != printDialog.PrinterSettings.PrinterName ||
