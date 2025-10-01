@@ -7,9 +7,8 @@ using System.Windows;
 /// </summary>
 public partial class ReportViewerWindow : Window
 {
-    public ReportViewerWindow(ReportViewerWindowVM viewModel)
+    public ReportViewerWindow()
     {
         InitializeComponent();
-        DataContext = viewModel;
     }
 }

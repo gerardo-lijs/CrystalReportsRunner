@@ -1,5 +1,6 @@
 namespace LijsDev.CrystalReportsRunner.Core;
 
+using System.Globalization;
 using Newtonsoft.Json;
 
 /// <summary>
@@ -10,11 +11,14 @@ public sealed class ReportViewerSettings
 {
     /// <summary>
     /// Sets whether the report viewer window should be closed when user presses the Escape key.
+    /// Is not in use with the WPF Viewer.
     /// Default: false
     /// </summary>
     public bool WindowCloseOnEscapeKey { get; set; } = WindowCloseOnEscapeKeyDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeWindowCloseOnEscapeKey() => WindowCloseOnEscapeKey != WindowCloseOnEscapeKeyDefault;
+
     private const bool WindowCloseOnEscapeKeyDefault = false;
 
     /// <summary>
@@ -30,8 +34,10 @@ public sealed class ReportViewerSettings
     /// Default: 700
     /// </summary>
     public int? WindowMinimumWidth { get; set; } = WindowMinimumWidthDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeWindowMinimumWidth() => WindowMinimumWidth != WindowMinimumWidthDefault;
+
     private const int WindowMinimumWidthDefault = 700;
 
     /// <summary>
@@ -39,8 +45,10 @@ public sealed class ReportViewerSettings
     /// Default: 500
     /// </summary>
     public int? WindowMinimumHeight { get; set; } = WindowMinimumHeightDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeWindowMinimumHeight() => WindowMinimumHeight != WindowMinimumHeightDefault;
+
     private const int WindowMinimumHeightDefault = 500;
 
     /// <summary>
@@ -62,26 +70,34 @@ public sealed class ReportViewerSettings
     /// Default: Maximized
     /// </summary>
     public ReportViewerWindowState WindowInitialState { get; set; } = WindowInitialStateDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeWindowInitialState() => WindowInitialState != WindowInitialStateDefault;
+
     private const ReportViewerWindowState WindowInitialStateDefault = ReportViewerWindowState.Maximized;
 
     /// <summary>
     /// Sets the report viewer window starting position.
+    /// Is not in use with the WPF Viewer.
     /// Default: WindowsDefaultLocation
     /// </summary>
     public ReportViewerWindowStartPosition WindowInitialPosition { get; set; } = WindowInitialPositionDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeWindowInitialPosition() => WindowInitialPosition != WindowInitialPositionDefault;
+
     private const ReportViewerWindowStartPosition WindowInitialPositionDefault = ReportViewerWindowStartPosition.WindowsDefaultLocation;
 
     /// <summary>
     /// Sets whether the report viewer window is displayed in the Windows taskbar.
+    /// Is not in use with the WPF Viewer.
     /// Default: true
     /// </summary>
     public bool WindowShowInTaskbar { get; set; } = WindowShowInTaskbarDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeWindowShowInTaskbar() => WindowShowInTaskbar != WindowShowInTaskbarDefault;
+
     private const bool WindowShowInTaskbarDefault = true;
 
     /// <summary>
@@ -89,8 +105,10 @@ public sealed class ReportViewerSettings
     /// Default: true
     /// </summary>
     public bool WindowAllowMinimize { get; set; } = WindowAllowMinimizeDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeWindowAllowMinimize() => WindowAllowMinimize != WindowAllowMinimizeDefault;
+
     private const bool WindowAllowMinimizeDefault = true;
 
     /// <summary>
@@ -98,8 +116,10 @@ public sealed class ReportViewerSettings
     /// Default: true
     /// </summary>
     public bool WindowAllowMaximize { get; set; } = WindowAllowMaximizeDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeWindowAllowMaximize() => WindowAllowMaximize != WindowAllowMaximizeDefault;
+
     private const bool WindowAllowMaximizeDefault = true;
 
     /// <summary>
@@ -107,8 +127,10 @@ public sealed class ReportViewerSettings
     /// Default: true
     /// </summary>
     public bool WindowAllowResize { get; set; } = WindowAllowResizeDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeWindowAllowResize() => WindowAllowResize != WindowAllowResizeDefault;
+
     private const bool WindowAllowResizeDefault = true;
 
     /// <summary>
@@ -143,7 +165,7 @@ public sealed class ReportViewerSettings
     /// Set the UI culture to use in the CrystalReportViewer control.
     /// Default: Use system locale
     /// </summary>
-    public void SetUICulture(System.Globalization.CultureInfo value)
+    public void SetUICulture(CultureInfo value)
     {
         UICultureLCID = value.LCID;
     }
@@ -159,17 +181,22 @@ public sealed class ReportViewerSettings
     /// Default: AllFormats
     /// </summary>
     public ReportViewerExportFormats AllowedExportFormats { get; set; } = AllowedExportFormatsDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeAllowedExportFormats() => AllowedExportFormats != AllowedExportFormatsDefault;
+
     private const ReportViewerExportFormats AllowedExportFormatsDefault = ReportViewerExportFormats.AllFormats;
 
     /// <summary>
     /// Sets the report tool panel view type.
+    /// Is not in use with the WPF Viewer.
     /// Default: GroupTree
     /// </summary>
     public ReportViewerToolPanelViewType ToolPanelView { get; set; } = ToolPanelViewDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeToolPanelView() => ToolPanelView != ToolPanelViewDefault;
+
     private const ReportViewerToolPanelViewType ToolPanelViewDefault = ReportViewerToolPanelViewType.GroupTree;
 
     /// <summary>
@@ -177,8 +204,10 @@ public sealed class ReportViewerSettings
     /// Default: true
     /// </summary>
     public bool EnableDrillDown { get; set; } = EnableDrillDownDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeEnableDrillDown() => EnableDrillDown != EnableDrillDownDefault;
+
     private const bool EnableDrillDownDefault = true;
 
     /// <summary>
@@ -186,17 +215,22 @@ public sealed class ReportViewerSettings
     /// Default: true
     /// </summary>
     public bool EnableRefresh { get; set; } = EnableRefreshDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeEnableRefresh() => EnableRefresh != EnableRefreshDefault;
+
     private const bool EnableRefreshDefault = true;
 
     /// <summary>
     /// Sets whether the close button on the toolbar is visible or hidden.
+    /// Is not in use with the WPF Viewer.
     /// Default: true
     /// </summary>
     public bool ShowCloseButton { get; set; } = ShowCloseButtonDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeShowCloseButton() => ShowCloseButton != ShowCloseButtonDefault;
+
     private const bool ShowCloseButtonDefault = true;
 
     /// <summary>
@@ -204,8 +238,10 @@ public sealed class ReportViewerSettings
     /// Default: true
     /// </summary>
     public bool ShowPrintButton { get; set; } = ShowPrintButtonDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeShowPrintButton() => ShowPrintButton != ShowPrintButtonDefault;
+
     private const bool ShowPrintButtonDefault = true;
 
     /// <summary>
@@ -213,17 +249,22 @@ public sealed class ReportViewerSettings
     /// Default: true
     /// </summary>
     public bool ShowExportButton { get; set; } = ShowExportButtonDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeShowExportButton() => ShowExportButton != ShowExportButtonDefault;
+
     private const bool ShowExportButtonDefault = true;
 
     /// <summary>
     /// Sets whether the zoom button on the toolbar is visible or hidden.
+    /// Is not in use with the WPF Viewer.
     /// Default: true
     /// </summary>
     public bool ShowZoomButton { get; set; } = ShowZoomButtonDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeShowZoomButton() => ShowZoomButton != ShowZoomButtonDefault;
+
     private const bool ShowZoomButtonDefault = true;
 
     /// <summary>
@@ -231,8 +272,10 @@ public sealed class ReportViewerSettings
     /// Default: true
     /// </summary>
     public bool ShowCopyButton { get; set; } = ShowCopyButtonDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeShowCopyButton() => ShowCopyButton != ShowCopyButtonDefault;
+
     private const bool ShowCopyButtonDefault = true;
 
     /// <summary>
@@ -240,34 +283,45 @@ public sealed class ReportViewerSettings
     /// Default: true
     /// </summary>
     public bool ShowRefreshButton { get; set; } = ShowRefreshButtonDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeShowRefreshButton() => ShowRefreshButton != ShowRefreshButtonDefault;
+
     private const bool ShowRefreshButtonDefault = true;
 
     /// <summary>
     /// Sets whether the reports tabs on the toolbar are visible or hidden.
+    /// Is not in use with the WPF Viewer.
     /// Default: true
     /// </summary>
     public bool ShowReportTabs { get; set; } = ShowReportTabsDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeShowReportTabs() => ShowReportTabs != ShowReportTabsDefault;
+
     private const bool ShowReportTabsDefault = true;
 
     /// <summary>
     /// Sets whether the show/hide group tree button on the toolbar is visible or hidden.
+    /// Is not in use with the WPF Viewer.
     /// Default: true
     /// </summary>
     public bool ShowGroupTreeButton { get; set; } = ShowGroupTreeButtonDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeShowGroupTreeButton() => ShowGroupTreeButton != ShowGroupTreeButtonDefault;
+
     private const bool ShowGroupTreeButtonDefault = true;
 
     /// <summary>
     /// Sets whether the parameters panel is visible or hidden.
+    /// Is not in use with the WPF Viewer.
     /// Default: true
     /// </summary>
     public bool ShowParameterPanelButton { get; set; } = ShowParameterPanelButtonDefault;
+
     /// <inheritdoc/>
     public bool ShouldSerializeShowParameterPanelButton() => ShowParameterPanelButton != ShowParameterPanelButtonDefault;
+
     private const bool ShowParameterPanelButtonDefault = true;
 }

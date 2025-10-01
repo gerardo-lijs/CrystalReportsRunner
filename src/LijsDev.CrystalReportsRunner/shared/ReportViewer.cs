@@ -30,8 +30,14 @@ internal class ReportViewer : IReportViewer
 
     public Window GetViewerWindow(Report report, ReportViewerSettings settings)
     {
+        // Fix Crystal Report param dialog with culture English (World)
+        if (Thread.CurrentThread.CurrentCulture.IetfLanguageTag == "gsw-CH")
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("de-CH");
+        }
+
         var document = ReportUtils.CreateReportDocument(report);
         var viewModel = new ReportViewerWindowVM(document, settings);
-        return new ReportViewerWindow(viewModel);
+        return new ReportViewerWindow { DataContext = viewModel };
     }
 }
