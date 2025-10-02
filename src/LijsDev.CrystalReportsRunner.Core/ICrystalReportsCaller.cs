@@ -10,7 +10,8 @@ public interface ICrystalReportsCaller
     /// </summary>
     /// <param name="reportFileName"></param>
     /// <param name="location"></param>
-    public void FormClosed(string reportFileName, WindowLocation location);
+    /// <param name="reportGuid"></param>
+    public void FormClosed(string reportFileName, WindowLocation location, Guid reportGuid);
 
     /// <summary>
     /// Form Loaded Event.

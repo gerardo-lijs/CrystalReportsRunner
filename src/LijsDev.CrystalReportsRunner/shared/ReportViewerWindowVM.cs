@@ -17,7 +17,7 @@ using Shell;
 /// <summary>
 /// View-Model für den Report-Viewer
 /// </summary>
-public class ReportViewerWindowVM : BindableBase
+public class ReportViewerWindowVM : BindableBase, IReportViewerWindowVM
 {
     #region Members
 
@@ -46,6 +46,7 @@ public class ReportViewerWindowVM : BindableBase
     public ReportViewerWindowVM(CustomReportDocument reportDocument, ReportViewerSettings viewerSettings)
     {
         _reportDocument = reportDocument;
+        ReportGuid = _reportDocument.CallbackGuid;
         ReportViewerSettings = viewerSettings;
 
         if (_reportDocument != null)
@@ -87,9 +88,14 @@ public class ReportViewerWindowVM : BindableBase
 
     #region Properties
 
+    public event EventHandler<Guid>? ExecuteCallbackEvent;
+
     /// <summary>
-    /// Titel des Fensters
+    /// Copy of the Callback GUID from the CustomReportDocument.
+    /// Is needed to pass to the Window.Closed event.
     /// </summary>
+    public Guid ReportGuid { get; }
+
     public string WindowTitle
     {
         get => _windowTitle;
@@ -216,11 +222,7 @@ public class ReportViewerWindowVM : BindableBase
                     _reportDocument.PrintToPrinter(printDialog.PrinterSettings,
                         new PageSettings(printDialog.PrinterSettings), false);
                     //Fire Event
-                    // TODO: #6648 Named Pipe
-                    //if (ReportPrinted != null)
-                    //{
-                    //    ReportPrinted(_reportDocument.Rows, EventArgs.Empty);
-                    //}
+                    ExecuteCallbackEvent?.Invoke(_reportDocument.Rows.DataView.Table, _reportDocument.CallbackGuid);
                 }
             }
             else
@@ -231,23 +233,6 @@ public class ReportViewerWindowVM : BindableBase
         catch (Exception e)
         {
             Logger.Error(e);
-        }
-    }
-
-    /// <summary>
-    /// Druck
-    /// </summary>
-    public void PrintDirect()
-    {
-        if (_reportDocument != null)
-        {
-            _reportDocument.Print();
-            //Fire Event
-            // TODO: #6648 Named Pipe
-            //if (ReportPrinted != null)
-            //{
-            //    ReportPrinted(_reportDocument.Rows, EventArgs.Empty);
-            //}
         }
     }
 

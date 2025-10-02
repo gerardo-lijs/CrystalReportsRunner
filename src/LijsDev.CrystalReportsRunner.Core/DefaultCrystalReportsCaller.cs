@@ -9,8 +9,8 @@ internal class DefaultCrystalReportsCaller : ICrystalReportsCaller
         _engine = engine;
     }
 
-    public void FormClosed(string reportFileName, WindowLocation location) =>
-        _engine.OnFormClosed(reportFileName, location);
+    public void FormClosed(string reportFileName, WindowLocation location, Guid reportGuid) =>
+        _engine.OnFormClosed(reportFileName, location, reportGuid);
 
     public void FormLoaded(string reportFileName, WindowHandle windowHandle) =>
         _engine.OnFormLoaded(reportFileName, windowHandle);

@@ -1,12 +1,8 @@
 namespace LijsDev.CrystalReportsRunner.Core;
 
-using Newtonsoft.Json;
-
-using PipeMethodCalls;
-
-using System;
-using System.IO;
 using System.Text;
+using Newtonsoft.Json;
+using PipeMethodCalls;
 
 /// <summary>
 /// Serializer used for named pipes communication

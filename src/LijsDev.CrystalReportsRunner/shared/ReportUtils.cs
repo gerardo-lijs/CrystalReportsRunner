@@ -20,6 +20,8 @@ internal static class ReportUtils
 
             doc.Load(report.Filename);
 
+            doc.CallbackGuid = report.Guid;
+
             //Check Report Datenbankverbindung geändert?
             if (report.Connection is not null)
             {

@@ -12,13 +12,17 @@ using PipeMethodCalls;
 public sealed class CrystalReportsEngine : IDisposable
 {
     private readonly PipeServerWithCallback<ICrystalReportsRunner, ICrystalReportsCaller> _pipe;
+    private readonly PipeServer<ICallbackDispatcher> _callbackPipeServer;
 
     /// <inheritdoc/>
-    public CrystalReportsEngine()
+    public CrystalReportsEngine(ICallbackDispatcher callbackDispatcher)
     {
         NamedPipeName = $"lijs-dev-crystal-reports-runner-{Guid.NewGuid()}";
         _pipe = new PipeServerWithCallback<ICrystalReportsRunner, ICrystalReportsCaller>(
             new JsonNetPipeSerializer(), NamedPipeName, () => new DefaultCrystalReportsCaller(this));
+
+        CallbackPipeName = $"lijs-dev-crystal-reports-runner-callbacks-{Guid.NewGuid()}";
+        _callbackPipeServer = new PipeServer<ICallbackDispatcher>(new JsonNetPipeSerializer(), CallbackPipeName, () => callbackDispatcher);
     }
 
     /// <summary>
@@ -55,6 +59,11 @@ public sealed class CrystalReportsEngine : IDisposable
     /// Named pipes name used by the runner process to communicate with CrystalReportsEngine.
     /// </summary>
     public string NamedPipeName { get; }
+
+    /// <summary>
+    /// Named pipes name used by the runner process to invoke callbacks.
+    /// </summary>
+    public string CallbackPipeName { get; }
 
     /// <summary>
     /// Returns true if Crystal Reports Runner process/pipe is alive (connected state).
@@ -291,7 +300,7 @@ public sealed class CrystalReportsEngine : IDisposable
 
             var path = GetRunnerPath(RunnerPath);
 
-            var arguments = new List<string> { $"--pipe-name {NamedPipeName}", $"--log-level {(int)LogLevel}" };
+            var arguments = new List<string> { $"--pipe-name {NamedPipeName}", $"--callback-pipe-name {CallbackPipeName}", $"--log-level {(int)LogLevel}" };
 
             if (!string.IsNullOrEmpty(LogDirectory))
             {
@@ -333,6 +342,7 @@ public sealed class CrystalReportsEngine : IDisposable
             try
             {
                 await _pipe.WaitForConnectionAsync(compositeToken);
+                await _callbackPipeServer.WaitForConnectionAsync(compositeToken);
             }
             catch (OperationCanceledException)
             {
@@ -425,6 +435,10 @@ public sealed class CrystalReportsEngine : IDisposable
         // Dispose process with tracker
         _process?.Dispose();
         _tracker?.Dispose();
+
+        // Remove all Events
+        FormClosed = null;
+        FormLoaded = null;
     }
 
     /// <summary>
@@ -432,8 +446,8 @@ public sealed class CrystalReportsEngine : IDisposable
     /// </summary>
     public event EventHandler<FormClosedEventArgs>? FormClosed;
 
-    internal void OnFormClosed(string reportFileName, WindowLocation settings) =>
-        FormClosed?.Invoke(this, new FormClosedEventArgs(reportFileName, settings));
+    internal void OnFormClosed(string reportFileName, WindowLocation settings, Guid reportGuid) =>
+        FormClosed?.Invoke(this, new FormClosedEventArgs(reportFileName, settings, reportGuid));
 
     /// <summary>
     /// Fires when a form is loaded.
@@ -449,10 +463,11 @@ public sealed class CrystalReportsEngine : IDisposable
 /// </summary>
 public class FormClosedEventArgs
 {
-    internal FormClosedEventArgs(string reportFileName, WindowLocation windowSettings)
+    internal FormClosedEventArgs(string reportFileName, WindowLocation windowSettings, Guid reportGuid)
     {
         ReportFileName = reportFileName;
         WindowLocation = windowSettings;
+        ReportGuid = reportGuid;
     }
 
     /// <summary>
@@ -464,6 +479,11 @@ public class FormClosedEventArgs
     /// Location of the form before it was closed.
     /// </summary>
     public WindowLocation WindowLocation { get; }
+
+    /// <summary>
+    /// Guid of the Report.
+    /// </summary>
+    public Guid ReportGuid { get; }
 }
 
 /// <summary>

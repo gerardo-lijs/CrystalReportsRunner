@@ -1,5 +1,6 @@
 namespace LijsDev.CrystalReportsRunner.Shell;
 
+using System.Data;
 using CommandLine;
 using Core;
 using NLog;
@@ -21,6 +22,10 @@ public class Shell(
         /// <inheritdoc/>
         [Option('n', "pipe-name", Required = true, HelpText = "The Named Pipe this instance should connect to.")]
         public string PipeName { get; set; } = string.Empty;
+
+        /// <inheritdoc/>
+        [Option('c', "callback-pipe-name", Required = true, HelpText = "The Named Pipe to use for the callbacks.")]
+        public string CallbackPipeName { get; set; } = string.Empty;
 
         /// <inheritdoc/>
         [Option("log-level", Required = false, HelpText = "Minimum logging level.")]
@@ -93,7 +98,20 @@ public class Shell(
         }
     }
 
+    internal async Task InvokeCallbackPipeClient(DataTable sender, Guid guid)
+    {
+        try
+        {
+            await _callbackPipeClient.InvokeAsync(dispatcher => dispatcher.TryInvokeCallbackFromGuid(sender, guid));
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex);
+        }
+    }
+
     private PipeClientWithCallback<ICrystalReportsCaller, ICrystalReportsRunner>? _pipeClient;
+    private PipeClient<ICallbackDispatcher>? _callbackPipeClient;
 
     private async Task OpenConnection(SynchronizationContext uiContext)
     {
@@ -107,31 +125,36 @@ public class Shell(
             _options.PipeName,
             () => new WpfWindowReportRunner(reportViewer, reportExporter, uiContext, this));
 
+        _callbackPipeClient = new PipeClient<ICallbackDispatcher>(new JsonNetPipeSerializer(), _options.CallbackPipeName);
+
         try
         {
             Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::ConnectAsync::Start");
             await _pipeClient.ConnectAsync();
+            await _callbackPipeClient.ConnectAsync();
             Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::ConnectAsync::End");
 
             Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::WaitForRemotePipeCloseAsync::Start");
             await _pipeClient.WaitForRemotePipeCloseAsync();
+            await _callbackPipeClient.WaitForRemotePipeCloseAsync();
             Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::WaitForRemotePipeCloseAsync::End");
         }
         finally
         {
             _pipeClient.Dispose();
+            _callbackPipeClient.Dispose();
         }
 
         Application.ExitThread();
     }
 
-    internal async void FormClosed(string reportFileName, WindowLocation windowLocation)
+    internal async void FormClosed(string reportFileName, WindowLocation windowLocation, Guid reportGuid)
     {
         try
         {
             if (_pipeClient is not null)
             {
-                await _pipeClient.InvokeAsync(caller => caller.FormClosed(reportFileName, windowLocation));
+                await _pipeClient.InvokeAsync(caller => caller.FormClosed(reportFileName, windowLocation, reportGuid));
             }
         }
         catch (Exception ex)
