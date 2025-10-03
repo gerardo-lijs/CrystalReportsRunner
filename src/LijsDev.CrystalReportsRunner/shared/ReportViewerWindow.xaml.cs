@@ -1,4 +1,4 @@
-﻿namespace LijsDev.CrystalReportsRunner;
+namespace LijsDev.CrystalReportsRunner;
 
 using System.Windows;
 

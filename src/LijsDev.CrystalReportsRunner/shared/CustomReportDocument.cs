@@ -53,6 +53,11 @@ public class CustomReportDocument : ReportDocument
     }
 
     /// <summary>
+    /// Guid to identify the associated callback.
+    /// </summary>
+    public Guid CallbackGuid { get; set; }
+
+    /// <summary>
     /// Setzt die Parameterwerte
     /// </summary>
     /// <param name="name">Name</param>

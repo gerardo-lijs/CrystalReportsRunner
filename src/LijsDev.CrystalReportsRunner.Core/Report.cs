@@ -52,13 +52,20 @@ public sealed class Report
     /// <param name="filename"></param>
     /// <param name="title"></param>
     /// <param name="exportFilename"></param>
+    /// <param name="guid"></param>
     [JsonConstructor]
-    public Report(string filename, string title, string exportFilename)
+    public Report(string filename, string title, string exportFilename, Guid guid)
     {
         Filename = filename;
         Title = title;
         ExportFilename = exportFilename;
+        Guid = guid;
     }
+
+    /// <summary>
+    /// This Guid is used to identify the callback associated with this Report.
+    /// </summary>
+    public Guid Guid { get; } = Guid.NewGuid();
 
     /// <summary>
     /// Crystal Reports RPT filename

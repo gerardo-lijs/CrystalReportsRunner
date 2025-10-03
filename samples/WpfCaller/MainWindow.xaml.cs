@@ -1,11 +1,11 @@
 namespace WpfCaller;
 
-using LijsDev.CrystalReportsRunner.Core;
-
-using System;
+using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Interop;
+using LijsDev.CrystalReportsRunner.Core;
 
 public partial class MainWindow : Window
 {
@@ -13,6 +13,7 @@ public partial class MainWindow : Window
     /// Shared Crystal Reports Engine
     /// </summary>
     private CrystalReportsEngine? _engineInstance;
+
     private WindowLocation? _lastLocation;
 
     public MainWindow()
@@ -58,14 +59,15 @@ public partial class MainWindow : Window
         try
         {
             EnsureEngineAvailable();
-            if (_engineInstance is null) throw new InvalidProgramException($"{nameof(_engineInstance)} can't be null here after calling EnsureEngineAvailable.");
+            if (_engineInstance is null)
+                throw new InvalidProgramException($"{nameof(_engineInstance)} can't be null here after calling EnsureEngineAvailable.");
 
             ConfigureWindowLocationAndSize();
 
             // Show
             var report = CreateReport();
             var windowHandle = new WindowHandle(new WindowInteropHelper(this).EnsureHandle());
-            await _engineInstance.ShowReport(report, owner: windowHandle);
+            await _engineInstance.ShowReport(report, windowHandle);
         }
         catch (Exception ex)
         {
@@ -96,14 +98,15 @@ public partial class MainWindow : Window
         try
         {
             EnsureEngineAvailable();
-            if (_engineInstance is null) throw new InvalidProgramException($"{nameof(_engineInstance)} can't be null here after calling EnsureEngineAvailable.");
+            if (_engineInstance is null)
+                throw new InvalidProgramException($"{nameof(_engineInstance)} can't be null here after calling EnsureEngineAvailable.");
 
             ConfigureWindowLocationAndSize();
 
             // Show
             var report = CreateReport();
             var windowHandle = new WindowHandle(new WindowInteropHelper(this).EnsureHandle());
-            var result = await _engineInstance.ShowReportDialog(report, owner: windowHandle);
+            var result = await _engineInstance.ShowReportDialog(report, windowHandle);
         }
         catch (Exception ex)
         {
@@ -122,18 +125,15 @@ public partial class MainWindow : Window
         try
         {
             EnsureEngineAvailable();
-            if (_engineInstance is null) throw new InvalidProgramException($"{nameof(_engineInstance)} can't be null here after calling EnsureEngineAvailable.");
+            if (_engineInstance is null)
+                throw new InvalidProgramException($"{nameof(_engineInstance)} can't be null here after calling EnsureEngineAvailable.");
 
             // Export
             var report = CreateReport();
             var dstFilename = "sample_report.pdf";
-            await _engineInstance.Export(report, ReportExportFormats.PDF, dstFilename, overwrite: true);
+            await _engineInstance.Export(report, ReportExportFormats.PDF, dstFilename, true);
 
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = dstFilename,
-                UseShellExecute = true
-            });
+            Process.Start(new ProcessStartInfo { FileName = dstFilename, UseShellExecute = true });
         }
         catch (Exception ex)
         {
@@ -152,22 +152,19 @@ public partial class MainWindow : Window
         try
         {
             EnsureEngineAvailable();
-            if (_engineInstance is null) throw new InvalidProgramException($"{nameof(_engineInstance)} can't be null here after calling EnsureEngineAvailable.");
+            if (_engineInstance is null)
+                throw new InvalidProgramException($"{nameof(_engineInstance)} can't be null here after calling EnsureEngineAvailable.");
 
             // Export
             var report = CreateReport();
             using var reportStream = await _engineInstance.Export(report, ReportExportFormats.PDF);
 
             var dstFilename = "sample_report_stream.pdf";
-            if (System.IO.File.Exists(dstFilename)) System.IO.File.Delete(dstFilename);
-            using var sw = new System.IO.FileStream(dstFilename, System.IO.FileMode.Create);
+            if (File.Exists(dstFilename)) File.Delete(dstFilename);
+            using var sw = new FileStream(dstFilename, FileMode.Create);
             await reportStream.CopyToAsync(sw);
 
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = dstFilename,
-                UseShellExecute = true
-            });
+            Process.Start(new ProcessStartInfo { FileName = dstFilename, UseShellExecute = true });
         }
         catch (Exception ex)
         {
@@ -183,7 +180,7 @@ public partial class MainWindow : Window
     {
         var report = new Report("SampleReport.rpt", "Sample Report")
         {
-            Connection = CrystalReportsConnectionFactory.CreateSqlConnection(".\\SQLEXPRESS", "CrystalReportsSample")
+            Connection = CrystalReportsConnectionFactory.CreateSqlConnection(".\\SQLEXPRESS", "CrystalReportsSample"),
         };
         report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
         report.Parameters.Add("UserName", "Muhammad");
@@ -200,10 +197,10 @@ public partial class MainWindow : Window
         report.Parameters.Add("UserName", "Gerardo");
 
         // Create dataset
-        var sampleReportDataset = new System.Data.DataSet();
+        var sampleReportDataset = new DataSet();
 
         // Create table
-        var personsTable = new System.Data.DataTable("Persons");
+        var personsTable = new DataTable("Persons");
         sampleReportDataset.Tables.Add(personsTable);
         personsTable.Columns.Add("Id", typeof(int));
         personsTable.Columns.Add("Name", typeof(string));
@@ -211,8 +208,8 @@ public partial class MainWindow : Window
         personsTable.Columns.Add("PersonImage", typeof(byte[]));
 
         // Add rows
-        personsTable.Rows.Add(1, "Gerardo", "42", System.IO.File.ReadAllBytes("sampleImage1.jpg"));
-        personsTable.Rows.Add(2, "Khalifa", "24", System.IO.File.ReadAllBytes("sampleImage2.jpg"));
+        personsTable.Rows.Add(1, "Gerardo", "42", File.ReadAllBytes("sampleImage1.jpg"));
+        personsTable.Rows.Add(2, "Khalifa", "24", File.ReadAllBytes("sampleImage2.jpg"));
 
         report.DataSets.Add(sampleReportDataset);
 
@@ -222,7 +219,7 @@ public partial class MainWindow : Window
     private CrystalReportsEngine CreateEngine()
     {
         // NOTE: Create CrystalReportsSample using Schema.sql in the \samples\shared folder
-        var engine = new CrystalReportsEngine();
+        var engine = new CrystalReportsEngine(new DummyCallbackDispatcher());
 
         // Method 2: Without Connection string
         // using var engine = new CrystalReportsEngine();
@@ -253,7 +250,7 @@ public partial class MainWindow : Window
         engine.ViewerSettings.WindowInitialState = ReportViewerWindowState.Normal;
 
         // Set viewer Icon
-        engine.ViewerSettings.WindowIcon = System.IO.File.ReadAllBytes("SampleIcon.png");
+        engine.ViewerSettings.WindowIcon = File.ReadAllBytes("SampleIcon.png");
 
         // Optional we can also set culture for Crystal Reports Viewer UI to match the one used in your application
         //engine.ViewerSettings.SetUICulture(Thread.CurrentThread.CurrentUICulture);
@@ -278,7 +275,8 @@ public partial class MainWindow : Window
     private void Engine_FormClosed(object? sender, FormClosedEventArgs e)
     {
         _lastLocation = e.WindowLocation;
-        Debug.WriteLine($"Form Closed for {e.ReportFileName}. Location: ({e.WindowLocation.Left}, {e.WindowLocation.Top}). Size: {e.WindowLocation.Width} x {e.WindowLocation.Height}.");
+        Debug.WriteLine(
+            $"Form Closed for {e.ReportFileName}. Location: ({e.WindowLocation.Left}, {e.WindowLocation.Top}). Size: {e.WindowLocation.Width} x {e.WindowLocation.Height}.");
     }
 
     private async void ShowDataSetButton_Click(object sender, RoutedEventArgs e)
@@ -288,14 +286,15 @@ public partial class MainWindow : Window
         try
         {
             EnsureEngineAvailable();
-            if (_engineInstance is null) throw new InvalidProgramException($"{nameof(_engineInstance)} can't be null here after calling EnsureEngineAvailable.");
+            if (_engineInstance is null)
+                throw new InvalidProgramException($"{nameof(_engineInstance)} can't be null here after calling EnsureEngineAvailable.");
 
             ConfigureWindowLocationAndSize();
 
             // Show
             var report = CreateReportDataSet();
             var windowHandle = new WindowHandle(new WindowInteropHelper(this).EnsureHandle());
-            await _engineInstance.ShowReport(report, owner: windowHandle);
+            await _engineInstance.ShowReport(report, windowHandle);
         }
         catch (Exception ex)
         {
@@ -314,7 +313,8 @@ public partial class MainWindow : Window
         try
         {
             EnsureEngineAvailable();
-            if (_engineInstance is null) throw new InvalidProgramException($"{nameof(_engineInstance)} can't be null here after calling EnsureEngineAvailable.");
+            if (_engineInstance is null)
+                throw new InvalidProgramException($"{nameof(_engineInstance)} can't be null here after calling EnsureEngineAvailable.");
 
             // Export
             var report = CreateReport();

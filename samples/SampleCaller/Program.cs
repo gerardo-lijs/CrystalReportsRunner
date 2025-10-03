@@ -3,7 +3,7 @@ using LijsDev.CrystalReportsRunner.Core;
 // ========== Initializing Engine ===========
 
 // Method 1: With Connection string
-using var engine = new CrystalReportsEngine();
+using var engine = new CrystalReportsEngine(new DummyCallbackDispatcher());
 
 // Method 2: Without Connection string
 // using var engine = new CrystalReportsEngine();
@@ -41,7 +41,7 @@ engine.ViewerSettings.SetUICulture(Thread.CurrentThread.CurrentUICulture);
 // Method 1: Full Control
 var report = new Report("SampleReport.rpt", "Sample Report")
 {
-    Connection = CrystalReportsConnectionFactory.CreateSqlConnection(".\\SQLEXPRESS", "CrystalReportsSample")
+    Connection = CrystalReportsConnectionFactory.CreateSqlConnection(".\\SQLEXPRESS", "CrystalReportsSample"),
 };
 report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
 report.Parameters.Add("UserName", "Gerardo");

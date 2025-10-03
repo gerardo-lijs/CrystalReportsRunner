@@ -1,5 +1,6 @@
 namespace LijsDev.CrystalReportsRunner.Shell;
 
+using System.Data;
 using System.Windows;
 using System.Windows.Interop;
 using Core;
@@ -71,7 +72,15 @@ internal class WpfWindowReportRunner : ICrystalReportsRunner
             var window = _viewer.GetViewerWindow(report, viewerSettings);
             var reportFileName = report.Filename;
 
-            window.Loaded += (s, args) =>
+            if (window.DataContext is IReportViewerWindowVM viewerWindowVM)
+            {
+                viewerWindowVM.ExecuteCallbackEvent += async (sender, args) =>
+                {
+                    await _shell.InvokeCallbackPipeClient((DataTable)sender, args);
+                };
+            }
+
+            window.Loaded += (sender, args) =>
             {
                 Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::ShowReport::FormLoad");
                 _shell.FormLoaded(reportFileName, new WindowHandle(new WindowInteropHelper(window).EnsureHandle()));
@@ -79,11 +88,14 @@ internal class WpfWindowReportRunner : ICrystalReportsRunner
                 waitHandle.Set();
             };
 
-            window.Closed += (s, args) =>
+            if (window.DataContext is IReportViewerWindowVM viewerWindowVM1)
             {
-                Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::ShowReport::FormClosed");
-                _shell.FormClosed(reportFileName, GetWindowLocation(window));
-            };
+                window.Closed += (sender, args) =>
+                {
+                    Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::ShowReport::FormClosed");
+                    _shell.FormClosed(reportFileName, GetWindowLocation(window), viewerWindowVM1.ReportGuid);
+                };
+            }
 
             if (owner is not null)
             {
@@ -115,7 +127,15 @@ internal class WpfWindowReportRunner : ICrystalReportsRunner
         {
             var window = _viewer.GetViewerWindow(report, viewerSettings);
 
-            window.Loaded += (s, args) =>
+            if (window.DataContext is IReportViewerWindowVM viewerWindowVM)
+            {
+                viewerWindowVM.ExecuteCallbackEvent += async (sender, args) =>
+                {
+                    await _shell.InvokeCallbackPipeClient((DataTable)sender, args);
+                };
+            }
+
+            window.Loaded += (sender, args) =>
             {
                 Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::ShowReportDialog::FormLoad");
                 _shell.FormLoaded(reportFileName, new WindowHandle(new WindowInteropHelper(window).EnsureHandle()));
@@ -123,11 +143,14 @@ internal class WpfWindowReportRunner : ICrystalReportsRunner
                 waitHandle.Set();
             };
 
-            window.Closed += (s, args) =>
+            if (window.DataContext is IReportViewerWindowVM viewerWindowVM1)
             {
-                Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::ShowReportDialog::FormClosed");
-                _shell.FormClosed(reportFileName, GetWindowLocation(window));
-            };
+                window.Closed += (sender, args) =>
+                {
+                    Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::ShowReportDialog::FormClosed");
+                    _shell.FormClosed(reportFileName, GetWindowLocation(window), viewerWindowVM1.ReportGuid);
+                };
+            }
 
             var interopHelper = new WindowInteropHelper(window);
             interopHelper.Owner = owner.Handle;
