@@ -9,7 +9,7 @@ using System.Diagnostics;
 public class DummyCallbackDispatcher : ICallbackDispatcher
 {
     /// <inheritdoc/>
-    public bool TryInvokeCallbackFromGuid(DataTable sender, Guid guid)
+    public bool TryInvokeCallbackFromGuid(DataTable dataTable, Guid guid)
     {
         Debug.WriteLine($"Callback Dispatcher called with GUID: {guid}");
         return true;

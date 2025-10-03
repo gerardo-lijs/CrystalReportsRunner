@@ -98,11 +98,11 @@ public class Shell(
         }
     }
 
-    internal async Task InvokeCallbackPipeClient(DataTable sender, Guid guid)
+    internal async Task InvokeCallbackPipeClient(DataTable dataTable, Guid guid)
     {
         try
         {
-            await _callbackPipeClient.InvokeAsync(dispatcher => dispatcher.TryInvokeCallbackFromGuid(sender, guid));
+            await _callbackPipeClient.InvokeAsync(dispatcher => dispatcher.TryInvokeCallbackFromGuid(dataTable, guid));
         }
         catch (Exception ex)
         {

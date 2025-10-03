@@ -11,7 +11,7 @@ public interface ICallbackDispatcher
     /// Executes the callback associated with the provided GUID.
     /// Returns <langword>true</langword> if the callback exists in the Registry and it was executed.
     /// </summary>
-    /// <param name="sender"></param>
+    /// <param name="dataTable"></param>
     /// <param name="guid"></param>
-    bool TryInvokeCallbackFromGuid(DataTable sender, Guid guid);
+    bool TryInvokeCallbackFromGuid(DataTable dataTable, Guid guid);
 }
