@@ -21,7 +21,7 @@
     <Authors>Muhammad Azeez and Gerardo Lijs and sharecomm ag</Authors>
     <Company>Muhammad Azeez and Gerardo Lijs and sharecomm ag</Company>
     <Copyright>Copyright © LijsDev and sharecomm ag 2022-2025</Copyright>
-    <ApplicationIcon>..\shared\report.ico</ApplicationIcon>
+    <ApplicationIcon>..\shared\report_blue_32.ico</ApplicationIcon>
     <EmbeddedResourceUseDependentUponConvention>true</EmbeddedResourceUseDependentUponConvention>
   </PropertyGroup>
 
@@ -63,6 +63,7 @@
   <ItemGroup>
     <EmbeddedResource Include="..\shared\ViewerForm.resx" Link="ViewerForm.resx" />
     <EmbeddedResource Include="..\shared\report.ico" />
+    <EmbeddedResource Include="..\shared\report_blue_32.ico" />
   </ItemGroup>
 
   <ItemGroup>

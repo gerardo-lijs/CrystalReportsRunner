@@ -24,7 +24,6 @@
     ResizeMode="{Binding ResizeMode}"
     WindowState="{Binding WindowState}"
     WindowStartupLocation="Manual"
-    Icon="{Binding ReportViewerSettings.WindowIcon}"
     d:DataContext="{d:DesignInstance crystalReportsRunner:ReportViewerWindowVM}" d:DesignHeight="350">
 
     <Grid>
