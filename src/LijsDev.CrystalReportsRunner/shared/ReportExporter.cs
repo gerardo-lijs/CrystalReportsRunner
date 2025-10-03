@@ -1,5 +1,6 @@
 namespace LijsDev.CrystalReportsRunner;
 
+using System.Data;
 using System.IO;
 using Core;
 using CrystalDecisions.Shared;
@@ -8,10 +9,11 @@ using Shell;
 internal class ReportExporter : IReportExporter
 {
     /// <inheritdoc/>
-    public void Print(Report report, ReportPrintOptions printOptions)
+    public DataTable Print(Report report, ReportPrintOptions printOptions)
     {
         var document = ReportUtils.CreateReportDocument(report);
         document.Print();
+        return document.Rows.DataView.Table;
     }
 
     /// <inheritdoc/>

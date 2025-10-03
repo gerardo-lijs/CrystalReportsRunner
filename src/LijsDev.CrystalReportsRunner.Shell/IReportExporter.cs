@@ -1,6 +1,7 @@
 namespace LijsDev.CrystalReportsRunner.Shell;
 
-using LijsDev.CrystalReportsRunner.Core;
+using System.Data;
+using Core;
 
 /// <summary>
 /// Report Exporter interface
@@ -9,10 +10,11 @@ public interface IReportExporter
 {
     /// <summary>
     /// Prints a report using the specified printer options.
+    /// It returns the DataTable that the Report holds.
     /// </summary>
     /// <param name="report">Report to print</param>
     /// <param name="printOptions">Report printer options</param>
-    public void Print(
+    public DataTable Print(
         Report report,
         ReportPrintOptions printOptions);
 

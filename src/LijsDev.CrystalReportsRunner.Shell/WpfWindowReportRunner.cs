@@ -28,10 +28,11 @@ internal class WpfWindowReportRunner : ICrystalReportsRunner
     }
 
     /// <inheritdoc/>
-    public void Print(Report report, ReportPrintOptions printOptions)
+    public async Task Print(Report report, ReportPrintOptions printOptions)
     {
         Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::Print::PrinterName={printOptions.PrinterName}::Start");
-        _exporter.Print(report, printOptions);
+        var dataTable = _exporter.Print(report, printOptions);
+        await _shell.InvokeCallbackPipeClient(dataTable, report.Guid);
         Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::Print::End");
     }
 

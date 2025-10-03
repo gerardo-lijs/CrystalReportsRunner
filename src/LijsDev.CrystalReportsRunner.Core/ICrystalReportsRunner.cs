@@ -10,7 +10,7 @@ public interface ICrystalReportsRunner
     /// </summary>
     /// <param name="report">Report to print</param>
     /// <param name="printOptions">Report printer options</param>
-    public void Print(Report report, ReportPrintOptions printOptions);
+    public Task Print(Report report, ReportPrintOptions printOptions);
 
     /// <summary>
     /// Exports a report to the specified filename.
