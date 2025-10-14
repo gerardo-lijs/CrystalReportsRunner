@@ -1,6 +1,7 @@
 namespace LijsDev.CrystalReportsRunner.Shell;
 
 using System.Data;
+using System.Windows.Threading;
 using CommandLine;
 using Core;
 using NLog;
@@ -10,11 +11,24 @@ using LogLevel = Core.LogLevel;
 /// <summary>
 /// Shell implementation for Crystal Reports Runner
 /// </summary>
-public class Shell(
-    IReportViewer reportViewer,
-    IReportExporter reportExporter)
+public class Shell
 {
+    private readonly IReportViewer _reportViewer;
+    private readonly IReportExporter _reportExporter;
+    private readonly Dispatcher _uiDispatcher;
+
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+    /// <inheritdoc/>
+    public Shell(
+        IReportViewer reportViewer,
+        IReportExporter reportExporter,
+        Dispatcher dispatcher)
+    {
+        _reportViewer = reportViewer;
+        _reportExporter = reportExporter;
+        _uiDispatcher = dispatcher;
+    }
 
     /// <inheritdoc/>
     public class Options
@@ -123,7 +137,7 @@ public class Shell(
             new JsonNetPipeSerializer(),
             ".",
             _options.PipeName,
-            () => new WpfWindowReportRunner(reportViewer, reportExporter, uiContext, this));
+            () => new WpfWindowReportRunner(_reportViewer, _reportExporter, _uiDispatcher, this));
 
         _callbackPipeClient = new PipeClient<ICallbackDispatcher>(new JsonNetPipeSerializer(), _options.CallbackPipeName);
 

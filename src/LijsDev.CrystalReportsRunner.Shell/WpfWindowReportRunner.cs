@@ -3,6 +3,7 @@ namespace LijsDev.CrystalReportsRunner.Shell;
 using System.Data;
 using System.Windows;
 using System.Windows.Interop;
+using System.Windows.Threading;
 using Core;
 using NLog;
 
@@ -12,18 +13,18 @@ internal class WpfWindowReportRunner : ICrystalReportsRunner
 
     private readonly IReportViewer _viewer;
     private readonly IReportExporter _exporter;
-    private readonly SynchronizationContext _uiContext;
+    private readonly Dispatcher _uiDispatcher;
     private readonly Shell _shell;
 
     public WpfWindowReportRunner(
         IReportViewer viewer,
         IReportExporter exporter,
-        SynchronizationContext uiContext,
+        Dispatcher uiDispatcher,
         Shell shell)
     {
         _viewer = viewer;
         _exporter = exporter;
-        _uiContext = uiContext;
+        _uiDispatcher = uiDispatcher;
         _shell = shell;
     }
 
@@ -66,9 +67,7 @@ internal class WpfWindowReportRunner : ICrystalReportsRunner
     {
         Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::ShowReport::Start");
 
-        using var waitHandle = new ManualResetEvent(false);
-
-        _uiContext.Send(s =>
+        _uiDispatcher.BeginInvoke(() =>
         {
             var window = _viewer.GetViewerWindow(report, viewerSettings);
             var reportFileName = report.Filename;
@@ -85,8 +84,6 @@ internal class WpfWindowReportRunner : ICrystalReportsRunner
             {
                 Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::ShowReport::FormLoad");
                 _shell.FormLoaded(reportFileName, new WindowHandle(new WindowInteropHelper(window).EnsureHandle()));
-
-                waitHandle.Set();
             };
 
             if (window.DataContext is IReportViewerWindowVM viewerWindowVM1)
@@ -105,9 +102,7 @@ internal class WpfWindowReportRunner : ICrystalReportsRunner
             }
 
             window.Show();
-        }, null);
-
-        waitHandle.WaitOne();
+        });
 
         Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::ShowReport::End");
     }
@@ -120,11 +115,10 @@ internal class WpfWindowReportRunner : ICrystalReportsRunner
     {
         Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::ShowReportDialog::Start");
 
-        using var waitHandle = new ManualResetEvent(false);
         bool? result = false;
         var reportFileName = report.Filename;
 
-        _uiContext.Send(s =>
+        _uiDispatcher!.BeginInvoke(() =>
         {
             var window = _viewer.GetViewerWindow(report, viewerSettings);
 
@@ -140,8 +134,6 @@ internal class WpfWindowReportRunner : ICrystalReportsRunner
             {
                 Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::ShowReportDialog::FormLoad");
                 _shell.FormLoaded(reportFileName, new WindowHandle(new WindowInteropHelper(window).EnsureHandle()));
-
-                waitHandle.Set();
             };
 
             if (window.DataContext is IReportViewerWindowVM viewerWindowVM1)
@@ -158,10 +150,8 @@ internal class WpfWindowReportRunner : ICrystalReportsRunner
 
             result = window.ShowDialog();
 
-            waitHandle.Set();
-        }, null);
-
-        waitHandle.WaitOne();
+            window.Show();
+        });
 
         Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::ShowReportDialog::End");
         return result;

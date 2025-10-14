@@ -2,6 +2,7 @@ namespace LijsDev.CrystalReportsRunner;
 
 using System.Diagnostics;
 using System.Reflection;
+using System.Windows.Threading;
 using CommandLine;
 using Core;
 using NLog;
@@ -10,6 +11,7 @@ using static Shell.Shell;
 internal static class Program
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private static Dispatcher _uiDispatcher = null!;
 
     public static string ApplicationVersion
     {
@@ -72,10 +74,22 @@ internal static class Program
 
         try
         {
+            var thread = new Thread(() =>
+            {
+                _uiDispatcher = Dispatcher.CurrentDispatcher;
+                Dispatcher.Run(); // Startet die Message-Loop
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.IsBackground = true;
+            thread.Start();
+
+            // optional: kurz warten, bis Dispatcher da ist
+            SpinWait.SpinUntil(() => _uiDispatcher != null, 2000);
+
             // Enable Runtime LegacyV2 for Crystal Reports
             RuntimePolicyHelper.LegacyV2Runtime_Enable();
 
-            var shell = new Shell.Shell(new ReportViewer(), new ReportExporter());
+            var shell = new Shell.Shell(new ReportViewer(), new ReportExporter(), _uiDispatcher);
             shell.StartListening(args);
         }
         catch (Exception ex)

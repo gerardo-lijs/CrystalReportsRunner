@@ -180,7 +180,7 @@ public partial class MainWindow : Window
     {
         var report = new Report("SampleReport.rpt", "Sample Report")
         {
-            Connection = CrystalReportsConnectionFactory.CreateSqlConnection(".\\SQLEXPRESS", "CrystalReportsSample"),
+            Connection = CrystalReportsConnectionFactory.CreateSqlConnection("(local)", "CrystalReportsSample"),
         };
         report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
         report.Parameters.Add("UserName", "Muhammad");
