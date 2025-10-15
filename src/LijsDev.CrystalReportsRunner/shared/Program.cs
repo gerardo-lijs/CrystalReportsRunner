@@ -84,6 +84,9 @@ internal static class Program
             thread.IsBackground = true;
             thread.Start();
 
+            // Wait until Dispatcher is available
+            SpinWait.SpinUntil(() => _uiDispatcher != null, 2000);
+
             // Enable Runtime LegacyV2 for Crystal Reports
             RuntimePolicyHelper.LegacyV2Runtime_Enable();
 

@@ -12,9 +12,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
-    <Version>1.6.8</Version>
-    <AssemblyVersion>1.6.8.0</AssemblyVersion>
-    <FileVersion>1.6.8.0</FileVersion>
+    <Version>1.6.9</Version>
+    <AssemblyVersion>1.6.9.0</AssemblyVersion>
+    <FileVersion>1.6.9.0</FileVersion>
     <RootNamespace>LijsDev.CrystalReportsRunner</RootNamespace>
     <AssemblyName>Remec.CrystalReportsRunner</AssemblyName>
     <AssemblyTitle>Remec Crystal Reports Runner</AssemblyTitle>
