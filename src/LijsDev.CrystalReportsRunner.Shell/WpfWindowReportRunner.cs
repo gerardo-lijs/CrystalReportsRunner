@@ -118,7 +118,7 @@ internal class WpfWindowReportRunner : ICrystalReportsRunner
         bool? result = false;
         var reportFileName = report.Filename;
 
-        _uiDispatcher!.BeginInvoke(() =>
+        _uiDispatcher.BeginInvoke(() =>
         {
             var window = _viewer.GetViewerWindow(report, viewerSettings);
 

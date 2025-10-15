@@ -74,6 +74,7 @@ internal static class Program
 
         try
         {
+            // We need an UiThread for the WPF viewer - otherwise it has no message-loop and wont accept keyboard input
             var thread = new Thread(() =>
             {
                 _uiDispatcher = Dispatcher.CurrentDispatcher;
@@ -82,9 +83,6 @@ internal static class Program
             thread.SetApartmentState(ApartmentState.STA);
             thread.IsBackground = true;
             thread.Start();
-
-            // optional: kurz warten, bis Dispatcher da ist
-            SpinWait.SpinUntil(() => _uiDispatcher != null, 2000);
 
             // Enable Runtime LegacyV2 for Crystal Reports
             RuntimePolicyHelper.LegacyV2Runtime_Enable();
