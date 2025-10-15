@@ -42,7 +42,6 @@
 
   <ItemGroup>
     <Compile Include="..\shared\MemoryMappedFileUtils.cs" Link="MemoryMappedFileUtils.cs" />
-    <Compile Include="..\shared\Program.cs" Link="Program.cs" />
     <Compile Include="..\shared\ReportExporter.cs" Link="ReportExporter.cs" />
     <Compile Include="..\shared\ReportUtils.cs" Link="ReportUtils.cs" />
     <Compile Include="..\shared\CustomReportDocument.cs" Link="CustomReportDocument.cs" />

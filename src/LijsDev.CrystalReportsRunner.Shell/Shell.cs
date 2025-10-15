@@ -1,6 +1,7 @@
 namespace LijsDev.CrystalReportsRunner.Shell;
 
 using System.Data;
+using System.Windows;
 using System.Windows.Threading;
 using CommandLine;
 using Core;
@@ -11,24 +12,9 @@ using LogLevel = Core.LogLevel;
 /// <summary>
 /// Shell implementation for Crystal Reports Runner
 /// </summary>
-public class Shell
+public class Shell(IReportViewer reportViewer, IReportExporter reportExporter, Dispatcher dispatcher)
 {
-    private readonly IReportViewer _reportViewer;
-    private readonly IReportExporter _reportExporter;
-    private readonly Dispatcher _uiDispatcher;
-
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-    /// <inheritdoc/>
-    public Shell(
-        IReportViewer reportViewer,
-        IReportExporter reportExporter,
-        Dispatcher dispatcher)
-    {
-        _reportViewer = reportViewer;
-        _reportExporter = reportExporter;
-        _uiDispatcher = dispatcher;
-    }
 
     /// <inheritdoc/>
     public class Options
@@ -52,25 +38,8 @@ public class Shell
 
     private Options? _options;
 
-    private void ThreadExceptionHandler(object s, ThreadExceptionEventArgs e)
-    {
-        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::ThreadExceptionHandler");
-        Logger.Fatal(e.Exception);
-        Application.ExitThread();
-    }
-
-    private async void StartUpHandler(object s, EventArgs e)
-    {
-        Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartUpHandler");
-        Application.Idle -= StartUpHandler;
-
-        // Capture WindowsFormsSynchronizationContext UI context
-        var uiContext = SynchronizationContext.Current ?? throw new Exception($"{nameof(StartUpHandler)} needs to be run from a UI Thread.");
-        await OpenConnection(uiContext);
-    }
-
     /// <inheritdoc/>
-    public void StartListening(string[] args)
+    public async Task StartListening(string[] args)
     {
         var result = Parser.Default.ParseArguments<Options>(args);
 
@@ -81,18 +50,14 @@ public class Shell
 
             Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::Start");
 
-            Application.ThreadException += ThreadExceptionHandler;
-            Application.Idle += StartUpHandler;
             try
             {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::Application.Run");
-                Application.Run();
+                await OpenConnection();
             }
-            finally
+            catch (Exception ex)
             {
-                Application.Idle -= StartUpHandler;
+                Logger.Fatal(ex);
+                Application.Current?.Shutdown();
             }
 
             Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::End");
@@ -108,7 +73,9 @@ public class Shell
             MessageBox.Show(
                 "Crystal Reports Runner is not meant to be run standalone.\n\nPlease use from caller app with NuGet package LijsDev.CrystalReportsRunner.Core.\nSee project documentation in GitHub to learn how to get started.",
                 "Crystal Reports Runner",
-                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBoxButton.OK, MessageBoxImage.Warning);
+
+            Application.Current?.Shutdown();
         }
     }
 
@@ -127,7 +94,7 @@ public class Shell
     private PipeClientWithCallback<ICrystalReportsCaller, ICrystalReportsRunner>? _pipeClient;
     private PipeClient<ICallbackDispatcher>? _callbackPipeClient;
 
-    private async Task OpenConnection(SynchronizationContext uiContext)
+    private async Task OpenConnection()
     {
         if (_options is null) throw new NullReferenceException(nameof(_options));
 
@@ -137,7 +104,7 @@ public class Shell
             new JsonNetPipeSerializer(),
             ".",
             _options.PipeName,
-            () => new WpfWindowReportRunner(_reportViewer, _reportExporter, _uiDispatcher, this));
+            () => new WpfWindowReportRunner(reportViewer, reportExporter, dispatcher, this));
 
         _callbackPipeClient = new PipeClient<ICallbackDispatcher>(new JsonNetPipeSerializer(), _options.CallbackPipeName);
 
@@ -159,7 +126,7 @@ public class Shell
             _callbackPipeClient.Dispose();
         }
 
-        Application.ExitThread();
+        Application.Current?.Dispatcher.BeginInvoke(() => Application.Current.Shutdown());
     }
 
     internal async void FormClosed(string reportFileName, WindowLocation windowLocation, Guid reportGuid)
