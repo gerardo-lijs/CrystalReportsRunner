@@ -61,21 +61,15 @@ public partial class App : Application
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
 
-            exArgs.Handled = true; // verhindert Absturz
+            Current.Shutdown(-1);
         };
 
-        try
+        // Exceptions thrown here will be caught in DispatcherUnhandledExceptions above
+        var result = Parser.Default.ParseArguments<Shell.Shell.Options>(e.Args);
+        if (result.Tag == ParserResultType.Parsed)
         {
-            var result = Parser.Default.ParseArguments<Shell.Shell.Options>(e.Args);
-            if (result.Tag == ParserResultType.Parsed)
-            {
-                var options = result.Value;
-                NLogHelper.ConfigureNLog(options.LogDirectory, options.LogLevel);
-            }
-        }
-        catch (Exception ex)
-        {
-            Logger.Fatal(ex);
+            var options = result.Value;
+            NLogHelper.ConfigureNLog(options.LogDirectory, options.LogLevel);
         }
 
         Logger.Info("========================================================================================================");
@@ -86,23 +80,20 @@ public partial class App : Application
         Logger.Info($"LijsDev::CrystalReportsRunner::Program::CrystalReportsRuntimePlatform::{CrystalReportsRuntimePlatform}");
         Logger.Info("========================================================================================================");
 
-        try
-        {
-            // Enable Runtime LegacyV2 for Crystal Reports
-            RuntimePolicyHelper.LegacyV2Runtime_Enable();
+        RuntimePolicyHelper.LegacyV2Runtime_Enable();
 
-            var shell = new Shell.Shell(new ReportViewer(), new ReportExporter(), Dispatcher);
-            _ = shell.StartListening(e.Args);
-        }
-        catch (Exception ex)
+        var shell = new Shell.Shell(new ReportViewer(), new ReportExporter(), Dispatcher);
+        shell.StartListening(e.Args).ContinueWith((task) =>
         {
-            Logger.Fatal(ex);
-        }
-        finally
-        {
-            Logger.Info("========================================================================================================");
-            Logger.Info("LijsDev::CrystalReportsRunner::Program::End");
-            Logger.Info("========================================================================================================");
-        }
+            // Exceptions thrown inside Shell.StartListening will be handled here
+            if (task.Status != TaskStatus.Faulted) return;
+
+            Logger.Error(task.Exception.StackTrace);
+            MessageBox.Show(
+                task.Exception.ToString(),
+                "Unhandled Exception",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+        });
     }
 }

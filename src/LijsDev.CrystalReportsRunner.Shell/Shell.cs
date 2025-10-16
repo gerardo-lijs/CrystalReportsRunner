@@ -50,15 +50,7 @@ public class Shell(IReportViewer reportViewer, IReportExporter reportExporter, D
 
             Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::Start");
 
-            try
-            {
-                await OpenConnection();
-            }
-            catch (Exception ex)
-            {
-                Logger.Fatal(ex);
-                Application.Current?.Shutdown();
-            }
+            await OpenConnection();
 
             Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::End");
         }
@@ -125,8 +117,6 @@ public class Shell(IReportViewer reportViewer, IReportExporter reportExporter, D
             _pipeClient.Dispose();
             _callbackPipeClient.Dispose();
         }
-
-        Application.Current?.Dispatcher.BeginInvoke(() => Application.Current.Shutdown());
     }
 
     internal async void FormClosed(string reportFileName, WindowLocation windowLocation, Guid reportGuid)
