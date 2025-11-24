@@ -46,7 +46,7 @@ public static class NLogHelper
         if (!string.IsNullOrEmpty(logDirectory))
         {
             // Change logfile location
-            var target = LogManager.Configuration.FindTargetByName("logfile") as NLog.Targets.FileTarget;
+            var target = LogManager.Configuration?.FindTargetByName("logfile") as NLog.Targets.FileTarget;
             if (target is not null)
             {
                 if (!logDirectory!.EndsWith("/") && !logDirectory.EndsWith("\\"))
