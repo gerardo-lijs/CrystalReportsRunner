@@ -86,6 +86,10 @@ public partial class MainWindow : Window
             _engineInstance.ViewerSettings.WindowLocationHeight = _lastLocation.Height;
             _engineInstance.ViewerSettings.WindowLocationWidth = _lastLocation.Width;
             _engineInstance.ViewerSettings.WindowInitialPosition = ReportViewerWindowStartPosition.Manual;
+
+            // Set zoom to page width
+            // TODO: ZommLevel is not working the first time the viewer is created. Subsecuent openings work fine.
+            _engineInstance.ViewerSettings.ZoomLevel = 1;
         }
     }
 

@@ -99,6 +99,11 @@ internal partial class ViewerForm : Form
         crystalReportViewer1.ShowPrintButton = viewerSettings.ShowPrintButton;
         crystalReportViewer1.ShowExportButton = viewerSettings.ShowExportButton;
         crystalReportViewer1.ShowZoomButton = viewerSettings.ShowZoomButton;
+
+        if (viewerSettings.ZoomLevel is not 100)
+        {
+            crystalReportViewer1.Zoom(viewerSettings.ZoomLevel);
+        }
     }
 
     protected override bool ProcessDialogKey(Keys keyData)

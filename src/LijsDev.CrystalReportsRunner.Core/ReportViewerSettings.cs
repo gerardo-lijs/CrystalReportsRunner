@@ -10,7 +10,7 @@ public sealed class ReportViewerSettings
 {
     /// <summary>
     /// Sets whether the report viewer window should be closed when user presses the Escape key.
-    /// Default: false
+    /// <para>Default: false</para>
     /// </summary>
     public bool WindowCloseOnEscapeKey { get; set; } = WindowCloseOnEscapeKeyDefault;
     /// <inheritdoc/>
@@ -19,15 +19,15 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Sets the report viewer window icon.
-    /// Byte array must be a valid Bitmap.
-    /// Default: null (default icon)
+    /// <para>Byte array must be a valid Bitmap.</para>
+    /// <para>Default: null (default icon)</para>
     /// </summary>
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public byte[]? WindowIcon { get; set; }
 
     /// <summary>
     /// Sets the report viewer window minimum width.
-    /// Default: 700
+    /// <para>Default: 700</para>
     /// </summary>
     public int? WindowMinimumWidth { get; set; } = WindowMinimumWidthDefault;
     /// <inheritdoc/>
@@ -36,7 +36,7 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Sets the report viewer window minimum height.
-    /// Default: 500
+    /// <para>Default: 500</para>
     /// </summary>
     public int? WindowMinimumHeight { get; set; } = WindowMinimumHeightDefault;
     /// <inheritdoc/>
@@ -45,21 +45,21 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Sets the report viewer window maximum width.
-    /// Default: null (any Width)
+    /// <para>Default: null (any Width)</para>
     /// </summary>
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public int? WindowMaximumWidth { get; set; }
 
     /// <summary>
     /// Sets the report viewer window maximum height.
-    /// Default: null (any Height)
+    /// <para>Default: null (any Height)</para>
     /// </summary>
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public int? WindowMaximumHeight { get; set; }
 
     /// <summary>
     /// Sets the report viewer window initial state.
-    /// Default: Maximized
+    /// <para>Default: Maximized</para>
     /// </summary>
     public ReportViewerWindowState WindowInitialState { get; set; } = WindowInitialStateDefault;
     /// <inheritdoc/>
@@ -68,7 +68,7 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Sets the report viewer window starting position.
-    /// Default: WindowsDefaultLocation
+    /// <para>Default: WindowsDefaultLocation</para>
     /// </summary>
     public ReportViewerWindowStartPosition WindowInitialPosition { get; set; } = WindowInitialPositionDefault;
     /// <inheritdoc/>
@@ -77,7 +77,7 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Sets whether the report viewer window is displayed in the Windows taskbar.
-    /// Default: true
+    /// <para>Default: true</para>
     /// </summary>
     public bool WindowShowInTaskbar { get; set; } = WindowShowInTaskbarDefault;
     /// <inheritdoc/>
@@ -86,7 +86,7 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Sets whether the user can minimize the report viewer window.
-    /// Default: true
+    /// <para>Default: true</para>
     /// </summary>
     public bool WindowAllowMinimize { get; set; } = WindowAllowMinimizeDefault;
     /// <inheritdoc/>
@@ -95,7 +95,7 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Sets whether the user can maximize the report viewer window.
-    /// Default: true
+    /// <para>Default: true</para>
     /// </summary>
     public bool WindowAllowMaximize { get; set; } = WindowAllowMaximizeDefault;
     /// <inheritdoc/>
@@ -104,7 +104,7 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Sets whether the user can resize the report viewer window.
-    /// Default: true
+    /// <para>Default: true</para>
     /// </summary>
     public bool WindowAllowResize { get; set; } = WindowAllowResizeDefault;
     /// <inheritdoc/>
@@ -113,35 +113,35 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Optionally sets the report viewer window initial height.
-    /// Default: null (not set)
+    /// <para>Default: null (not set)</para>
     /// </summary>
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public int? WindowLocationHeight { get; set; }
 
     /// <summary>
     /// Optionally sets the report viewer window initial width.
-    /// Default: null (not set)
+    /// <para>Default: null (not set)</para>
     /// </summary>
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public int? WindowLocationWidth { get; set; }
 
     /// <summary>
     /// Optionally sets the report viewer window initial left location. WindowInitialPosition may override this setting.
-    /// Default: null (not set)
+    /// <para>Default: null (not set)</para>
     /// </summary>
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public int? WindowLocationLeft { get; set; }
 
     /// <summary>
     /// Optionally sets the report viewer window initial top location. WindowInitialPosition may override this setting.
-    /// Default: null (not set)
+    /// <para>Default: null (not set)</para>
     /// </summary>
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public int? WindowLocationTop { get; set; }
 
     /// <summary>
     /// Set the UI culture to use in the CrystalReportViewer control.
-    /// Default: Use system locale
+    /// <para>Default: Use system locale</para>
     /// </summary>
     public void SetUICulture(System.Globalization.CultureInfo value)
     {
@@ -156,7 +156,7 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Sets which exports formats are available.
-    /// Default: AllFormats
+    /// <para>Default: AllFormats</para>
     /// </summary>
     public ReportViewerExportFormats AllowedExportFormats { get; set; } = AllowedExportFormatsDefault;
     /// <inheritdoc/>
@@ -165,7 +165,7 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Sets the report tool panel view type.
-    /// Default: GroupTree
+    /// <para>Default: GroupTree</para>
     /// </summary>
     public ReportViewerToolPanelViewType ToolPanelView { get; set; } = ToolPanelViewDefault;
     /// <inheritdoc/>
@@ -174,7 +174,7 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Sets whether the user can drill down into the report.
-    /// Default: true
+    /// <para>Default: true</para>
     /// </summary>
     public bool EnableDrillDown { get; set; } = EnableDrillDownDefault;
     /// <inheritdoc/>
@@ -183,7 +183,7 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Sets whether the refresh is enabled or not.
-    /// Default: true
+    /// <para>Default: true</para>
     /// </summary>
     public bool EnableRefresh { get; set; } = EnableRefreshDefault;
     /// <inheritdoc/>
@@ -192,7 +192,7 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Sets whether the close button on the toolbar is visible or hidden.
-    /// Default: true
+    /// <para>Default: true</para>
     /// </summary>
     public bool ShowCloseButton { get; set; } = ShowCloseButtonDefault;
     /// <inheritdoc/>
@@ -201,7 +201,7 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Sets whether the print button on the toolbar is visible or hidden.
-    /// Default: true
+    /// <para>Default: true</para>
     /// </summary>
     public bool ShowPrintButton { get; set; } = ShowPrintButtonDefault;
     /// <inheritdoc/>
@@ -210,7 +210,7 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Sets whether the export button on the toolbar is visible or hidden.
-    /// Default: true
+    /// <para>Default: true</para>
     /// </summary>
     public bool ShowExportButton { get; set; } = ShowExportButtonDefault;
     /// <inheritdoc/>
@@ -219,7 +219,7 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Sets whether the zoom button on the toolbar is visible or hidden.
-    /// Default: true
+    /// <para>Default: true</para>
     /// </summary>
     public bool ShowZoomButton { get; set; } = ShowZoomButtonDefault;
     /// <inheritdoc/>
@@ -227,8 +227,17 @@ public sealed class ReportViewerSettings
     private const bool ShowZoomButtonDefault = true;
 
     /// <summary>
+    /// Sets document zoom level. 1 = Page Width, 2 = Whole Page, or a percent number in range 25-400
+    /// <para>Default: 100 %</para>
+    /// </summary>
+    public int ZoomLevel { get; set; } = ZoomLevelDefault;
+    /// <inheritdoc/>
+    public bool ShouldSerializeZoomLevel() => ZoomLevel != ZoomLevelDefault;
+    private const int ZoomLevelDefault = 100;
+
+    /// <summary>
     /// Sets whether the copy button on the toolbar is visible or hidden.
-    /// Default: true
+    /// <para>Default: true</para>
     /// </summary>
     public bool ShowCopyButton { get; set; } = ShowCopyButtonDefault;
     /// <inheritdoc/>
@@ -237,7 +246,7 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Sets whether the refresh button on the toolbar is visible or hidden.
-    /// Default: true
+    /// <para>Default: true</para>
     /// </summary>
     public bool ShowRefreshButton { get; set; } = ShowRefreshButtonDefault;
     /// <inheritdoc/>
@@ -246,7 +255,7 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Sets whether the reports tabs on the toolbar are visible or hidden.
-    /// Default: true
+    /// <para>Default: true</para>
     /// </summary>
     public bool ShowReportTabs { get; set; } = ShowReportTabsDefault;
     /// <inheritdoc/>
@@ -255,7 +264,7 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Sets whether the show/hide group tree button on the toolbar is visible or hidden.
-    /// Default: true
+    /// <para>Default: true</para>
     /// </summary>
     public bool ShowGroupTreeButton { get; set; } = ShowGroupTreeButtonDefault;
     /// <inheritdoc/>
@@ -264,7 +273,7 @@ public sealed class ReportViewerSettings
 
     /// <summary>
     /// Sets whether the parameters panel is visible or hidden.
-    /// Default: true
+    /// <para>Default: true</para>
     /// </summary>
     public bool ShowParameterPanelButton { get; set; } = ShowParameterPanelButtonDefault;
     /// <inheritdoc/>
