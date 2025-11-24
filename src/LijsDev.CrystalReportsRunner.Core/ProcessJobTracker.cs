@@ -13,6 +13,7 @@ using System.Diagnostics;
 using Microsoft.Win32.SafeHandles;
 
 using Windows.Win32.System.JobObjects;
+using Windows.Win32.Foundation;
 
 using static Windows.Win32.PInvoke;
 
@@ -56,17 +57,22 @@ public class ProcessJobTracker : IDisposable
             var jobName = nameof(ProcessJobTracker) + Process.GetCurrentProcess().Id;
             _jobHandle = CreateJobObject(null, jobName);
 
-            var extendedInfo = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION
+            if (_jobHandle != null && !_jobHandle.IsInvalid)
             {
-                BasicLimitInformation = new JOBOBJECT_BASIC_LIMIT_INFORMATION
+                var extendedInfo = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION
                 {
-                    LimitFlags = JOB_OBJECT_LIMIT.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE,
-                },
-            };
+                    BasicLimitInformation = new JOBOBJECT_BASIC_LIMIT_INFORMATION
+                    {
+                        LimitFlags = JOB_OBJECT_LIMIT.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE,
+                    },
+                };
 
-            if (!SetInformationJobObject(_jobHandle, JOBOBJECTINFOCLASS.JobObjectExtendedLimitInformation, &extendedInfo, (uint)sizeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION)))
-            {
-                throw new Win32Exception();
+                var jobHandle = new HANDLE(_jobHandle.DangerousGetHandle());
+
+                if (!SetInformationJobObject(jobHandle, JOBOBJECTINFOCLASS.JobObjectExtendedLimitInformation, &extendedInfo, (uint)sizeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION)))
+                {
+                    throw new Win32Exception();
+                }
             }
         }
     }
@@ -88,7 +94,15 @@ public class ProcessJobTracker : IDisposable
         if (Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.OSVersion.Version > new Version(5, 1, 2600))
 #endif
         {
-            bool success = AssignProcessToJobObject(_jobHandle, new SafeFileHandle(process.Handle, ownsHandle: false));
+            if (_jobHandle == null || _jobHandle.IsInvalid)
+            {
+                return;
+            }
+
+            var jobHandle = new HANDLE(_jobHandle.DangerousGetHandle());
+            var processHandle = new HANDLE(process.Handle);
+
+            bool success = AssignProcessToJobObject(jobHandle, processHandle);
             if (!success && !process.HasExited)
             {
                 throw new Win32Exception();
