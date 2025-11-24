@@ -14,7 +14,7 @@
     <AssemblyTitle>LijsDev Crystal Reports Runner</AssemblyTitle>
     <Authors>Muhammad Azeez and Gerardo Lijs</Authors>
     <Company>LijsDev</Company>
-    <Copyright>Copyright © LijsDev 2023</Copyright>
+    <Copyright>Copyright © LijsDev 2023-2025</Copyright>
     <ApplicationIcon>..\shared\report.ico</ApplicationIcon>
     <EmbeddedResourceUseDependentUponConvention>true</EmbeddedResourceUseDependentUponConvention>
   </PropertyGroup>
