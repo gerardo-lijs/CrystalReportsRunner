@@ -1,14 +1,14 @@
 namespace LijsDev.CrystalReportsRunner.UnitTests;
 
 using FluentAssertions;
+using Xunit;
+
 using LijsDev.CrystalReportsRunner.Core;
 using LijsDev.CrystalReportsRunner.Core.UnitTests;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-[TestClass]
 public class JsonNetPipeSerializerTests
 {
-    [TestMethod]
+    [Fact]
     public void IntPtrJsonConverter_ShouldWork()
     {
         var windowHandle = new WindowHandle(new IntPtr(123456789));
@@ -23,7 +23,7 @@ public class JsonNetPipeSerializerTests
         deserializeData.Handle.Should().Be(windowHandle.Handle);
     }
 
-    [TestMethod]
+    [Fact]
     public void ReportByteArray_Serialize_Deserialize_ShouldWork()
     {
         var report = new Report("SampleReportDataset.rpt", "Sample Report Dataset");
@@ -90,7 +90,7 @@ public class JsonNetPipeSerializerTests
         deserialize_Row1_PersonImage!.Length.Should().Be(original_Row1_PersonImage!.Length);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestByteArray_Serialize_Deserialize_ShouldWork()
     {
         // NB: For byte[] it works directly without converters. It seems to fail with object columns in DataTable only of type byte[]

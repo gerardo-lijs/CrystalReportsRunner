@@ -1,14 +1,14 @@
 namespace LijsDev.CrystalReportsRunner.UnitTests;
 
-using CrystalDecisions.Shared;
 using FluentAssertions;
-using LijsDev.CrystalReportsRunner.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
-[TestClass]
+using CrystalDecisions.Shared;
+using LijsDev.CrystalReportsRunner.Core;
+
 public class CrystalReportsTests
 {
-    [TestMethod]
+    [Fact]
     public void SampleReport_ShowDialog_ShouldWork()
     {
         var report = new Report("SampleReport.rpt", "Sample Report")
@@ -23,7 +23,7 @@ public class CrystalReportsTests
         form.ShowDialog();
     }
 
-    [TestMethod]
+    [Fact]
     public void SampleReport_ShowDialog_ShouldWork_ODBCSqlConnection()
     {
         var report = new Report("SampleReport.rpt", "Sample Report")
@@ -40,7 +40,7 @@ public class CrystalReportsTests
         form.ShowDialog();
     }
 
-    [TestMethod]
+    [Fact]
     public void SampleReport_ShowDialog_ShouldWork_ODBCSqlConnectionRegistry()
     {
         // NB: This Unit Test will automatically create a User DSN in Windows Registry at runtime.
@@ -60,7 +60,7 @@ public class CrystalReportsTests
         form.ShowDialog();
     }
 
-    [TestMethod]
+    [Fact]
     public void SampleReport_AskParameters_ShowDialog_ShouldWork()
     {
         var report = new Report("SampleReport.rpt", "Sample Report")
@@ -73,7 +73,7 @@ public class CrystalReportsTests
         form.ShowDialog();
     }
 
-    [TestMethod]
+    [Fact]
     public void SampleReportTwoDataSources_ShowDialog_ShouldWork()
     {
         var report = new Report("SampleReportTwoDataSources.rpt", "Sample Report with two datasources")
@@ -91,7 +91,7 @@ public class CrystalReportsTests
     /// <summary>
     /// Test a simple sample report without database connection, sending the DataSet with int/string/byte[] fields.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void SampleReportDataset_ShowDialog_ShouldWork()
     {
         var report = new Report("SampleReportDataset.rpt", "Sample Report Dataset");
@@ -123,7 +123,7 @@ public class CrystalReportsTests
     /// <summary>
     /// Test a simple sample landscape report without database connection, sending the DataSet with int/string/byte[] fields.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void SampleReportDataset_ShowDialog_WithLandscape_ShouldWork()
     {
         var report = new Report("SampleReportDataset.rpt", "Sample Report Dataset");
@@ -155,7 +155,7 @@ public class CrystalReportsTests
     }
 
 
-    [TestMethod]
+    [Fact]
     public void SampleReport_CreateReportDocument_ShouldWork()
     {
         var report = new Report("SampleReport.rpt", "Sample Report")
@@ -178,7 +178,7 @@ public class CrystalReportsTests
     /// <summary>
     /// Test a simple sample report without database connection, sending the DataSet with int/string/byte[] fields and parameter with multiple values
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void SampleReportDatasetParameter_ShowDialog_ShouldWork()
     {
         var idListArray = new List<int> { 1, 3, 7 };

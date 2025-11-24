@@ -1,12 +1,11 @@
 namespace LijsDev.CrystalReportsRunner.Core.UnitTests;
 
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
-[TestClass]
 public class DataSetJsonConverterTests
 {
-    [TestMethod]
+    [Fact]
     public void DataSet_Serialize_Deserialize_ShouldWork()
     {
         // Create dataset
