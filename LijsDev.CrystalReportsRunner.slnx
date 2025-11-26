@@ -1,6 +1,9 @@
 <Solution>
   <Folder Name="/Runners/">
     <Project Path="src/LijsDev.CrystalReportsRunner.Shell/LijsDev.CrystalReportsRunner.Shell.csproj" />
+    <Project Path="src/LijsDev.CrystalReportsRunner/LijsDev.CrystalReportsRunner.13.0.16.x64/LijsDev.CrystalReportsRunner.13.0.16.x64.csproj">
+      <Platform Project="x64" />
+    </Project>
     <Project Path="src/LijsDev.CrystalReportsRunner/LijsDev.CrystalReportsRunner.13.0.20.x64/LijsDev.CrystalReportsRunner.13.0.20.x64.csproj">
       <Platform Project="x64" />
     </Project>

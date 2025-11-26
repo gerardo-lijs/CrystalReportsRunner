@@ -20,7 +20,9 @@ internal static class Program
     }
     public static string ApplicationLocation => System.Reflection.Assembly.GetExecutingAssembly().Location;
 
-#if CR_RUNTIME_13_0_20
+#if CR_RUNTIME_13_0_16
+    private const string CrystalReportsRuntimeVersion = "13.0.16";
+#elif CR_RUNTIME_13_0_20
     private const string CrystalReportsRuntimeVersion = "13.0.20";
 #elif CR_RUNTIME_13_0_32
     private const string CrystalReportsRuntimeVersion = "13.0.32";
@@ -28,6 +30,8 @@ internal static class Program
     private const string CrystalReportsRuntimeVersion = "13.0.33";
 #elif CR_RUNTIME_13_0_34
     private const string CrystalReportsRuntimeVersion = "13.0.34";
+#elif CR_RUNTIME_13_0_38
+    private const string CrystalReportsRuntimeVersion = "13.0.38";
 #else
     private const string CrystalReportsRuntimeVersion = "Unknown";
 #endif
