@@ -149,8 +149,8 @@ internal static class ReportUtils
 
         crTable.LogOnInfo.ConnectionInfo.ServerName = crystalReportsConnection.Server;
         crTable.LogOnInfo.ConnectionInfo.DatabaseName = crystalReportsConnection.Database;
-        crTable.LogOnInfo.ConnectionInfo.UserID = crystalReportsConnection.Username;
-        crTable.LogOnInfo.ConnectionInfo.Password = crystalReportsConnection.Password;
+        crTable.LogOnInfo.ConnectionInfo.UserID = crystalReportsConnection.Username ?? string.Empty;
+        crTable.LogOnInfo.ConnectionInfo.Password = crystalReportsConnection.Password ?? string.Empty;
         crTable.LogOnInfo.ConnectionInfo.IntegratedSecurity = crystalReportsConnection.UseIntegratedSecurity;
 
         if (logonProperties is not null)
