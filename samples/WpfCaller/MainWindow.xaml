@@ -91,13 +91,33 @@
 
             </StackPanel>
 
-            <StackPanel Margin="0,10,0,0">
+            <StackPanel Margin="0,20,0,0" Orientation="Horizontal">
                 <CheckBox
                     x:Name="LandscapeCheckBox"
-                    Margin="0,10,0,0"
                     HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
                     Content="Landscape mode"
                     ToolTip="Check to request landscape orientation when showing/exporting the report." />
+
+                <!--  Zoom level combobox: 1 = Page Width, 2 = Whole Page, then percentages  -->
+                <Label
+                    Margin="15,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="Zoom level:" />
+                <ComboBox
+                    x:Name="ZoomComboBox"
+                    Width="140"
+                    VerticalAlignment="Center"
+                    SelectedIndex="0"
+                    ToolTip="Select zoom level">
+                    <ComboBoxItem Tag="1">Page Width</ComboBoxItem>
+                    <ComboBoxItem Tag="2">Whole Page</ComboBoxItem>
+                    <ComboBoxItem Tag="25">25%</ComboBoxItem>
+                    <ComboBoxItem Tag="50">50%</ComboBoxItem>
+                    <ComboBoxItem Tag="100">100%</ComboBoxItem>
+                    <ComboBoxItem Tag="200">200%</ComboBoxItem>
+                    <ComboBoxItem Tag="300">300%</ComboBoxItem>
+                </ComboBox>
             </StackPanel>
 
         </StackPanel>

@@ -5,6 +5,7 @@ using LijsDev.CrystalReportsRunner.Core;
 using System;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Interop;
 
 public partial class MainWindow : Window
@@ -87,9 +88,16 @@ public partial class MainWindow : Window
             _engineInstance.ViewerSettings.WindowLocationWidth = _lastLocation.Width;
             _engineInstance.ViewerSettings.WindowInitialPosition = ReportViewerWindowStartPosition.Manual;
 
-            // Set zoom to page width
             // TODO: ZommLevel is not working the first time the viewer is created. Subsecuent openings work fine.
-            _engineInstance.ViewerSettings.ZoomLevel = 1;
+            // Set zoom from ZoomComboBox Tag (1 = Page Width, 2 = Whole Page, or percent number)
+            if (ZoomComboBox.SelectedItem is ComboBoxItem selected && selected.Tag is not null)
+            {
+                var tagStr = selected.Tag.ToString();
+                if (int.TryParse(tagStr, out var zoom))
+                {
+                    _engineInstance.ViewerSettings.ZoomLevel = zoom;
+                }
+            }
         }
     }
 
