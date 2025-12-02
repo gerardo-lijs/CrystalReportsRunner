@@ -20,11 +20,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DefineConstants>$(DefineConstants);CR_RUNTIME_x64</DefineConstants>
-    <DefineConstants>$(DefineConstants);CR_RUNTIME_13_0_35</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <MinVerTagPrefix>v</MinVerTagPrefix>
     <MinVerMinimumMajorMinor>1.0</MinVerMinimumMajorMinor>
     <MinVerDefaultPreReleaseIdentifiers>preview.0</MinVerDefaultPreReleaseIdentifiers>

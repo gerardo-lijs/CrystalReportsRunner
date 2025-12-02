@@ -13,36 +13,23 @@ internal static class Program
     {
         get
         {
-            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            var fileVersionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+            var fileVersionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(ApplicationLocation);
             return fileVersionInfo.ProductVersion;
         }
     }
     public static string ApplicationLocation => System.Reflection.Assembly.GetExecutingAssembly().Location;
 
-#if CR_RUNTIME_13_0_16
-    private const string CrystalReportsRuntimeVersion = "13.0.16";
-#elif CR_RUNTIME_13_0_20
-    private const string CrystalReportsRuntimeVersion = "13.0.20";
-#elif CR_RUNTIME_13_0_32
-    private const string CrystalReportsRuntimeVersion = "13.0.32";
-#elif CR_RUNTIME_13_0_33
-    private const string CrystalReportsRuntimeVersion = "13.0.33";
-#elif CR_RUNTIME_13_0_34
-    private const string CrystalReportsRuntimeVersion = "13.0.34";
-#elif CR_RUNTIME_13_0_38
-    private const string CrystalReportsRuntimeVersion = "13.0.38";
-#else
-    private const string CrystalReportsRuntimeVersion = "Unknown";
-#endif
+    private static string CrystalReportsRuntimeVersion
+    {
+        get
+        {
+            var runnerPath = System.IO.Path.GetDirectoryName(ApplicationLocation);
+            var fileVersionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(Path.Combine(runnerPath, "CrystalDecisions.CrystalReports.Engine.dll"));
+            return fileVersionInfo.ProductVersion;
+        }
+    }
 
-#if CR_RUNTIME_x86
-    private const string CrystalReportsRuntimePlatform = "x86";
-#elif CR_RUNTIME_x64
-    private const string CrystalReportsRuntimePlatform = "x64";
-#else
-    private const string CrystalReportsRuntimePlatform = "Unknown";
-#endif
+    private static string CrystalReportsRuntimePlatform => Environment.Is64BitProcess ? "x64" : "x86";
 
     [STAThread]
     private static void Main(string[] args)
