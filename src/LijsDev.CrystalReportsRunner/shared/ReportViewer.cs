@@ -21,7 +21,7 @@ internal class ReportViewer : IReportViewer
 
         // Print options
         document.PrintOptions.PaperOrientation = (PaperOrientation)report.PaperOrientation;
-        if (report.PaperOrientation == PaperOrientations.Landscape)
+        if (report.PaperOrientation is PaperOrientations.Landscape)
         {
             document.PrintOptions.DissociatePageSizeAndPrinterPaperSize = false;
         }

@@ -90,6 +90,16 @@
                     Content="Print report" />
 
             </StackPanel>
+
+            <StackPanel Margin="0,10,0,0">
+                <CheckBox
+                    x:Name="LandscapeCheckBox"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Left"
+                    Content="Landscape mode"
+                    ToolTip="Check to request landscape orientation when showing/exporting the report." />
+            </StackPanel>
+
         </StackPanel>
 
         <Border

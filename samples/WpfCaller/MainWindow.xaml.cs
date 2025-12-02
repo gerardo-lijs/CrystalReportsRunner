@@ -183,7 +183,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private static Report CreateReport()
+    private Report CreateReport()
     {
         var report = new Report("SampleReport.rpt", "Sample Report")
         {
@@ -191,17 +191,26 @@ public partial class MainWindow : Window
         };
         report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
         report.Parameters.Add("UserName", "Muhammad");
+        if (LandscapeCheckBox.IsChecked is true)
+        {
+            report.PaperOrientation = PaperOrientations.Landscape;
+        }
         return report;
     }
 
     /// <summary>
     /// Simple sample report without database connection, sending the DataSet with int/string/byte[] fields.
     /// </summary>
-    private static Report CreateReportDataSet()
+    private Report CreateReportDataSet()
     {
         var report = new Report("SampleReportDataset.rpt", "Sample Report Dataset");
         report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
         report.Parameters.Add("UserName", "Gerardo");
+
+        if (LandscapeCheckBox.IsChecked is true)
+        {
+            report.PaperOrientation = PaperOrientations.Landscape;
+        }
 
         // Create dataset
         var sampleReportDataset = new System.Data.DataSet();
