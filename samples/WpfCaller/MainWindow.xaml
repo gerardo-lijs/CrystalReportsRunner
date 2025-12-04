@@ -9,18 +9,23 @@
     Width="800"
     Height="450"
     mc:Ignorable="d">
+
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Padding" Value="10,5" />
         </Style>
-
-        <Style TargetType="TextBlock">
-            <Setter Property="Width" Value="20" />
-        </Style>
     </Window.Resources>
-    <Grid>
 
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel
+            Grid.Row="0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
             <TextBlock
                 Width="500"
                 Margin="0,0,0,50"
@@ -53,21 +58,21 @@
                     Click="ShowButton_Click"
                     Content="Show Report" />
 
-                <TextBlock />
+                <TextBlock Width="20" />
 
                 <Button
                     x:Name="ShowDialogButton"
                     Click="ShowDialogButton_Click"
                     Content="Show Report as a Dialog" />
 
-                <TextBlock />
+                <TextBlock Width="20" />
 
                 <Button
                     x:Name="ExportReportButton"
                     Click="ExportReportButton_Click"
                     Content="Export report" />
 
-                <TextBlock />
+                <TextBlock Width="20" />
 
                 <Button
                     x:Name="ExportReportToStreamButton"
@@ -82,7 +87,7 @@
                     Click="ShowDataSetButton_Click"
                     Content="Show DataSet Report" />
 
-                <TextBlock />
+                <TextBlock Width="20" />
 
                 <Button
                     x:Name="PrintReportButton"
@@ -122,8 +127,15 @@
 
         </StackPanel>
 
+        <StatusBar Grid.Row="1">
+            <StatusBarItem>
+                <TextBlock x:Name="RuntimesTextBlock" Text="Crystal Reports runtimes: (loading...)" />
+            </StatusBarItem>
+        </StatusBar>
+
         <Border
             x:Name="LoadingBorder"
+            Grid.RowSpan="2"
             Background="Black"
             Opacity="0.8"
             Visibility="Collapsed" />

@@ -20,6 +20,27 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         Closed += MainWindow_Closed;
+        Loaded += MainWindow_Loaded;
+    }
+
+    private void MainWindow_Loaded(object? sender, RoutedEventArgs e)
+    {
+        try
+        {
+            var runtimes = RuntimeUtils.EnumerateCrystalReportRuntimesInstalled();
+            if (runtimes is null || runtimes.Count == 0)
+            {
+                RuntimesTextBlock.Text = "Crystal Reports runtimes: none detected";
+            }
+            else
+            {
+                RuntimesTextBlock.Text = "Crystal Reports runtimes: " + string.Join(", ", runtimes.ConvertAll(r => $"{r.Version} ({r.Architecture})"));
+            }
+        }
+        catch
+        {
+            RuntimesTextBlock.Text = "Crystal Reports runtimes: unavailable";
+        }
     }
 
     /// <summary>
