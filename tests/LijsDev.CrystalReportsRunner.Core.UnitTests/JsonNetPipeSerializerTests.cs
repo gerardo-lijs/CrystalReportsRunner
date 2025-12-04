@@ -1,10 +1,9 @@
-namespace LijsDev.CrystalReportsRunner.UnitTests;
+namespace LijsDev.CrystalReportsRunner.Core.UnitTests;
 
 using FluentAssertions;
 using Xunit;
 
 using LijsDev.CrystalReportsRunner.Core;
-using LijsDev.CrystalReportsRunner.Core.UnitTests;
 
 public class JsonNetPipeSerializerTests
 {
