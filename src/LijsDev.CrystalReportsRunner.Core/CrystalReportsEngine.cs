@@ -17,12 +17,34 @@ public sealed class CrystalReportsEngine : IDisposable
 {
     private readonly PipeServerWithCallback<ICrystalReportsRunner, ICrystalReportsCaller> _pipe;
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Initializes a new instance of the CrystalReportsEngine class.
+    /// </summary>
     public CrystalReportsEngine()
     {
         NamedPipeName = $"lijs-dev-crystal-reports-runner-{Guid.NewGuid()}";
         _pipe = new PipeServerWithCallback<ICrystalReportsRunner, ICrystalReportsCaller>(
             new JsonNetPipeSerializer(), NamedPipeName, () => new DefaultCrystalReportsCaller(this));
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the CrystalReportsEngine class with the specified runner version and platform
+    /// architecture.
+    /// </summary>
+    /// <param name="version">The version of the Crystal Reports runner to use for report processing.</param>
+    /// <param name="is64bit">Indicates whether the runner should operate in 64-bit mode. Specify <see langword="true"/> for 64-bit;
+    /// otherwise, <see langword="false"/> for 32-bit.</param>
+    public CrystalReportsEngine(Version version, bool is64bit = true) : this()
+    {
+        RunnerRuntime = new(version, is64bit);
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the CrystalReportsEngine class using the specified CrystalReportsRuntime configuration.
+    /// </summary>
+    public CrystalReportsEngine(CrystalReportsRuntime? runtime) : this()
+    {
+        RunnerRuntime = runtime;
     }
 
     /// <summary>
@@ -37,6 +59,11 @@ public sealed class CrystalReportsEngine : IDisposable
     /// Default: null - The engine uses the first runner it finds in the main assembly directory with the name 'CrystalReportsRunner.{version}.{platform}' and the runner with executable name 'LijsDev.CrystalReportsRunner.exe'
     /// </summary>
     public string? RunnerPath { get; set; }
+
+    /// <summary>
+    /// The version of the Crystal Reports runtime we want to use.
+    /// </summary>
+    public CrystalReportsRuntime? RunnerRuntime { get; }
 
     /// <summary>
     /// Minimum logging level for the runner. Default: Error.
@@ -385,7 +412,12 @@ public sealed class CrystalReportsEngine : IDisposable
             }
         }
 
-        var path = candidates.FirstOrDefault(File.Exists);
+        string? specificRuntimePath = null;
+        if (RunnerRuntime is not null)
+        {
+            specificRuntimePath = candidates.FirstOrDefault(x => x.Contains($"{RunnerRuntime.Version.Major}.{RunnerRuntime.Version.Minor}.{RunnerRuntime.Version.Build}.{RunnerRuntime.Architecture}"));
+        }
+        var path = specificRuntimePath ?? candidates.FirstOrDefault(File.Exists);
 
         if (path is null)
         {

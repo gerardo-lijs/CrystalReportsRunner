@@ -263,10 +263,14 @@ public partial class MainWindow : Window
 
     private CrystalReportsEngine CreateEngine()
     {
-        // NOTE: Create CrystalReportsSample using Schema.sql in the \samples\shared folder
-        var engine = new CrystalReportsEngine();
+        // Method 1: Specifying the runtime to use. This is useful when multiple runtimes (32 bits and 64 bits) are installed on the machine.
+        var firstAvailableRuntime = RuntimeUtils.EnumerateCrystalReportRuntimesInstalled().FirstOrDefault()
+            ?? throw new InvalidOperationException("No Crystal Reports runtimes are installed on this computer.");
 
-        // Method 2: Without Connection string
+        // NOTE: Create CrystalReportsSample using Schema.sql in the \samples\shared folder
+        var engine = new CrystalReportsEngine(firstAvailableRuntime);
+
+        // Method 2: Without specifying runtime, let the engine pick the first available installed runtime.
         // using var engine = new CrystalReportsEngine();
 
         // ========== Customizing Viewer Settings (optional) ===========
