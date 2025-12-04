@@ -9,6 +9,7 @@ Unfortunately, Crystal Reports doesn't support .NET Core so one workaround is to
 ## Quick Start 
 
 1. Create a new Console Application and reference one of these NuGet packages depending the Crystal Reports runtime version you're using:
+   - Crystal Reports v13.0.38 x64: [![NuGet version](https://img.shields.io/nuget/v/LijsDev.CrystalReportsRunner.13.0.38.x64.svg?style=flat&label=nuget%3A%20LijsDev.CrystalReportsRunner.13.0.38.x64)](https://www.nuget.org/packages/LijsDev.CrystalReportsRunner.13.0.38.x64)
    - Crystal Reports v13.0.35 x64: [![NuGet version](https://img.shields.io/nuget/v/LijsDev.CrystalReportsRunner.13.0.35.x64.svg?style=flat&label=nuget%3A%20LijsDev.CrystalReportsRunner.13.0.35.x64)](https://www.nuget.org/packages/LijsDev.CrystalReportsRunner.13.0.35.x64)
    - Crystal Reports v13.0.35 x86: [![NuGet version](https://img.shields.io/nuget/v/LijsDev.CrystalReportsRunner.13.0.35.x86.svg?style=flat&label=nuget%3A%20LijsDev.CrystalReportsRunner.13.0.35.x86)](https://www.nuget.org/packages/LijsDev.CrystalReportsRunner.13.0.35.x86)
    - Crystal Reports v13.0.34 x64: [![NuGet version](https://img.shields.io/nuget/v/LijsDev.CrystalReportsRunner.13.0.34.x64.svg?style=flat&label=nuget%3A%20LijsDev.CrystalReportsRunner.13.0.34.x64)](https://www.nuget.org/packages/LijsDev.CrystalReportsRunner.13.0.34.x64)
@@ -19,6 +20,7 @@ Unfortunately, Crystal Reports doesn't support .NET Core so one workaround is to
    - Crystal Reports v13.0.32 x86: [![NuGet version](https://img.shields.io/nuget/v/LijsDev.CrystalReportsRunner.13.0.32.x86.svg?style=flat&label=nuget%3A%20LijsDev.CrystalReportsRunner.13.0.32.x86)](https://www.nuget.org/packages/LijsDev.CrystalReportsRunner.13.0.32.x86)
    - Crystal Reports v13.0.20 x64: [![NuGet version](https://img.shields.io/nuget/v/LijsDev.CrystalReportsRunner.13.0.20.x64.svg?style=flat&label=nuget%3A%20LijsDev.CrystalReportsRunner.13.0.20.x64)](https://www.nuget.org/packages/LijsDev.CrystalReportsRunner.13.0.20.x64)
    - Crystal Reports v13.0.20 x86: [![NuGet version](https://img.shields.io/nuget/v/LijsDev.CrystalReportsRunner.13.0.20.x86.svg?style=flat&label=nuget%3A%20LijsDev.CrystalReportsRunner.13.0.20.x86)](https://www.nuget.org/packages/LijsDev.CrystalReportsRunner.13.0.20.x86)
+   - Crystal Reports v13.0.16 x64: [![NuGet version](https://img.shields.io/nuget/v/LijsDev.CrystalReportsRunner.13.0.16.x64.svg?style=flat&label=nuget%3A%20LijsDev.CrystalReportsRunner.13.0.16.x64)](https://www.nuget.org/packages/LijsDev.CrystalReportsRunner.13.0.16.x64)
    - You need a version that is not listed here? Please refer to [Creating a custom Runner](./docs/custom-runner.md) or contact us.
    
    - You can download SAP Crystal Reports runtime engine for .NET Framwork from [SAP download website](https://origin.softwaredownloads.sap.com/public/site/index.html)
