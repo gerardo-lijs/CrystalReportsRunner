@@ -14,6 +14,10 @@
     <Copyright>Copyright © LijsDev 2022-2024</Copyright>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="MinVer" Version="4.3.0" PrivateAssets="All" />
     <PackageReference Include="CommandLineParser" Version="2.9.1" />

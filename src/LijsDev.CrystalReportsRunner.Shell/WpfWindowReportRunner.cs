@@ -1,11 +1,11 @@
-namespace LijsDev.CrystalReportsRunner.Shell;
-
 using System.Data;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
-using Core;
+using LijsDev.CrystalReportsRunner.Core;
 using NLog;
+
+namespace LijsDev.CrystalReportsRunner.Shell;
 
 internal class WpfWindowReportRunner : ICrystalReportsRunner
 {
@@ -28,38 +28,59 @@ internal class WpfWindowReportRunner : ICrystalReportsRunner
         _shell = shell;
     }
 
-    /// <inheritdoc/>
     public async Task Print(Report report, ReportPrintOptions printOptions)
     {
-        Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::Print::PrinterName={printOptions.PrinterName}::Start");
-        var dataTable = _exporter.Print(report, printOptions);
-        await _shell.InvokeCallbackPipeClient(dataTable, report.Guid);
-        Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::Print::End");
+        try
+        {
+            Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::Print::PrinterName={printOptions.PrinterName}::Start");
+            var dataTable = _exporter.Print(report, printOptions);
+            await _shell.InvokeCallbackPipeClient(dataTable, report.Guid);
+            Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::Print::End");
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex);
+            await _shell.InvokePipeOnException(ex);
+        }
     }
 
-    /// <inheritdoc/>
-    public void Export(
+    public async Task Export(
         Report report,
         ReportExportOptions reportExportOptions)
     {
-        Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::Export::Start");
-        _exporter.Export(report, reportExportOptions);
-        Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::Export::End");
+        try
+        {
+            Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::Export::Start");
+            _exporter.Export(report, reportExportOptions);
+            Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::Export::End");
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex);
+            await _shell.InvokePipeOnException(ex);
+        }
     }
 
-    /// <inheritdoc/>
-    public string ExportToMemoryMappedFile(
+    public async Task<string> ExportToMemoryMappedFile(
         Report report,
         ReportExportToMemoryMappedFileOptions reportExportToMemoryMappedFileOptions)
     {
-        Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::ExportToStream::Start");
-        var mmfName = _exporter.ExportToMemoryMappedFile(report, reportExportToMemoryMappedFileOptions);
-        Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::ExportToStream::End");
+        try
+        {
+            Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::ExportToStream::Start");
+            var mmfName = _exporter.ExportToMemoryMappedFile(report, reportExportToMemoryMappedFileOptions);
+            Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::ExportToStream::End");
 
-        return mmfName;
+            return mmfName;
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex);
+            await _shell.InvokePipeOnException(ex);
+            throw;
+        }
     }
 
-    /// <inheritdoc/>
     public void ShowReport(
         Report report,
         ReportViewerSettings viewerSettings,
@@ -74,10 +95,9 @@ internal class WpfWindowReportRunner : ICrystalReportsRunner
 
             if (window.DataContext is IReportViewerWindowVM viewerWindowVM)
             {
-                viewerWindowVM.ExecuteCallbackEvent += async (sender, args) =>
-                {
-                    await _shell.InvokeCallbackPipeClient((DataTable)sender, args);
-                };
+                viewerWindowVM.ExecuteCallbackEvent += async (sender, args) => await _shell.InvokeCallbackPipeClient((DataTable) sender, args);
+
+                viewerWindowVM.ReportViewerExceptionEvent += async (_, ex) => await _shell.InvokePipeOnException(ex);
             }
 
             window.Loaded += (sender, args) =>
@@ -107,7 +127,6 @@ internal class WpfWindowReportRunner : ICrystalReportsRunner
         Logger.Trace($"LijsDev::CrystalReportsRunner::WpfWindowReportRunner::ShowReport::End");
     }
 
-    /// <inheritdoc/>
     public bool? ShowReportDialog(
         Report report,
         ReportViewerSettings viewerSettings,
@@ -124,10 +143,9 @@ internal class WpfWindowReportRunner : ICrystalReportsRunner
 
             if (window.DataContext is IReportViewerWindowVM viewerWindowVM)
             {
-                viewerWindowVM.ExecuteCallbackEvent += async (sender, args) =>
-                {
-                    await _shell.InvokeCallbackPipeClient((DataTable)sender, args);
-                };
+                viewerWindowVM.ExecuteCallbackEvent += async (sender, args) => await _shell.InvokeCallbackPipeClient((DataTable) sender, args);
+
+                viewerWindowVM.ReportViewerExceptionEvent += async (_, ex) => await _shell.InvokePipeOnException(ex);
             }
 
             window.Loaded += (sender, args) =>
@@ -160,6 +178,6 @@ internal class WpfWindowReportRunner : ICrystalReportsRunner
     private WindowLocation GetWindowLocation(Window window) =>
         new()
         {
-            Width = (int)window.Width, Height = (int)window.Height, Left = (int)window.Left, Top = (int)window.Top,
+            Width = (int) window.Width, Height = (int) window.Height, Left = (int) window.Left, Top = (int) window.Top,
         };
 }

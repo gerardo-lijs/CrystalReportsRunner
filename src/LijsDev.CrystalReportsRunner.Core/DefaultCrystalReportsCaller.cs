@@ -14,4 +14,7 @@ internal class DefaultCrystalReportsCaller : ICrystalReportsCaller
 
     public void FormLoaded(string reportFileName, WindowHandle windowHandle) =>
         _engine.OnFormLoaded(reportFileName, windowHandle);
+
+    public void OnException(Exception ex) =>
+        _engine.OnException(ex);
 }

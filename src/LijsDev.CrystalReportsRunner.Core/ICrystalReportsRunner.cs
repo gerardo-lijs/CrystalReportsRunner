@@ -17,7 +17,7 @@ public interface ICrystalReportsRunner
     /// </summary>
     /// <param name="report">Report to export</param>
     /// <param name="reportExportOptions">Report export options</param>
-    public void Export(
+    public Task Export(
         Report report,
         ReportExportOptions reportExportOptions);
 
@@ -27,7 +27,7 @@ public interface ICrystalReportsRunner
     /// </summary>
     /// <param name="report">Report to export</param>
     /// <param name="reportExportToMemoryMappedFileOptions">Report export to memory mapped file options</param>
-    public string ExportToMemoryMappedFile(
+    public Task<string> ExportToMemoryMappedFile(
         Report report,
         ReportExportToMemoryMappedFileOptions reportExportToMemoryMappedFileOptions);
 

@@ -1,18 +1,18 @@
-namespace LijsDev.CrystalReportsRunner;
-
 using System.Drawing.Printing;
 using System.Globalization;
 using System.IO;
 using System.Resources;
 using System.Windows;
-using Core;
 using CrystalDecisions.Shared;
+using LijsDev.CrystalReportsRunner.Core;
+using LijsDev.CrystalReportsRunner.Resources;
+using LijsDev.CrystalReportsRunner.Shell;
 using NLog;
 using Prism.Commands;
 using Prism.Mvvm;
-using Resources;
 using SAPBusinessObjects.WPF.Viewer;
-using Shell;
+
+namespace LijsDev.CrystalReportsRunner;
 
 /// <summary>
 /// View-Model für den Report-Viewer
@@ -38,10 +38,6 @@ public class ReportViewerWindowVM : BindableBase, IReportViewerWindowVM
     private WindowState? _windowState;
 
     #endregion
-
-    public DelegateCommand<CrystalReportsViewer> SetCrystalReportsViewerCommand { get; set; }
-    public DelegateCommand CloseCommand { get; set; }
-    public DelegateCommand PrintCommand { get; set; }
 
     public ReportViewerWindowVM(CustomReportDocument reportDocument, ReportViewerSettings viewerSettings)
     {
@@ -74,8 +70,8 @@ public class ReportViewerWindowVM : BindableBase, IReportViewerWindowVM
             if (_reportDocument != null)
             {
                 _crystalReportsViewer.ViewerCore.ReportSource = _reportDocument;
-                _crystalReportsViewer.ViewerCore.Error -= CrystalReportViewer_HandleException;
-                _crystalReportsViewer.ViewerCore.Error += CrystalReportViewer_HandleException;
+                _crystalReportsViewer.ViewerCore.Error -= CrystalReportViewer_HandleExceptionAndInvokeExceptionEvent;
+                _crystalReportsViewer.ViewerCore.Error += CrystalReportViewer_HandleExceptionAndInvokeExceptionEvent;
             }
 
             ConfigureReportViewer(ReportViewerSettings);
@@ -88,6 +84,11 @@ public class ReportViewerWindowVM : BindableBase, IReportViewerWindowVM
 
     #region Properties
 
+    public DelegateCommand<CrystalReportsViewer> SetCrystalReportsViewerCommand { get; set; }
+    public DelegateCommand CloseCommand { get; set; }
+    public DelegateCommand PrintCommand { get; set; }
+
+    public event EventHandler<Exception>? ReportViewerExceptionEvent;
     public event EventHandler<Guid>? ExecuteCallbackEvent;
 
     /// <summary>
@@ -250,12 +251,13 @@ public class ReportViewerWindowVM : BindableBase, IReportViewerWindowVM
     /// </summary>
     /// <param name="source"></param>
     /// <param name="e"></param>
-    private void CrystalReportViewer_HandleException(object source, ExceptionEventArgs e)
+    private void CrystalReportViewer_HandleExceptionAndInvokeExceptionEvent(object source, ExceptionEventArgs e)
     {
-        if (_crystalReportsViewer is not null)
-            _crystalReportsViewer.IsEnabled = false;
-        e.Handled = true;
         Logger.Error(e.Exception);
+        _crystalReportsViewer?.IsEnabled = false;
+        ReportViewerExceptionEvent?.Invoke(null, new Exception(e.Exception.Message, e.Exception.InnerException));
+
+        e.Handled = true;
     }
 
     private void ConfigureReportViewer(ReportViewerSettings settings)
@@ -268,7 +270,7 @@ public class ReportViewerWindowVM : BindableBase, IReportViewerWindowVM
             _crystalReportsViewer.ViewerCore.ProductLocale = new CultureInfo(settings.UICultureLCID.Value);
         }
 
-        _crystalReportsViewer.ViewerCore.AllowedExportFormats = (int)settings.AllowedExportFormats;
+        _crystalReportsViewer.ViewerCore.AllowedExportFormats = (int) settings.AllowedExportFormats;
         _crystalReportsViewer.ViewerCore.EnableDrillDown = settings.EnableDrillDown;
         _crystalReportsViewer.ViewerCore.EnableRefresh = settings.EnableRefresh;
 

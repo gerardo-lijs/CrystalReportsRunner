@@ -1,10 +1,10 @@
-namespace LijsDev.CrystalReportsRunner.Core;
-
 using System.Diagnostics;
 using System.IO.MemoryMappedFiles;
 using System.Reflection;
 using System.Text;
 using PipeMethodCalls;
+
+namespace LijsDev.CrystalReportsRunner.Core;
 
 /// <summary>
 /// Crystal Reports Engine
@@ -14,7 +14,6 @@ public sealed class CrystalReportsEngine : IDisposable
     private readonly PipeServerWithCallback<ICrystalReportsRunner, ICrystalReportsCaller> _pipe;
     private readonly PipeServer<ICallbackDispatcher> _callbackPipeServer;
 
-    /// <inheritdoc/>
     public CrystalReportsEngine(ICallbackDispatcher callbackDispatcher)
     {
         NamedPipeName = $"lijs-dev-crystal-reports-runner-{Guid.NewGuid()}";
@@ -300,7 +299,7 @@ public sealed class CrystalReportsEngine : IDisposable
 
             var path = GetRunnerPath(RunnerPath);
 
-            var arguments = new List<string> { $"--pipe-name {NamedPipeName}", $"--callback-pipe-name {CallbackPipeName}", $"--log-level {(int)LogLevel}" };
+            var arguments = new List<string> { $"--pipe-name {NamedPipeName}", $"--callback-pipe-name {CallbackPipeName}", $"--log-level {(int) LogLevel}" };
 
             if (!string.IsNullOrEmpty(LogDirectory))
             {
@@ -443,6 +442,7 @@ public sealed class CrystalReportsEngine : IDisposable
 
     /// <summary>
     /// Fires when a form is closed.
+    /// If GUI components should be shown, they must be dispatched to the UI thread.
     /// </summary>
     public event EventHandler<FormClosedEventArgs>? FormClosed;
 
@@ -451,11 +451,21 @@ public sealed class CrystalReportsEngine : IDisposable
 
     /// <summary>
     /// Fires when a form is loaded.
+    /// If GUI components should be shown, they must be dispatched to the UI thread.
     /// </summary>
     public event EventHandler<FormLoadedEventArgs>? FormLoaded;
 
     internal void OnFormLoaded(string reportFileName, WindowHandle windowHandle) =>
         FormLoaded?.Invoke(this, new FormLoadedEventArgs(reportFileName, windowHandle));
+
+    /// <summary>
+    /// Fires when an Exception occured in the ReportViewer
+    /// If GUI components should be shown, they must be dispatched to the UI thread.
+    /// </summary>
+    public event EventHandler<Exception>? ReportViewerExceptionEvent;
+
+    internal void OnException(Exception ex) =>
+        ReportViewerExceptionEvent?.Invoke(null, ex);
 }
 
 /// <summary>

@@ -1,12 +1,15 @@
-namespace LijsDev.CrystalReportsRunner.Shell;
-
 using System.Data;
 using System.Windows;
 using System.Windows.Threading;
 using CommandLine;
-using Core;
+using LijsDev.CrystalReportsRunner.Core;
 using NLog;
 using PipeMethodCalls;
+using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
+
+namespace LijsDev.CrystalReportsRunner.Shell;
+
 using LogLevel = Core.LogLevel;
 
 /// <summary>
@@ -15,30 +18,10 @@ using LogLevel = Core.LogLevel;
 public class Shell(IReportViewer reportViewer, IReportExporter reportExporter, Dispatcher dispatcher)
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-    /// <inheritdoc/>
-    public class Options
-    {
-        /// <inheritdoc/>
-        [Option('n', "pipe-name", Required = true, HelpText = "The Named Pipe this instance should connect to.")]
-        public string PipeName { get; set; } = string.Empty;
-
-        /// <inheritdoc/>
-        [Option('c', "callback-pipe-name", Required = true, HelpText = "The Named Pipe to use for the callbacks.")]
-        public string CallbackPipeName { get; set; } = string.Empty;
-
-        /// <inheritdoc/>
-        [Option("log-level", Required = false, HelpText = "Minimum logging level.")]
-        public LogLevel LogLevel { get; set; } = LogLevel.Error;
-
-        /// <inheritdoc/>
-        [Option("log-directory", Required = false, HelpText = "The directory for the log files.")]
-        public string? LogDirectory { get; set; }
-    }
-
+    private PipeClientWithCallback<ICrystalReportsCaller, ICrystalReportsRunner>? _pipeClient;
+    private PipeClient<ICallbackDispatcher>? _callbackPipeClient;
     private Options? _options;
 
-    /// <inheritdoc/>
     public async Task StartListening(string[] args)
     {
         var result = Parser.Default.ParseArguments<Options>(args);
@@ -83,8 +66,20 @@ public class Shell(IReportViewer reportViewer, IReportExporter reportExporter, D
         }
     }
 
-    private PipeClientWithCallback<ICrystalReportsCaller, ICrystalReportsRunner>? _pipeClient;
-    private PipeClient<ICallbackDispatcher>? _callbackPipeClient;
+    internal async Task InvokePipeOnException(Exception ex)
+    {
+        try
+        {
+            if (_pipeClient is not null)
+            {
+                await _pipeClient.InvokeAsync(caller => caller.OnException(ex));
+            }
+        }
+        catch (Exception exception)
+        {
+            Logger.Error(exception);
+        }
+    }
 
     private async Task OpenConnection()
     {
@@ -147,5 +142,20 @@ public class Shell(IReportViewer reportViewer, IReportExporter reportExporter, D
         {
             Logger.Error(ex, "Failed sending FormLoaded event through pipe.");
         }
+    }
+
+    public class Options
+    {
+        [Option('n', "pipe-name", Required = true, HelpText = "The Named Pipe this instance should connect to.")]
+        public string PipeName { get; set; } = string.Empty;
+
+        [Option('c', "callback-pipe-name", Required = true, HelpText = "The Named Pipe to use for the callbacks.")]
+        public string CallbackPipeName { get; set; } = string.Empty;
+
+        [Option("log-level", Required = false, HelpText = "Minimum logging level.")]
+        public LogLevel LogLevel { get; set; } = LogLevel.Error;
+
+        [Option("log-directory", Required = false, HelpText = "The directory for the log files.")]
+        public string? LogDirectory { get; set; }
     }
 }
