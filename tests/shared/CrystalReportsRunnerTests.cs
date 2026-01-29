@@ -1,9 +1,11 @@
 namespace LijsDev.CrystalReportsRunner.UnitTests;
 
+using System.IO;
+
 using FluentAssertions;
 using Xunit;
-
 using CrystalDecisions.Shared;
+
 using LijsDev.CrystalReportsRunner.Core;
 
 public class CrystalReportsTests
@@ -21,6 +23,21 @@ public class CrystalReportsTests
         var reportViewer = new LijsDev.CrystalReportsRunner.ReportViewer();
         var form = reportViewer.GetViewerForm(report, new ReportViewerSettings());
         form.ShowDialog();
+    }
+
+    [StaFact]
+    public void SampleReport_ShowDialog_WPF_ShouldWork()
+    {
+        var report = new Report("SampleReport.rpt", "Sample Report")
+        {
+            Connection = CrystalReportsConnectionFactory.CreateSqlConnection(".\\SQLEXPRESS", "CrystalReportsSample")
+        };
+        report.Parameters.Add("ReportFrom", new DateTime(2022, 01, 01));
+        report.Parameters.Add("UserName", "Gerardo");
+
+        var reportViewer = new LijsDev.CrystalReportsRunner.ReportViewer();
+        var window = reportViewer.GetViewerWindow(report, new ReportViewerSettings());
+        window.ShowDialog();
     }
 
     [StaFact]

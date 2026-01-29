@@ -24,7 +24,7 @@ internal static class Program
         get
         {
             var runnerPath = System.IO.Path.GetDirectoryName(ApplicationLocation);
-            var fileVersionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(Path.Combine(runnerPath, "CrystalDecisions.CrystalReports.Engine.dll"));
+            var fileVersionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(System.IO.Path.Combine(runnerPath, "CrystalDecisions.CrystalReports.Engine.dll"));
             return fileVersionInfo.ProductVersion;
         }
     }

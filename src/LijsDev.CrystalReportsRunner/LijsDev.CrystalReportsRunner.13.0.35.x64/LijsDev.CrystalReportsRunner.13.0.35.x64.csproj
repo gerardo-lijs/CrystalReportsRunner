@@ -5,6 +5,7 @@
     <TargetFramework>net48</TargetFramework>
     <Platforms>x64</Platforms>
     <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -14,7 +15,7 @@
     <AssemblyTitle>LijsDev Crystal Reports Runner</AssemblyTitle>
     <Authors>Muhammad Azeez and Gerardo Lijs</Authors>
     <Company>LijsDev</Company>
-    <Copyright>Copyright © LijsDev 2022-2025</Copyright>
+    <Copyright>Copyright © LijsDev 2022-2026</Copyright>
     <ApplicationIcon>..\shared\report.ico</ApplicationIcon>
     <EmbeddedResourceUseDependentUponConvention>true</EmbeddedResourceUseDependentUponConvention>
   </PropertyGroup>

@@ -21,7 +21,7 @@ internal partial class ViewerForm : Form
         {
             try
             {
-                using var ms = new MemoryStream(viewerSettings.WindowIcon);
+                using var ms = new System.IO.MemoryStream(viewerSettings.WindowIcon);
                 var iconBitmap = new Bitmap(ms);
                 Icon = Icon.FromHandle(iconBitmap.GetHicon());
             }

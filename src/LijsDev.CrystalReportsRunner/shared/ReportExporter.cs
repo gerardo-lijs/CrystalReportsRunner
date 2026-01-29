@@ -1,4 +1,6 @@
 namespace LijsDev.CrystalReportsRunner;
+
+using System.IO;
 using CrystalDecisions.Shared;
 
 using LijsDev.CrystalReportsRunner.Core;

@@ -9,7 +9,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Authors>Muhammad Azeez and Gerardo Lijs</Authors>
     <Company>LijsDev</Company>
-    <Copyright>Copyright © LijsDev 2022-2025</Copyright>
+    <Copyright>Copyright © LijsDev 2022-2026</Copyright>
     <Description>API needed to use Crystal Reports Runner from caller applications.</Description>
 
     <IsPackable>true</IsPackable>

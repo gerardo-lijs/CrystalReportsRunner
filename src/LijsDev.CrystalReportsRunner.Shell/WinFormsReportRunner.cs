@@ -4,32 +4,19 @@ using LijsDev.CrystalReportsRunner.Core;
 
 using System.Threading;
 
-internal class WinFormsReportRunner : ICrystalReportsRunner
+internal class WinFormsReportRunner(
+    IReportViewer viewer,
+    IReportExporter exporter,
+    SynchronizationContext uiContext,
+    Shell shell) : ICrystalReportsRunner
 {
     private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
-
-    private readonly IReportViewer _viewer;
-    private readonly IReportExporter _exporter;
-    private readonly SynchronizationContext _uiContext;
-    private readonly Shell _shell;
-
-    public WinFormsReportRunner(
-        IReportViewer viewer,
-        IReportExporter exporter,
-        SynchronizationContext uiContext,
-        Shell shell)
-    {
-        _viewer = viewer;
-        _exporter = exporter;
-        _uiContext = uiContext;
-        _shell = shell;
-    }
 
     /// <inheritdoc/>
     public void Print(Report report, ReportPrintOptions printOptions)
     {
         Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::Print::PrinterName={printOptions.PrinterName}::Start");
-        _exporter.Print(report, printOptions);
+        exporter.Print(report, printOptions);
         Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::Print::End");
     }
 
@@ -39,7 +26,7 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
         ReportExportOptions reportExportOptions)
     {
         Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::Export::Start");
-        _exporter.Export(report, reportExportOptions);
+        exporter.Export(report, reportExportOptions);
         Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::Export::End");
     }
 
@@ -49,7 +36,7 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
         ReportExportToMemoryMappedFileOptions reportExportToMemoryMappedFileOptions)
     {
         Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ExportToStream::Start");
-        var mmfName = _exporter.ExportToMemoryMappedFile(report, reportExportToMemoryMappedFileOptions);
+        var mmfName = exporter.ExportToMemoryMappedFile(report, reportExportToMemoryMappedFileOptions);
         Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ExportToStream::End");
 
         return mmfName;
@@ -65,15 +52,15 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
 
         using var waitHandle = new ManualResetEvent(false);
 
-        _uiContext.Send(s =>
+        uiContext.Send(s =>
         {
-            var form = _viewer.GetViewerForm(report, viewerSettings);
+            var form = viewer.GetViewerForm(report, viewerSettings);
             var reportFileName = report.Filename;
 
             form.Load += (s, args) =>
             {
                 Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ShowReport::FormLoad");
-                _shell.FormLoaded(reportFileName, new WindowHandle(form.Handle));
+                shell.FormLoaded(reportFileName, new WindowHandle(form.Handle));
 
                 waitHandle.Set();
             };
@@ -81,7 +68,7 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
             form.FormClosed += (s, args) =>
             {
                 Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ShowReport::FormClosed");
-                _shell.FormClosed(reportFileName, GetFormLocation(form));
+                shell.FormClosed(reportFileName, GetFormLocation(form));
             };
 
             if (owner is not null)
@@ -108,14 +95,14 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
         bool? result = false;
         var reportFileName = report.Filename;
 
-        _uiContext.Send(s =>
+        uiContext.Send(s =>
         {
-            using var form = _viewer.GetViewerForm(report, viewerSettings);
+            using var form = viewer.GetViewerForm(report, viewerSettings);
 
             form.Load += (s, args) =>
             {
                 Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ShowReportDialog::FormLoad");
-                _shell.FormLoaded(reportFileName, new WindowHandle(form.Handle));
+                shell.FormLoaded(reportFileName, new WindowHandle(form.Handle));
 
                 waitHandle.Set();
             };
@@ -123,7 +110,7 @@ internal class WinFormsReportRunner : ICrystalReportsRunner
             form.FormClosed += (s, args) =>
             {
                 Logger.Trace($"LijsDev::CrystalReportsRunner::WinFormsReportRunner::ShowReportDialog::FormClosed");
-                _shell.FormClosed(reportFileName, GetFormLocation(form));
+                shell.FormClosed(reportFileName, GetFormLocation(form));
             };
 
             result = ConvertToBoolean(form.ShowDialog(owner.GetWindow()));

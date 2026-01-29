@@ -8,7 +8,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Authors>Gerardo Lijs</Authors>
     <Company>LijsDev</Company>
-    <Copyright>Copyright © LijsDev 2023-2025</Copyright>
+    <Copyright>Copyright © LijsDev 2023-2026</Copyright>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>

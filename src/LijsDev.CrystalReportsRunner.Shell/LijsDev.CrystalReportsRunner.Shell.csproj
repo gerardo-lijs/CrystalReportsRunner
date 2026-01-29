@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -10,7 +11,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Authors>Muhammad Azeez and Gerardo Lijs</Authors>
     <Company>LijsDev</Company>
-    <Copyright>Copyright © LijsDev 2022-2025</Copyright>
+    <Copyright>Copyright © LijsDev 2022-2026</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
