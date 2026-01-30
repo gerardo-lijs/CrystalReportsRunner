@@ -29,6 +29,12 @@ public partial class ViewerWindow : Window
         //    }
         //}
 
+        // Fix Application.Current not initialized. This is needed for Print to work
+        if (System.Windows.Application.Current is null)
+        {
+            new System.Windows.Application();
+        }
+
         // Configure Form
         Title = reportTitle;
         //_closeOnEscapeKey = viewerSettings.WindowCloseOnEscapeKey;

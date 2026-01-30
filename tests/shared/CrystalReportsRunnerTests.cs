@@ -25,7 +25,7 @@ public class CrystalReportsTests
         form.ShowDialog();
     }
 
-    [StaFact]
+    [WpfFact]
     public void SampleReport_ShowDialog_WPF_ShouldWork()
     {
         var report = new Report("SampleReport.rpt", "Sample Report")
