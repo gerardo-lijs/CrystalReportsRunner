@@ -5,6 +5,7 @@
     <Platforms>x64</Platforms>
     <OutputType>Exe</OutputType>
     <UseWindowsForms>true</UseWindowsForms>
+    <UseWpf>true</UseWpf>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>

@@ -11,6 +11,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <RootNamespace>LijsDev.CrystalReportsRunner</RootNamespace>
     <AssemblyName>LijsDev.CrystalReportsRunner</AssemblyName>
     <AssemblyTitle>LijsDev Crystal Reports Runner</AssemblyTitle>
     <Authors>Muhammad Azeez and Gerardo Lijs</Authors>
@@ -35,6 +36,8 @@
     <Compile Include="..\shared\RuntimePolicyHelper.cs" Link="RuntimePolicyHelper.cs" />
     <Compile Include="..\shared\ViewerForm.cs" Link="ViewerForm.cs" />
     <Compile Include="..\shared\ViewerForm.Designer.cs" Link="ViewerForm.Designer.cs" />
+    <Compile Include="..\shared\ViewerWindow.xaml.cs" Link="ViewerWindow.xaml.cs" />
+    <Compile Include="..\shared\ViewerWindowViewModel.cs" Link="ViewerWindowViewModel.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -61,6 +64,12 @@
     <Reference Include="CrystalDecisions.Windows.Forms">
       <HintPath>..\..\..\dependencies\13.0.33\CrystalDecisions.Windows.Forms.dll</HintPath>
     </Reference>
+    <Reference Include="SAPBusinessObjects.WPF.Viewer">
+      <HintPath>..\..\..\dependencies\13.0.33\SAPBusinessObjects.WPF.Viewer.dll</HintPath>
+    </Reference>
+    <Reference Include="SAPBusinessObjects.WPF.ViewerShared">
+      <HintPath>..\..\..\dependencies\13.0.33\SAPBusinessObjects.WPF.ViewerShared.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
@@ -71,5 +80,15 @@
     <None Include="..\shared\NLog.config" Link="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>LijsDev.CrystalReportsRunner.13.0.33.x86.UnitTests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="..\shared\ViewerWindow.xaml" Link="ViewerWindow.xaml" />
   </ItemGroup>
 </Project>
