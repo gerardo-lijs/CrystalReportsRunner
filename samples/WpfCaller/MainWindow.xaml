@@ -125,6 +125,15 @@
                 </ComboBox>
             </StackPanel>
 
+            <StackPanel Margin="0,20,0,0">
+                <CheckBox
+                    x:Name="UseWPFViewerCheckBox"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Content="Use Crystal Reports WPF viewer"
+                    ToolTip="Check to use the WPF viewer instead of the WinForms viewer." />
+            </StackPanel>
+
         </StackPanel>
 
         <StatusBar Grid.Row="1">

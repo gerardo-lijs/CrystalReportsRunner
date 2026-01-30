@@ -305,6 +305,10 @@ public partial class MainWindow : Window
         //engine.ViewerSettings.SetUICulture(Thread.CurrentThread.CurrentUICulture);
         //engine.ViewerSettings.SetUICulture(System.Globalization.CultureInfo.GetCultureInfo("es-ES"));
 
+        // Use WinForm or WPF viewer
+        engine.UseWPFViewer = UseWPFViewerCheckBox.IsChecked ?? false;
+        UseWPFViewerCheckBox.IsEnabled = false;
+
         engine.FormClosed += Engine_FormClosed;
         engine.FormLoaded += Engine_FormLoaded;
 

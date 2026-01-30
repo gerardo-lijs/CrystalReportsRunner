@@ -78,6 +78,12 @@ public sealed class CrystalReportsEngine : IDisposable
     public string? LogDirectory { get; set; }
 
     /// <summary>
+    /// Set to true to use Crystal Reports WPF Viewer for showing reports.
+    /// Default: false (uses Crystal Reports Windows Forms Viewer).
+    /// </summary>
+    public bool UseWPFViewer { get; set; }
+
+    /// <summary>
     /// Viewer settings
     /// </summary>
     public ReportViewerSettings ViewerSettings { get; set; } = new();
@@ -345,6 +351,11 @@ public sealed class CrystalReportsEngine : IDisposable
                 {
                     throw new InvalidOperationException("Log Directory is invalid or not-writable. Please make sure the security settings are correct.");
                 }
+            }
+
+            if (UseWPFViewer)
+            {
+                arguments.Add($"--use-wpf-viewer");
             }
 
             var psi = new ProcessStartInfo(path)

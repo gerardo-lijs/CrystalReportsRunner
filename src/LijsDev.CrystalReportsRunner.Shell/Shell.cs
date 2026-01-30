@@ -32,6 +32,10 @@ public class Shell(IReportViewer reportViewer,
         /// <inheritdoc/>
         [Option("log-directory", Required = false, HelpText = "The directory for the log files.")]
         public string? LogDirectory { get; set; }
+
+        /// <inheritdoc/>
+        [Option("use-wpf-viewer", Required = false, HelpText = "The directory for the log files.")]
+        public bool UseWPFViewer { get; set; }
     }
 
     private Options? _options;
@@ -101,11 +105,37 @@ public class Shell(IReportViewer reportViewer,
 
         Logger.Trace($"LijsDev::CrystalReportsRunner::Shell::StartListening::PipeName={_options.PipeName}");
 
-        _pipeClient = new PipeClientWithCallback<ICrystalReportsCaller, ICrystalReportsRunner>(
-                 new JsonNetPipeSerializer(),
-                 ".",
-                 _options.PipeName,
-                 () => new WinFormsReportRunner(reportViewer, reportExporter, uiContext, this));
+        if (_options.UseWPFViewer)
+        {
+            System.Windows.Threading.Dispatcher dispatcher = null!;
+
+            // We need an UiThread for the WPF viewer - otherwise it has no message-loop and wont accept keyboard input
+            var thread = new Thread(() =>
+            {
+                dispatcher = System.Windows.Threading.Dispatcher.CurrentDispatcher;
+                System.Windows.Threading.Dispatcher.Run(); // Start the Message-Loop
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.IsBackground = true;
+            thread.Start();
+
+            // Wait until Dispatcher is available
+            SpinWait.SpinUntil(() => dispatcher != null, 2000);
+
+            _pipeClient = new PipeClientWithCallback<ICrystalReportsCaller, ICrystalReportsRunner>(
+                new JsonNetPipeSerializer(),
+                ".",
+                _options.PipeName,
+                () => new WPFReportRunner(reportViewer, reportExporter, dispatcher, this));
+        }
+        else
+        {
+            _pipeClient = new PipeClientWithCallback<ICrystalReportsCaller, ICrystalReportsRunner>(
+                     new JsonNetPipeSerializer(),
+                     ".",
+                     _options.PipeName,
+                     () => new WinFormsReportRunner(reportViewer, reportExporter, uiContext, this));
+        }
 
         try
         {
