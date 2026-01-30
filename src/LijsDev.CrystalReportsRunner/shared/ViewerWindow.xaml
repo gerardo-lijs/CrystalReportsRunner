@@ -10,16 +10,5 @@
     Loaded="Window_Loaded"
     mc:Ignorable="d">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
-        <Viewer:CrystalReportsViewer
-            x:Name="CrystalReportsViewerControl"
-            Grid.Row="0"
-            ToggleSidePanel="ParameterPanel" />
-
-    </Grid>
+    <Viewer:CrystalReportsViewer x:Name="CrystalReportsViewerControl" />
 </Window>
