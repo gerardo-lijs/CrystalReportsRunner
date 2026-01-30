@@ -119,17 +119,22 @@ public partial class ViewerWindow : Window
         CrystalReportsViewerControl.ViewerCore.AllowedExportFormats = (int)viewerSettings.AllowedExportFormats;
 
         CrystalReportsViewerControl.ShowRefreshButton = viewerSettings.ShowRefreshButton;
-        //CrystalReportsViewerControl.ShowGroupTreeButton = viewerSettings.ShowGroupTreeButton;
-        //CrystalReportsViewerControl.ShowParameterPanelButton = viewerSettings.ShowParameterPanelButton;
-        //CrystalReportsViewerControl.ToolPanelView = (ToolPanelViewType)(int)viewerSettings.ToolPanelView;
-
+        CrystalReportsViewerControl.ShowToggleSidePanelButton = viewerSettings.ShowGroupTreeButton && viewerSettings.ShowParameterPanelButton;
+        CrystalReportsViewerControl.ViewerCore.ToggleSidePanel = viewerSettings.ToolPanelView switch
+        {
+            Core.ReportViewerToolPanelViewType.None => SAPBusinessObjects.WPF.Viewer.Constants.SidePanelKind.None,
+            Core.ReportViewerToolPanelViewType.GroupTree => SAPBusinessObjects.WPF.Viewer.Constants.SidePanelKind.GroupTree,
+            Core.ReportViewerToolPanelViewType.ParameterPanel => SAPBusinessObjects.WPF.Viewer.Constants.SidePanelKind.ParameterPanel,
+            _ => throw new NotImplementedException(),
+        };
         CrystalReportsViewerControl.ViewerCore.EnableDrillDown = viewerSettings.EnableDrillDown;
         CrystalReportsViewerControl.ViewerCore.EnableRefresh = viewerSettings.EnableRefresh;
 
         CrystalReportsViewerControl.ShowCopyButton = viewerSettings.ShowCopyButton;
-        //CrystalReportsViewerControl.ShowCloseButton = viewerSettings.ShowCloseButton;
         CrystalReportsViewerControl.ShowPrintButton = viewerSettings.ShowPrintButton;
         CrystalReportsViewerControl.ShowExportButton = viewerSettings.ShowExportButton;
+
+        //CrystalReportsViewerControl.ShowCloseButton = viewerSettings.ShowCloseButton;
         //CrystalReportsViewerControl.ShowZoomButton = viewerSettings.ShowZoomButton;
 
         if (viewerSettings.ZoomLevel is not 100)
@@ -140,7 +145,7 @@ public partial class ViewerWindow : Window
         _document = document;
     }
 
-    private void Window_Loaded(object sender, RoutedEventArgs e)
+    private void CrystalReportsViewerControl_Loaded(object sender, RoutedEventArgs e)
     {
         // Set report
         CrystalReportsViewerControl.ViewerCore.ReportSource = _document;

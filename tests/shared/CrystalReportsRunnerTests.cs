@@ -21,7 +21,12 @@ public class CrystalReportsTests
         report.Parameters.Add("UserName", "Gerardo");
 
         var reportViewer = new LijsDev.CrystalReportsRunner.ReportViewer();
-        var form = reportViewer.GetViewerForm(report, new ReportViewerSettings());
+        var form = reportViewer.GetViewerForm(report, new ReportViewerSettings()
+        {
+            ToolPanelView = ReportViewerToolPanelViewType.None,
+            ShowParameterPanelButton = false,
+            ShowGroupTreeButton = false
+        });
         form.ShowDialog();
     }
 
@@ -36,7 +41,12 @@ public class CrystalReportsTests
         report.Parameters.Add("UserName", "Gerardo");
 
         var reportViewer = new LijsDev.CrystalReportsRunner.ReportViewer();
-        var window = reportViewer.GetViewerWindow(report, new ReportViewerSettings());
+        var window = reportViewer.GetViewerWindow(report, new ReportViewerSettings()
+        {
+            ToolPanelView = ReportViewerToolPanelViewType.None,
+            ShowParameterPanelButton = false,
+            ShowGroupTreeButton = false
+        });
         window.ShowDialog();
     }
 
