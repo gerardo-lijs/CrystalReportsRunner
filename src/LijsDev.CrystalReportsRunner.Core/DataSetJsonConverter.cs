@@ -2,6 +2,8 @@ namespace LijsDev.CrystalReportsRunner.Core;
 
 using System;
 using System.Data;
+using System.Linq;
+using System.Collections.Generic;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -25,6 +27,8 @@ internal class JsonDataColumn
 
 internal class DataTableJsonConverter : JsonConverter<DataTable>
 {
+    private static readonly IReadOnlyDictionary<string, Type> AllowedDataTypes = CreateAllowedDataTypes();
+
     public override DataTable? ReadJson(JsonReader reader, Type objectType, DataTable? existingValue, bool hasExistingValue, JsonSerializer serializer)
     {
         var jObject = JObject.Load(reader);
@@ -43,10 +47,10 @@ internal class DataTableJsonConverter : JsonConverter<DataTable>
                 {
                     foreach (var jsonDataColumn in jsonDataColumns)
                     {
-                        var dataType = Type.GetType(jsonDataColumn.DataType);
-                        dt.Columns.Add(jsonDataColumn.ColumnName, dataType);
+                        var dataType = ResolveAllowedDataType(jsonDataColumn.DataType);
+                        var dataColumn = dt.Columns.Add(jsonDataColumn.ColumnName, dataType);
                         if (jsonDataColumn.MaxLength > 0)
-                            dt.Columns[dt.Columns.Count].MaxLength = jsonDataColumn.MaxLength;
+                            dataColumn.MaxLength = jsonDataColumn.MaxLength;
                     }
                 }
             }
@@ -81,6 +85,55 @@ internal class DataTableJsonConverter : JsonConverter<DataTable>
             }
         }
         return dt;
+    }
+
+    private static Type ResolveAllowedDataType(string? typeName)
+    {
+        if (string.IsNullOrWhiteSpace(typeName))
+            throw new JsonSerializationException("Missing DataColumn.DataType value.");
+
+        if (AllowedDataTypes.TryGetValue(typeName!, out var dataType))
+            return dataType;
+
+        throw new JsonSerializationException($"Unsupported DataColumn type '{typeName}'.");
+    }
+
+    private static IReadOnlyDictionary<string, Type> CreateAllowedDataTypes()
+    {
+        var allowedTypes = new[]
+        {
+            typeof(bool),
+            typeof(byte),
+            typeof(byte[]),
+            typeof(char),
+            typeof(DateTime),
+            typeof(DateTimeOffset),
+            typeof(decimal),
+            typeof(double),
+            typeof(Guid),
+            typeof(short),
+            typeof(int),
+            typeof(long),
+            typeof(sbyte),
+            typeof(float),
+            typeof(string),
+            typeof(TimeSpan),
+            typeof(ushort),
+            typeof(uint),
+            typeof(ulong)
+        };
+
+        var supportedTypes = new Dictionary<string, Type>(StringComparer.Ordinal);
+        foreach (var allowedType in allowedTypes)
+        {
+            supportedTypes[allowedType.ToString()] = allowedType;
+            if (allowedType.FullName is not null)
+                supportedTypes[allowedType.FullName] = allowedType;
+            if (allowedType.AssemblyQualifiedName is not null)
+                supportedTypes[allowedType.AssemblyQualifiedName] = allowedType;
+        }
+
+        return supportedTypes;
     }
 
     public override void WriteJson(JsonWriter writer, DataTable? value, JsonSerializer serializer)
